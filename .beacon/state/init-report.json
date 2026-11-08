@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "command": "projects init",
+  "project_root": "/Users/apple/Developer/Personal/renlink",
+  "docs_version": "v0.1",
+  "runtime_version": "2.0.0-go.15",
+  "project_mode": "greenfield",
+  "dry_run": false,
+  "status": "completed",
+  "actions": [
+    {
+      "scope": "store",
+      "action": "registered",
+      "path": "/Users/apple/Developer/Personal/renlink"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/execution"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/features"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/release"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": ".beacon"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": ".beacon/state"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/SUMMARY.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/execution/boundaries.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/execution/index.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/execution/architecture-blueprint.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/execution/version-evolution-blueprint.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/execution/implementation-archive-index.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/execution/project-lifecycle-onboarding.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/v0.1/release/v0.1.md"
+    },
+    {
+      "scope": "docs",
+      "action": "created",
+      "path": "docs/beacon/global-boundaries.md"
+    },
+    {
+      "scope": "base",
+      "action": "created",
+      "path": "CLAUDE.md"
+    },
+    {
+      "scope": "base",
+      "action": "created",
+      "path": "AGENTS.md"
+    },
+    {
+      "scope": "state",
+      "action": "created",
+      "path": ".beacon/state/project-onboarding.json"
+    }
+  ]
+}
