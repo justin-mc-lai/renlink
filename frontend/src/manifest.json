@@ -1,0 +1,29 @@
+{
+  "name": "renlink",
+  "appid": "wx0000000000000000",
+  "description": "社媒无水印提取",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "wx0000000000000000",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "postcss": true,
+      "minified": true
+    },
+    "usingComponents": true,
+    "permission": {
+      "scope.writePhotosAlbum": {
+        "desc": "保存视频和图片需要手机相册写入权限"
+      }
+    }
+  },
+  "h5": {
+    "title": "任链接 - 社媒无水印提取",
+    "router": {
+      "mode": "hash"
+    }
+  }
+}
