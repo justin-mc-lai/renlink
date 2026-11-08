@@ -1,0 +1,106 @@
+{
+  "total": 24,
+  "pass": 9,
+  "fail": 1,
+  "blocked": 14,
+  "blocked_rows": [
+    {
+      "tc": "TC-002",
+      "name": "dy-video-2",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: DY_VIDEO_2"
+    },
+    {
+      "tc": "TC-003",
+      "name": "dy-note-1",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: DY_NOTE_1"
+    },
+    {
+      "tc": "TC-004",
+      "name": "dy-note-2",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: DY_NOTE_2"
+    },
+    {
+      "tc": "TC-006",
+      "name": "xhs-video-2",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: XHS_VIDEO_2"
+    },
+    {
+      "tc": "TC-008",
+      "name": "xhs-short-1",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: XHS_SHORT_1"
+    },
+    {
+      "tc": "TC-009",
+      "name": "cookie-expired",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 PARSE_STUB_COOKIE_EXPIRED 启动"
+    },
+    {
+      "tc": "TC-013",
+      "name": "timeout",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 PARSE_UPSTREAM_DELAY_MS 启动"
+    },
+    {
+      "tc": "TC-014",
+      "name": "size-cap",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: XHS_NOTE_MAX"
+    },
+    {
+      "tc": "TC-015",
+      "name": "field-contract",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: DY_NOTE_1"
+    },
+    {
+      "tc": "TC-020",
+      "name": "dy-argus-stability",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 RENLINK_DISABLE_CACHE 启动"
+    },
+    {
+      "tc": "TC-021",
+      "name": "dy-argus-missing-header",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 RENLINK_DROP_ARGUS_HEADER 启动"
+    },
+    {
+      "tc": "TC-022",
+      "name": "dy-argus-timeout",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 PARSE_UPSTREAM_DELAY_MS 启动"
+    },
+    {
+      "tc": "TC-023",
+      "name": "obscura-xhs-render",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: XHS_NOTE_1"
+    },
+    {
+      "tc": "TC-024",
+      "name": "douyin-no-obscura",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 ENABLE_OBSCURA 启动"
+    }
+  ]
+}

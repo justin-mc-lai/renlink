@@ -1,0 +1,11 @@
+# in-image browser/obscura facts (image sha256:cf44f898...)
+chromium=(none)
+chromium-browser=(none)
+google-chrome=(none)
+chrome=(none)
+headless_shell=(none)
+obscura=/usr/local/bin/obscura
+/ms-playwright=ls: cannot access '/ms-playwright': No such file or directory
+/root/.cache/ms-playwright=ls: cannot access '/root/.cache/ms-playwright': No such file or directory
+obscura_version=obscura 0.2.6
+browser_env=none

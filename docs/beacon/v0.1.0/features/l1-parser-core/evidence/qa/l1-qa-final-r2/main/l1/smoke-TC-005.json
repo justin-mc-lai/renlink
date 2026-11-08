@@ -1,0 +1,38 @@
+{
+  "tc": "TC-005",
+  "name": "xhs-video-1",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T22:17:12+08:00",
+  "base": "http://127.0.0.1:18094",
+  "request": {
+    "url": "https://xhslink.cn/o/1zbdThHpdb0"
+  },
+  "httpStatus": 502,
+  "responseBytes": 182,
+  "clientElapsedMs": 692,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "PARSE_FAILED",
+      "message": "l2-xhs-images 的 parse_note 尚未冻结，l1 仅保留接缝",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 687
+  },
+  "failures": [
+    "HTTP 状态 502 != 200",
+    "ok 不是 true",
+    "platform 不是字符串",
+    "content_type 不是字符串",
+    "source_url 不是字符串",
+    "title 不是字符串",
+    "item_count 不是整数",
+    "item_count 不等于 items 长度",
+    "platform 不是 xhs",
+    "content_type 不是 video",
+    "items 长度不是 1"
+  ],
+  "note": ""
+}

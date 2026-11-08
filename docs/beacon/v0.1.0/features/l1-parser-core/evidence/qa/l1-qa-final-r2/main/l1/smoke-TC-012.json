@@ -1,0 +1,26 @@
+{
+  "tc": "TC-012",
+  "name": "unsupported-platform",
+  "status": "PASS",
+  "startedAt": "2026-11-08T22:17:13+08:00",
+  "base": "http://127.0.0.1:18094",
+  "request": {
+    "url": "https://youtu.be/abc"
+  },
+  "httpStatus": 400,
+  "responseBytes": 160,
+  "clientElapsedMs": 3,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "UNSUPPORTED_PLATFORM",
+      "message": "只支持抖音与小红书链接",
+      "retryable": false
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 0
+  },
+  "failures": [],
+  "note": "三个非目标平台"
+}

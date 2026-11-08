@@ -1,0 +1,26 @@
+{
+  "tc": "TC-011",
+  "name": "invalid-url",
+  "status": "PASS",
+  "startedAt": "2026-11-08T22:17:13+08:00",
+  "base": "http://127.0.0.1:18094",
+  "request": {
+    "url": "https://aaaaaaaaaaaaaaaaaaaaaaaa..."
+  },
+  "httpStatus": 400,
+  "responseBytes": 140,
+  "clientElapsedMs": 54,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "INVALID_URL",
+      "message": "url 长度超过 2048",
+      "retryable": false
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 51
+  },
+  "failures": [],
+  "note": "三组输入：空串、not-a-url、超长 URL"
+}

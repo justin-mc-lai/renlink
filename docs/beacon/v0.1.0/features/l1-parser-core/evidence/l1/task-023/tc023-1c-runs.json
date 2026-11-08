@@ -4,7 +4,7 @@
     {
       "run": 1,
       "http": 502,
-      "client_s": 12.004,
+      "client_s": 12.612,
       "body": {
         "ok": false,
         "error": {
@@ -17,61 +17,55 @@
     {
       "run": 2,
       "http": 200,
-      "client_s": 11.464,
-      "body": {
-        "ok": true,
-        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
-        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
-        "html_bytes": 497341,
-        "has_xsec_token": true,
-        "elapsed_ms": 11456,
-        "wait_ms": 8000,
-        "obscura_alive": true
-      }
-    },
-    {
-      "run": 3,
-      "http": 200,
-      "client_s": 11.301,
+      "client_s": 11.82,
       "body": {
         "ok": true,
         "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
         "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
         "html_bytes": 581195,
         "has_xsec_token": true,
-        "elapsed_ms": 11294,
+        "elapsed_ms": 11813,
         "wait_ms": 8000,
         "obscura_alive": true
+      }
+    },
+    {
+      "run": 3,
+      "http": 504,
+      "client_s": 12.176,
+      "body": {
+        "ok": false,
+        "error": {
+          "code": "TIMEOUT",
+          "message": "Obscura 渲染超过 12s 总预算",
+          "retryable": true
+        }
       }
     },
     {
       "run": 4,
-      "http": 200,
-      "client_s": 11.313,
+      "http": 502,
+      "client_s": 12.22,
       "body": {
-        "ok": true,
-        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
-        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
-        "html_bytes": 581236,
-        "has_xsec_token": true,
-        "elapsed_ms": 11306,
-        "wait_ms": 8000,
-        "obscura_alive": true
+        "ok": false,
+        "error": {
+          "code": "PARSE_FAILED",
+          "message": "页面仍停留在 loading shell",
+          "retryable": true
+        }
       }
     },
     {
       "run": 5,
-      "http": 200,
-      "client_s": 11.903,
+      "http": 504,
+      "client_s": 15.011,
       "body": {
-        "ok": true,
-        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
-        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
-        "html_bytes": 579786,
-        "has_xsec_token": true,
-        "elapsed_ms": 11893,
-        "wait_ms": 8000,
-        "obscura_alive": true
+        "ok": false,
+        "error": {
+          "code": "TIMEOUT",
+          "message": "Obscura 渲染超过 12s 总预算",
+          "retryable": true
+        }
       }
     }
   ]

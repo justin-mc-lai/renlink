@@ -261,3 +261,178 @@ View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux
 #23 DONE 0.2s
 
 View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/6f8vdxk1ss180v8gdg7pfdj8z
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.96kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/h4ckf0r0day/obscura:latest
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+#3 DONE 0.3s
+
+#4 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#4 DONE 0.3s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [obscura 1/1] FROM docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c
+#6 resolve docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c 0.0s done
+#6 DONE 0.0s
+
+#7 [node 1/1] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+#7 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 0.0s done
+#7 DONE 0.0s
+
+#8 [stage-2  1/14] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#8 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.0s done
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 15.28kB done
+#9 DONE 0.0s
+
+#10 [stage-2  4/14] RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+#10 CACHED
+
+#11 [stage-2  8/14] COPY container/requirements.txt ./requirements.txt
+#11 CACHED
+
+#12 [stage-2  3/14] COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+#12 CACHED
+
+#13 [stage-2  2/14] COPY --from=node /usr/local/bin/node /usr/local/bin/node
+#13 CACHED
+
+#14 [stage-2  9/14] RUN pip install --no-cache-dir -r requirements.txt     && node --version     && python -c "import logging; logging.getLogger('f2').addHandler(logging.NullHandler()); import f2, curl_cffi; print('f2 import ok', getattr(f2, '__version__', 'unknown'), '| curl_cffi', curl_cffi.__version__)"
+#14 CACHED
+
+#15 [stage-2  5/14] COPY --from=obscura /obscura /usr/local/bin/obscura
+#15 CACHED
+
+#16 [stage-2  6/14] RUN chmod +x /usr/local/bin/obscura
+#16 CACHED
+
+#17 [stage-2  7/14] WORKDIR /app
+#17 CACHED
+
+#18 [stage-2 10/14] RUN pip install --no-cache-dir playwright==1.64.1     && python -c "from playwright.sync_api import sync_playwright; print('playwright CDP client ok')"     && test ! -d /ms-playwright
+#18 CACHED
+
+#19 [stage-2 11/14] COPY container/app ./app
+#19 DONE 0.0s
+
+#20 [stage-2 12/14] COPY contract ./contract
+#20 DONE 0.0s
+
+#21 [stage-2 13/14] COPY container/entrypoint.sh /usr/local/bin/renlink-entrypoint
+#21 DONE 0.0s
+
+#22 [stage-2 14/14] RUN chmod +x /usr/local/bin/renlink-entrypoint
+#22 DONE 0.2s
+
+#23 exporting to image
+#23 exporting layers 0.1s done
+#23 exporting manifest sha256:46795d9e3622dfa0c2e301c39526843cca80c871b1daaaf64592d2a99057f7b6 done
+#23 exporting config sha256:e1abb989b5b7094487b1673c5f89fda4f0629adcb3f1d69f4202ae6b444996fe done
+#23 exporting attestation manifest sha256:69555a8ebd401ba74954223f368ecd1c8ecf6380e302a49cb977758e519f74ea
+#23 exporting attestation manifest sha256:69555a8ebd401ba74954223f368ecd1c8ecf6380e302a49cb977758e519f74ea 0.0s done
+#23 exporting manifest list sha256:29445fc8b10ebb53927eda16ebdd59d818fd99894b21d8b9a37d0b50f3e54e65 done
+#23 naming to docker.io/library/renlink-l1:qa3 done
+#23 unpacking to docker.io/library/renlink-l1:qa3 0.0s done
+#23 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/nx945frudcnkcc4iojt9eoj9n
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.96kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/h4ckf0r0day/obscura:latest
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+#3 ...
+
+#4 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#4 DONE 0.3s
+
+#3 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+#3 DONE 0.3s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [stage-2  1/14] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.0s done
+#6 DONE 0.0s
+
+#7 [node 1/1] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+#7 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 0.0s done
+#7 DONE 0.0s
+
+#8 [obscura 1/1] FROM docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c
+#8 resolve docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c 0.0s done
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 15.46kB done
+#9 DONE 0.0s
+
+#10 [stage-2  4/14] RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+#10 CACHED
+
+#11 [stage-2  3/14] COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+#11 CACHED
+
+#12 [stage-2  6/14] RUN chmod +x /usr/local/bin/obscura
+#12 CACHED
+
+#13 [stage-2  5/14] COPY --from=obscura /obscura /usr/local/bin/obscura
+#13 CACHED
+
+#14 [stage-2  9/14] RUN pip install --no-cache-dir -r requirements.txt     && node --version     && python -c "import logging; logging.getLogger('f2').addHandler(logging.NullHandler()); import f2, curl_cffi; print('f2 import ok', getattr(f2, '__version__', 'unknown'), '| curl_cffi', curl_cffi.__version__)"
+#14 CACHED
+
+#15 [stage-2  7/14] WORKDIR /app
+#15 CACHED
+
+#16 [stage-2  8/14] COPY container/requirements.txt ./requirements.txt
+#16 CACHED
+
+#17 [stage-2  2/14] COPY --from=node /usr/local/bin/node /usr/local/bin/node
+#17 CACHED
+
+#18 [stage-2 10/14] RUN pip install --no-cache-dir playwright==1.64.1     && python -c "from playwright.sync_api import sync_playwright; print('playwright CDP client ok')"     && test ! -d /ms-playwright
+#18 CACHED
+
+#19 [stage-2 11/14] COPY container/app ./app
+#19 DONE 0.0s
+
+#20 [stage-2 12/14] COPY contract ./contract
+#20 DONE 0.0s
+
+#21 [stage-2 13/14] COPY container/entrypoint.sh /usr/local/bin/renlink-entrypoint
+#21 DONE 0.0s
+
+#22 [stage-2 14/14] RUN chmod +x /usr/local/bin/renlink-entrypoint
+#22 DONE 0.1s
+
+#23 exporting to image
+#23 exporting layers 0.1s done
+#23 exporting manifest sha256:74b89df71a6e103cfc0b559b6e6d830023b845c50b64613b58a9062bc6eadf35 done
+#23 exporting config sha256:e1b27d6a72c6af13cd6295afd3622ca17e87157e43ec05fedf4dcd4a84876067 done
+#23 exporting attestation manifest sha256:5a2f9b3ddf78141e93fa42d0dedc3936a80145767f335569c6d46ecc1f934fc9 0.0s done
+#23 exporting manifest list sha256:629fe9dd54ffbde51af7e0935dba0e6e355f4514e2f57dcc9244166f7836cf21 done
+#23 naming to docker.io/library/renlink-l1:qa3
+#23 naming to docker.io/library/renlink-l1:qa3 done
+#23 unpacking to docker.io/library/renlink-l1:qa3 0.0s done
+#23 DONE 0.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/lwz7aq0pidy5i0pscuydti6b9

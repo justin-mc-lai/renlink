@@ -1,0 +1,10 @@
+{
+  "tc": "TC-014",
+  "name": "size-cap",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T22:17:13+08:00",
+  "base": "http://127.0.0.1:18094",
+  "request": {},
+  "failures": [],
+  "note": "缺少样本: XHS_NOTE_MAX"
+}

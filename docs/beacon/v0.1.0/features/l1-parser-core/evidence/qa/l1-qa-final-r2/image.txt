@@ -1,0 +1,11 @@
+# image facts (collected 2026-11-08T14:19:54Z)
+$ docker image inspect renlink-l1-final:latest
+Id=sha256:cf44f898eb17caa77baaa44013deb83bd816de5f2cfeed15b6d161f35b2bfe6a
+Created=2026-11-08T13:14:17.495959384Z
+Size=247849249
+RepoTags=[renlink-l1-final:latest]
+RepoDigests=[renlink-l1-final@sha256:cf44f898eb17caa77baaa44013deb83bd816de5f2cfeed15b6d161f35b2bfe6a]
+$ docker images | grep renlink-l1-final
+renlink-l1-final:latest                                 cf44f898eb17       1.02GB          248MB   U    
+$ docker version (server)
+29.1.5 / linux/arm64

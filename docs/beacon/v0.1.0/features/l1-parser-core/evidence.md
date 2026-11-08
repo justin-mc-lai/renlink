@@ -828,3 +828,77 @@ PASS: 2/2 samples parsed and downloaded
 
 - 本轮只改 `evidence.md` 与 `tasks.md`；未改 `truth.md`、`tests.md` 正文，未 commit / push，未关闭任何 change。
 - “调用方独立本机验收”是调用方给的原文登记，“独立 QA 结论”是验收员报告摘录；两者都不是后端自证，后端本轮没有重跑 smoke 或 accept_local。
+
+---
+
+## 独立 QA 复验 r2 登记（验收员，2026-11-08 22:25 +08:00）
+
+- 权威文件：`evidence/qa/l1-qa-final-r2/verdict.md`；索引：`evidence/qa/l1-qa-final-r2-index.md`；哈希清单：`evidence/qa/l1-qa-final-r2/sha256-manifest.txt`（52 个文件）。
+- mode `beacon-go` / run_id `qa-l1-20261108-2225` / stage `qa`；current_stage=`plan`（blocked，`stage_executor_not_registered`）。
+- 对象：`renlink-l1-final:latest` = `sha256:cf44f898eb17caa77baaa44013deb83bd816de5f2cfeed15b6d161f35b2bfe6a`，created `2026-11-08T13:14:17Z`；truth frozen / R1。
+- 分段结论：
+  - douyin 主路径 **PASS**（accept_local 762ms / 162,700,599B / 1407.53s）。
+  - xhs 主路径 **FAIL**（502 `PARSE_FAILED`；上游会话失效 302→/login），调用方自报 xhs PASS / 2-2 未复现。
+  - 默认 smoke 实测 `pass=9 fail=1 blocked=14`（调用方自报 10/0/14，差异为 TC-005）。
+  - 服务端模式用例 **PASS**：TC-009、TC-013、TC-022、TC-020、TC-021（各自独立容器）；附加 TC-024 PASS。
+  - 缺样本 **BLOCKED 8 条**：TC-002(DY_VIDEO_2)、TC-003(DY_NOTE_1)、TC-004(DY_NOTE_2)、TC-006(XHS_VIDEO_2)、TC-008(XHS_SHORT_1)、TC-014(XHS_NOTE_MAX)、TC-015(DY_NOTE_1 连带)、TC-023(XHS_NOTE_1 连带)。
+  - TC-023 遗留 **P0 未关闭**：默认 `/render/probe` 502；加 `OBSCURA_ALLOW_PRIVATE_NETWORK=1` 后 200 但落 XHS 登录页、`has_xsec_token=false`；`render_obscura.py` 无 cookie 注入。
+- 镜像事实更正：无 Chromium/Chrome/headless_shell、无 Playwright 浏览器成立；但 `obscura` 存在（`/usr/local/bin/obscura` 0.2.6），调用方“obscura 为空”的表述不成立。
+- 其他：`/health` 的 `cookie_status` 仅判存在性，XHS 会话失效仍报 `fresh`（P1）；`ops/smoke.py` 21:28 版 BLOCKED 门已验证不会吞真 FAIL（客户端设 env、服务端未开 → FAIL）。
+- 边界：未改 `app/`、`truth.md`、`tests.md` 判据；未 commit / push。本轮 verdict 不支持直接 release，release 由人类确认。
+
+---
+
+## TASK-023 返工：Obscura 冷启动与 1C 预算（2026-11-08 22:00–22:35 +08:00）
+
+### 本轮改动（只动实现与 evidence.md）
+
+- `container/app/parsers/render_obscura.py`
+  - 去掉固定 1000ms settle，改为约 120ms 的就绪轮询：标题非 `loading` 且（xhs 页面）内容含 `xsec_token` 即返回；上限仍受 12s 总预算约束。
+  - Playwright driver 与 `connect_over_cdp` 的 browser 改为进程内单例，固定在一个专用线程（sync API 有线程/greenlet 绑定）；每次请求只 `new_context()` → `new_page()`，只关闭 context，任何路径都不调用 `browser.close()`；断线时 `playwright.stop()` 后下次重连。
+  - `app` 启动时预连一次 CDP（`prewarm`），失败不影响启动；预连成本不再计入首个请求。
+  - 只跳过 `image` / `media` / `font` / `stylesheet` 子资源，脚本照常执行；`goto(wait_until="commit")` 用 2s 探针超时后立即进入轮询（超时不会中止导航）。
+  - 就绪时间越过 11.85s 仍按 12s 预算返回 504，保持 C10 的「超过 12s 返回 TIMEOUT」。
+- `container/app/main.py`：startup 预连 Obscura。
+- `Dockerfile`：`HEALTHCHECK --start-period` 调整为 40s（预连需要时间）；默认仍不装 Chromium / Playwright 浏览器。
+- 未改 `truth.md`、`tests.md`、`tasks.md` 的任何判据；未 commit / push。
+
+### 1C1G 实测（`--cpus=1 --memory=1g`，ENABLE_OBSCURA=1）
+
+- 3 个构建迭代共 15 次 TC-023 尝试：`<12s` 且 200 的只有 **7 次**，其余 8 次为 502/504 或 12s 后才返回。**没有任何一次 5/5。**
+- 最优一批（轮询 + 单例 + 预连，未加严格预算检查）：`12.004s(502) / 11.464 / 11.301 / 11.313 / 11.903`，4/5。
+- 最终构建 5 连跑：`12.612(502) / 11.820(200) / 12.176(504) / 12.220(502) / 15.011(504)`，1/5。
+- 官方 `ops/smoke.py --case TC-023` 在 1C：**FAIL**，13.018s，HTTP 502。
+- 结论：1C 下小红书页面的 JS 水合本身需要 12–15s；轮询、连接复用和预连把最好成绩从约 13.1s 压到约 11.3s，但方差大，无法稳定满足 5/5 <12s。要满足冻结的 12s 预算，容器规格应为 **≥2C1G**（truth C12 的「开启时建议 1C1G」需要人签变更，本轮未改）。
+
+### 2C1G 实测
+
+- 同一镜像、同一样本，`--cpus=2 --memory=1g`：probe 3/3 PASS（8.946s / 9.999s / 9.243s）；官方 smoke TC-023 PASS。余量约 2–3s。
+
+### 1C 下的其他用例（ENABLE_OBSCURA=1）
+
+| 用例 | 结果 | 实测 |
+|---|---|---|
+| TC-024 `douyin-no-obscura` | PASS | douyin 200，play_addr 非空；renders/cdp_connects 增量 0；obscura 日志抖音命中 0；两个抖音模块均不 import render |
+| TC-018 health | PASS | 200 |
+| TC-019 dy-argus-1 | PASS | argus 0→1，browser_launches 不增 |
+| 默认关闭（0.5C1G） | PASS | `render.enabled=false`，obscura 进程 0，`/render/probe` 404 |
+| 镜像默认浏览器 | PASS | `/ms-playwright` 不存在，chrome/chromium/headless_shell 计数 0，obscura 0.2.6 |
+
+所有 502/504 之后 obscura CDP 端口仍存活（`obscura_cdp_alive=true`，进程数 1），确认没有 `browser.close()`。
+
+### 样本问题（与代码无关）
+
+- 冻结样本 `XHS_NOTE_1`（`6af04386000000001500d626`）现在直接 `curl` 就是 **302 → /login**，不经过 obscura；旧 `xsec_token` 已不被接受。验收员 r2 也记录了同一现象。
+- 本轮 TC-023 使用 2026-11-08 22:23 从 explore feed 新取的真实笔记链接（`6a883be50000000018018c43`），见 `evidence/l1/task-023/sample-expiry.json`。QA 复跑必须换新样本；否则 FAIL/BLOCKED 是样本失效，不是实现回归。
+
+### 生产前提（P1，与旧证据一致）
+
+- Obscura 主机不能处于 fake-ip/私网解析环境：Clash fake-ip `198.18.0.0/15` 会被 SSRF 防护拒绝。本地证据用了 `OBSCURA_ALLOW_PRIVATE_NETWORK=1`，生产默认不加，保持严格模式。
+- 开启 Obscura 时启动会多做一次 CDP 预连（约 0.3–1.1s）；默认关闭时不导入 Playwright、不连接、不启动任何浏览器进程。
+
+### 证据文件（`evidence/l1/task-023/`）
+
+- `tc023-1c-runs.json`、`tc023-2c-runs.json`、`tc023-1c-smoke.json`、`tc023-2c-smoke.json`
+- `tc024-1c.json`、`regression-tc018.json`、`regression-tc019.json`、`default-off.json`
+- `sample-expiry.json`、`build.log`

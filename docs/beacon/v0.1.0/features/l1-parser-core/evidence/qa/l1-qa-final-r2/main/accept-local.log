@@ -1,0 +1,15 @@
+douyin: ok type=video items=1 762ms
+  item 0 video -> 162700599B (1407.533333s / 162700599B)
+Traceback (most recent call last):
+  File "/Users/apple/Developer/Personal/renlink/ops/accept_local.py", line 102, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/apple/Developer/Personal/renlink/ops/accept_local.py", line 76, in main
+    result = parse(url)
+             ^^^^^^^^^^
+  File "/Users/apple/Developer/Personal/renlink/ops/accept_local.py", line 39, in parse
+    resp.raise_for_status()
+  File "/Users/apple/Developer/Personal/renlink/.venv/lib/python3.11/site-packages/curl_cffi/requests/models.py", line 243, in raise_for_status
+    raise HTTPError(f"HTTP Error {self.status_code}: {self.reason}", 0, self)
+curl_cffi.requests.exceptions.HTTPError: HTTP Error 502: Bad Gateway
+exit=1

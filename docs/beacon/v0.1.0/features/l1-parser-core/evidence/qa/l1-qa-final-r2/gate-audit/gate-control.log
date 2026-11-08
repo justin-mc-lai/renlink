@@ -1,0 +1,4 @@
+PARSE_BASE=http://127.0.0.1:18094
+TC-009 cookie-expired: BLOCKED (服务端未以 PARSE_STUB_COOKIE_EXPIRED 启动)
+SUMMARY pass=0 fail=0 blocked=1
+exit=3

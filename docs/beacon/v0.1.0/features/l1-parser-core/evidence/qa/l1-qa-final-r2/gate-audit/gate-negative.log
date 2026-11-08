@@ -1,0 +1,4 @@
+PARSE_BASE=http://127.0.0.1:18094
+TC-009 cookie-expired: FAIL failures=['HTTP 状态 200 != 503', 'ok 不是 false', 'error.code None != COOKIE_EXPIRED', 'error.message 缺失', 'error.retryable 不是布尔', 'retryable 应为 True', '失败信封 items 不是空数组'] (需服务端以 PARSE_STUB_COOKIE_EXPIRED=douyin 启动)
+SUMMARY pass=0 fail=1 blocked=0
+exit=2

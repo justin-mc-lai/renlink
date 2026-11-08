@@ -1,0 +1,12 @@
+
+   ____  _                              
+  / __ \| |                             
+ | |  | | |__  ___  ___ _   _ _ __ __ _ 
+ | |  | | '_ \/ __|/ __| | | | '__/ _` |
+ | |__| | |_) \__ \ (__| |_| | | | (_| |
+  \____/|_.__/|___/\___|\__,_|_|  \__,_|
+                   
+  Headless Browser v0.2.6
+  CDP server: ws://127.0.0.1:9222/devtools/browser
+
+[2m2026-11-08T14:18:56.063690Z[0m [33m WARN[0m [2mobscura_cdp::server[0m[2m:[0m WS read error: WebSocket protocol error: Connection reset without closing handshake

@@ -1,0 +1,10 @@
+{
+  "tc": "TC-006",
+  "name": "xhs-video-2",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T22:17:12+08:00",
+  "base": "http://127.0.0.1:18094",
+  "request": {},
+  "failures": [],
+  "note": "缺少样本: XHS_VIDEO_2"
+}

@@ -1,0 +1,4 @@
+PARSE_BASE=http://127.0.0.1:18097
+TC-020 dy-argus-stability: PASS (连跑 3 次；需服务端以 RENLINK_DISABLE_CACHE=1 启动，避免缓存掩盖上游稳定性)
+SUMMARY pass=1 fail=0 blocked=0
+exit=0

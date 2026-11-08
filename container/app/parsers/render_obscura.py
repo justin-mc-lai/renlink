@@ -59,9 +59,6 @@ _SKIP_RESOURCES = {"image", "media", "font", "stylesheet"}
 # takes over immediately instead of waiting the full 8s for a commit event that
 # can arrive late under CPU starvation.
 _GOTO_PROBE_MS = 2000
-# Warm-up page: fills DNS/TLS and the shared HTTP cache before the first real
-# request, so a container cold start does not spend its budget on handshakes.
-_PREWARM_URL = "https://www.xiaohongshu.com/explore"
 
 _lock = threading.Lock()
 _stats: Dict[str, Any] = {
@@ -284,6 +281,9 @@ def _render_page(url: str, wait_ms: Optional[int] = None) -> Dict[str, Any]:
         except Exception as exc:  # noqa: BLE001 - late commit is common on 1 CPU
             nav_error = exc
         title, html = _wait_ready(page, deadline, need_token)
+        if time.monotonic() >= deadline:
+            # A blocking CDP call can land just past the poll boundary.
+            raise RenderTimeout("Obscura 渲染超过 12s 总预算")
         final_url = page.url or url
         body = html.encode("utf-8")
         if nav_error is not None and len(body) < 2000:
@@ -325,7 +325,10 @@ def render_page(url: str, wait_ms: Optional[int] = None) -> Dict[str, Any]:
     before = _artifacts_dirs()
     future = _worker().submit(_render_page, url, wait_ms)
     try:
-        return future.result(timeout=TOTAL_BUDGET_S + 1.0)
+        # Allow the internal 12s deadline plus the context/artifact cleanup;
+        # timing out earlier leaves the worker busy and cascades into the next
+        # request's budget.
+        return future.result(timeout=TOTAL_BUDGET_S + 3.0)
     except FuturesTimeout as exc:
         _record_failure("render: total budget exceeded (queue)")
         raise RenderTimeout("Obscura 渲染超过 12s 总预算") from exc
@@ -345,45 +348,12 @@ def prewarm() -> bool:
     try:
         future = _worker().submit(_ensure_browser, deadline)
         future.result(timeout=max(3.0, TOTAL_BUDGET_S - 1.0))
-        # One throwaway navigation: DNS, TLS and shared CDN assets only.
-        future = _worker().submit(_prewarm_navigation, time.monotonic() + 15.0)
-        future.result(timeout=16.0)
     except Exception as exc:  # noqa: BLE001 - startup stays alive, request retries
         logger.warning("obscura prewarm failed: %s", type(exc).__name__)
         return False
     with _lock:
         _stats["prewarms"] += 1
     return True
-
-
-def _prewarm_navigation(deadline: float) -> None:
-    """Load a public xhs page once so later renders reuse DNS/TLS/cache."""
-    browser = _browser
-    if browser is None:
-        return
-    context = None
-    try:
-        context = browser.new_context()
-        page = context.new_page()
-        try:
-            page.route("**/*", _skip_heavy)
-        except Exception:  # noqa: BLE001
-            pass
-        try:
-            page.goto(_PREWARM_URL, wait_until="commit", timeout=_remaining_ms(deadline, 8000))
-        except Exception:  # noqa: BLE001 - warm-up is best effort
-            pass
-        while time.monotonic() < deadline:
-            title = _page_title(page)
-            if title and not title.lower().startswith("loading"):
-                break
-            time.sleep(_POLL_S)
-    finally:
-        if context is not None:
-            try:
-                context.close()
-            except Exception:  # noqa: BLE001
-                pass
 
 
 async def render_html(url: str, wait_ms: Optional[int] = None) -> Dict[str, Any]:

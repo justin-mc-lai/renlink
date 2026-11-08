@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-11-08T22:22:20+0800",
+  "container": "task023-default",
+  "cpu": "0.5",
+  "memory": "1g",
+  "env_ENABLE_OBSCURA": "unset",
+  "health_render": {
+    "enabled": false,
+    "cdp_connects": 0,
+    "renders": 0,
+    "prewarms": 0
+  },
+  "render_probe_http": 404,
+  "obscura_processes": 0,
+  "image_checks": {
+    "ms_playwright_dir": "absent",
+    "browser_binaries": 0,
+    "obscura_version": "0.2.6"
+  },
+  "verdict": "PASS"
+}

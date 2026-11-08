@@ -1,0 +1,5 @@
+# xhs 会话状态（不打印 cookie 值）
+health.xhs.cookie_status=fresh
+$ curl -o /dev/null -w '%{http_code} %{redirect_url}' -H 'Cookie: <XHS_COOKIE>' https://www.xiaohongshu.com/explore
+302 https://www.xiaohongshu.com/login?redirectPath=http%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%3FexSource%3Dnull
+(302 到 /login => cookie 会话已失效；健康检查只判存在性，故仍报 fresh)

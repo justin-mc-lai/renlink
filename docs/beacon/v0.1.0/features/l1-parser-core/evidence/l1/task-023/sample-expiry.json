@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-11-08T22:22:09+0800",
+  "frozen_sample_XHS_NOTE_1": {
+    "url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626?xsec_token=CBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0=&xsec_source=app_share",
+    "http": 302,
+    "redirect_url": "https://www.xiaohongshu.com/login?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6af04386000000001500d626%3Fxsec_token%3DCBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%3D%26xsec_source%3Dapp_share%26exSource%3D"
+  },
+  "finding": "frozen XHS_NOTE_1 now returns 302 to /login without obscura; its xsec_token is no longer accepted",
+  "fresh_sample_used_for_task_023": {
+    "url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=",
+    "source": "public explore feed links rendered through obscura on 2026-11-08 22:23 +08:00"
+  },
+  "note": "QA must supply a fresh XHS_NOTE_1; the frozen sample redirects to login independent of this change"
+}

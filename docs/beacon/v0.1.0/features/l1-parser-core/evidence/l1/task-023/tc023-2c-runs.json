@@ -1,0 +1,50 @@
+{
+  "url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=",
+  "runs": [
+    {
+      "run": 1,
+      "http": 200,
+      "client_s": 8.964,
+      "body": {
+        "ok": true,
+        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
+        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+        "html_bytes": 581496,
+        "has_xsec_token": true,
+        "elapsed_ms": 8946,
+        "wait_ms": 8000,
+        "obscura_alive": true
+      }
+    },
+    {
+      "run": 2,
+      "http": 200,
+      "client_s": 10.008,
+      "body": {
+        "ok": true,
+        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
+        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+        "html_bytes": 497341,
+        "has_xsec_token": true,
+        "elapsed_ms": 9999,
+        "wait_ms": 8000,
+        "obscura_alive": true
+      }
+    },
+    {
+      "run": 3,
+      "http": 200,
+      "client_s": 9.266,
+      "body": {
+        "ok": true,
+        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
+        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+        "html_bytes": 497341,
+        "has_xsec_token": true,
+        "elapsed_ms": 9243,
+        "wait_ms": 8000,
+        "obscura_alive": true
+      }
+    }
+  ]
+}
