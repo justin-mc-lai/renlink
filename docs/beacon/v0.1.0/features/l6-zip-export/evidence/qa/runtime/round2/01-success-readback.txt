@@ -1,0 +1,14 @@
+=== PROBE 01: POST /zip SUCCESS PATH & READBACK (ROUND 2) ===
+HTTP Status: 200
+Response Body: {"bytes": 379, "count": 3, "fileID": "cloud://local/l6/st_876e525b35db1401b04b29d6/c0be322c1ad6af50.zip", "ok": true}
+Response Keys: ['bytes', 'count', 'fileID', 'ok']
+Zip on disk path: /var/folders/2t/f90n3twn0jsc89rglztl65b00000gn/T/renlink-l6-r2-tg5kxhlv/store/l6/st_876e525b35db1401b04b29d6/c0be322c1ad6af50.zip
+Disk file size: 379 bytes (matches resp.bytes: True)
+Zip entry count: 3 (matches resp.count: True)
+Zip entry filenames: ['000.jpg', '001.png', '002.webp']
+Entry 000.jpg: date_time=(1980, 1, 1, 0, 0, 0), compress_type=0 (ZIP_STORED=True), file_size=26
+Entry 001.png: date_time=(1980, 1, 1, 0, 0, 0), compress_type=0 (ZIP_STORED=True), file_size=28
+Entry 002.webp: date_time=(1980, 1, 1, 0, 0, 0), compress_type=0 (ZIP_STORED=True), file_size=31
+Zip contents verified successfully byte-for-byte.
+Elapsed: 16.74 ms
+VERDICT: PASS

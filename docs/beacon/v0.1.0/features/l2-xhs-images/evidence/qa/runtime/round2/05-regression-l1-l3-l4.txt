@@ -1,0 +1,11 @@
+=== PROBE 05: REGRESSION & HARD BOUNDARIES (ROUND 2) ===
+
+[1. Cookie in Request Body]
+Status: 400
+Body: {"elapsed_ms": 0, "error": {"code": "INVALID_REQUEST", "message": "请求体不得包含 cookie 字段", "retryable": false}, "items": [], "ok": false, "resolved_url": ""}
+Cookie rejection: PASS
+
+[2. Hard Boundary: No Forged cloud:// & Zero /tmp Residue]
+All error responses verified free of 'cloud://' strings.
+Regression /parse contract intact.
+VERDICT: PASS

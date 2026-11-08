@@ -1,7 +1,7 @@
 ---
 slug: l2-xhs-images
 version: v0.1.0
-materials_status: current
+materials_status: stale
 test_source: acceptance_criteria
 env: container-http
 ---

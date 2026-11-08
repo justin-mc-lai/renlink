@@ -1,0 +1,17 @@
+=== PROBE 02: FAILURES 410, 413, 503 (ROUND 2) ===
+[Case 1: 410 STAGE_EXPIRED]
+Status: 410
+Body: {"error": {"code": "STAGE_EXPIRED", "message": "清单缓存已过期，请重新解析", "retryable": false}, "ok": false}
+Check: ok=false, code='STAGE_EXPIRED', retryable=False, no fileID, no cloud://: PASS
+
+[Case 2: 413 TOO_LARGE]
+Status: 413
+Body: {"error": {"code": "TOO_LARGE", "message": "源图片体积超过上限", "retryable": false}, "ok": false}
+Check: ok=false, code='TOO_LARGE', retryable=False, no fileID, no cloud://: PASS
+
+[Case 3: 503 ZIP_NOT_READY]
+Status: 503
+Body: {"error": {"code": "ZIP_NOT_READY", "message": "打包服务未配置对象存储: 本地存储目录不可写", "retryable": true}, "ok": false}
+Check: ok=false, code='ZIP_NOT_READY', retryable=True, no fileID, no cloud://: PASS
+
+VERDICT: PASS

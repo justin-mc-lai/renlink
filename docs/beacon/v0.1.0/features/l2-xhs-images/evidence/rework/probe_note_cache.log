@@ -1,0 +1,29 @@
+2026-11-09 06:51:18,119 WARNING renlink.session session pool fallback platform=xhs source=cos reason=COS_BUCKET 未配置
+2026-11-09 06:51:18,119 INFO renlink.session session loaded platform=xhs source=env status=fresh cookie=web_***
+renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=miss cache_state=enabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,119 INFO renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=miss cache_state=enabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,120 INFO renlink.parse parse ok platform=xhs content_type=note items=2 elapsed_ms=1 host=www.xiaohongshu.com
+2026-11-09 06:51:18,121 INFO httpx HTTP Request: POST http://probe/parse "HTTP/1.1 200 OK"
+renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=hit cache_state=enabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,122 INFO renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=hit cache_state=enabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,122 INFO renlink.parse parse ok platform=xhs content_type=note items=2 elapsed_ms=1 host=www.xiaohongshu.com
+2026-11-09 06:51:18,123 INFO httpx HTTP Request: POST http://probe/parse "HTTP/1.1 200 OK"
+first status: 200
+first ok: True item_count: 2
+first remoteUrls: ['https://sns-img-qc.xhscdn.com/j.webp', 'https://sns-img-qc.xhscdn.com/k.webp']
+second status: 200
+second ok: True item_count: 2
+second remoteUrls: ['https://sns-img-qc.xhscdn.com/j.webp', 'https://sns-img-qc.xhscdn.com/k.webp']
+upstream_fetch_calls_with_default_ttl: 1
+counters_with_default_ttl: {"xhs_note_cache_hit_total": 1, "xhs_note_cache_miss_total": 1, "xhs_note_images_total": 4, "xhs_note_parse_total{result=failed}": 0, "xhs_note_parse_total{result=need_xsec}": 0, "xhs_note_parse_total{result=ok}": 2}
+renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=miss cache_state=disabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,124 INFO renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=miss cache_state=disabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,124 INFO renlink.parse parse ok platform=xhs content_type=note items=2 elapsed_ms=1 host=www.xiaohongshu.com
+2026-11-09 06:51:18,125 INFO httpx HTTP Request: POST http://probe/parse "HTTP/1.1 200 OK"
+renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=miss cache_state=disabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,126 INFO renlink.xhs event=xhs_note_parse note_id=6a0000000000000000000010 image_count=2 xsec_token=present cache=miss cache_state=disabled elapsed_ms=0 code=ok
+2026-11-09 06:51:18,126 INFO renlink.parse parse ok platform=xhs content_type=note items=2 elapsed_ms=1 host=www.xiaohongshu.com
+2026-11-09 06:51:18,126 INFO httpx HTTP Request: POST http://probe/parse "HTTP/1.1 200 OK"
+upstream_fetch_calls_with_ttl_0: 2
+counters_with_ttl_0: {"xhs_note_cache_hit_total": 0, "xhs_note_cache_miss_total": 0, "xhs_note_images_total": 4, "xhs_note_parse_total{result=failed}": 0, "xhs_note_parse_total{result=need_xsec}": 0, "xhs_note_parse_total{result=ok}": 2}
+NOTE_CACHE_PROBE_OK

@@ -1,0 +1,17 @@
+=== PROBE 04: HARD BOUNDARIES & RESIDUE / TIMEOUT LEAK ===
+[Check 1: Cookie in request body]
+Status: 400
+Body: {'ok': False, 'error': {'code': 'INVALID_REQUEST', 'message': '请求体不得包含 cookie 字段', 'retryable': False}}
+Cookie rejection check: PASS
+
+[Check 2: Normal run /tmp residue]
+New /tmp/renlink-zip-* files created and left: set()
+Normal run zero residue: PASS
+
+[Check 3: Timeout cancellation residue (L6-1 replication)]
+Timeout Status: 504
+Timeout Body: {'ok': False, 'error': {'code': 'TIMEOUT', 'message': '单请求超过 1 秒', 'retryable': True}}
+Leaked zip files in /tmp after timeout: ['/tmp/renlink-zip-bl9ftk4_.zip']
+DEFECT CONFIRMED (L6-1): 1 zip file(s) leaked in /tmp after 504 TIMEOUT.
+
+VERDICT: FAIL (due to L6-1 /tmp timeout leak)

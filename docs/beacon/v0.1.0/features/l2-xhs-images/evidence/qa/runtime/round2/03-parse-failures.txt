@@ -1,0 +1,23 @@
+=== PROBE 03: PARSE FAILURES (502 PARSE_FAILED) (ROUND 2) ===
+
+[Case: No __INITIAL_STATE__]
+Status: 502
+Body: {"elapsed_ms": 0, "error": {"code": "PARSE_FAILED", "message": "页面没有 window.__INITIAL_STATE__", "retryable": true}, "items": [], "ok": false, "resolved_url": ""}
+No __INITIAL_STATE__: PASS (502 PARSE_FAILED, items=[], no stack trace)
+
+[Case: Corrupted JSON in state]
+Status: 502
+Body: {"elapsed_ms": 0, "error": {"code": "PARSE_FAILED", "message": "初始状态 JSON 解析失败", "retryable": true}, "items": [], "ok": false, "resolved_url": ""}
+Corrupted JSON in state: PASS (502 PARSE_FAILED, items=[], no stack trace)
+
+[Case: Missing noteDetailMap]
+Status: 502
+Body: {"elapsed_ms": 0, "error": {"code": "PARSE_FAILED", "message": "页面缺少 noteDetailMap", "retryable": true}, "items": [], "ok": false, "resolved_url": ""}
+Missing noteDetailMap: PASS (502 PARSE_FAILED, items=[], no stack trace)
+
+[Case: Empty imageList]
+Status: 502
+Body: {"elapsed_ms": 0, "error": {"code": "PARSE_FAILED", "message": "imageList 为空或不是数组", "retryable": true}, "items": [], "ok": false, "resolved_url": ""}
+Empty imageList: PASS (502 PARSE_FAILED, items=[], no stack trace)
+
+VERDICT: PASS

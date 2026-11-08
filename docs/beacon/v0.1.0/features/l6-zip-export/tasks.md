@@ -1,7 +1,7 @@
 ---
 slug: l6-zip-export
 version: v0.1.0
-materials_status: current
+materials_status: stale
 task_source: acceptance_criteria
 ---
 
