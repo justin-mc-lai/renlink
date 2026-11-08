@@ -1,0 +1,4 @@
+douyin: ok (34 cookies)
+xhs: ok (17 cookies)
+wrote pool /Users/apple/.config/renlink/sessions
+wrote /Users/apple/.config/renlink/cookies.env

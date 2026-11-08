@@ -1,0 +1,130 @@
+{
+  "case": "image-ok",
+  "status": "PASS",
+  "at": "2026-11-09T00:36:27+08:00",
+  "base": "http://127.0.0.1:18109",
+  "store": "local",
+  "checks": [
+    {
+      "name": "parse_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "parse_schema",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "parse_has_image",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "name": "stage_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "stage_ok",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fileID_cloud",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kind_image",
+      "ok": true,
+      "detail": "image"
+    },
+    {
+      "name": "ext_nonempty",
+      "ok": true,
+      "detail": "jpg"
+    },
+    {
+      "name": "bytes_positive",
+      "ok": true,
+      "detail": "514859"
+    },
+    {
+      "name": "file_exists",
+      "ok": true,
+      "detail": "/tmp/renlink-stage-store/l3/6af04386000000001500d626/0.jpg"
+    },
+    {
+      "name": "readback_bytes",
+      "ok": true,
+      "detail": "514859 vs 514859"
+    },
+    {
+      "name": "pillow_decode",
+      "ok": true,
+      "detail": "JPEG"
+    }
+  ],
+  "detail": {
+    "parse": {
+      "status": 200,
+      "body": {
+        "ok": true,
+        "platform": "xhs",
+        "content_type": "note",
+        "source_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626",
+        "resolved_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626",
+        "title": "",
+        "item_count": 3,
+        "elapsed_ms": 763,
+        "items": [
+          {
+            "index": 0,
+            "type": "image",
+            "remoteUrl": "http://sns-webpic-qc.xhscdn.com/202611090027/f5819d7e802f41bc6dc9f66f52e45eb4/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+            "ext": "webp",
+            "cover": "",
+            "width": null,
+            "height": null,
+            "needs_transcode": true
+          },
+          {
+            "index": 1,
+            "type": "image",
+            "remoteUrl": "http://sns-webpic-qc.xhscdn.com/202611090027/f5819d7e802f41bc6dc9f66f52e45eb4/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+            "ext": "webp",
+            "cover": "",
+            "width": null,
+            "height": null,
+            "needs_transcode": true
+          },
+          {
+            "index": 2,
+            "type": "image",
+            "remoteUrl": "http://sns-webpic-qc.xhscdn.com/202611090027/f5819d7e802f41bc6dc9f66f52e45eb4/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+            "ext": "webp",
+            "cover": "",
+            "width": null,
+            "height": null,
+            "needs_transcode": true
+          }
+        ]
+      },
+      "bytes": 1016,
+      "elapsed_ms": 765
+    },
+    "stage": {
+      "status": 200,
+      "body": {
+        "ok": true,
+        "fileID": "cloud://local/l3/6af04386000000001500d626/0.jpg",
+        "kind": "image",
+        "ext": "jpg",
+        "bytes": 514859
+      },
+      "bytes": 112,
+      "elapsed_ms": 115
+    }
+  }
+}

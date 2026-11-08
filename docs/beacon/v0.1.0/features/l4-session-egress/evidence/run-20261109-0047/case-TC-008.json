@@ -1,0 +1,26 @@
+{
+  "case": "TC-008",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "fresh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fresh-age",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "expired",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "missing",
+      "ok": true,
+      "detail": "{'cookie_status': 'missing', 'last_refresh': '', 'source': 'missing', 'pool_age_s': None}"
+    }
+  ]
+}

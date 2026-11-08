@@ -1,0 +1,218 @@
+{
+  "case": "real-video-and-image",
+  "status": "PASS",
+  "at": "2026-11-09T00:30:58+08:00",
+  "base": "http://127.0.0.1:18104",
+  "store": "local",
+  "checks": [
+    {
+      "name": "parse_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "parse_schema",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "parse_has_video",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "stage_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "kind_video",
+      "ok": true,
+      "detail": "video"
+    },
+    {
+      "name": "ext_mp4",
+      "ok": true,
+      "detail": "mp4"
+    },
+    {
+      "name": "under_60s",
+      "ok": true,
+      "detail": "4127"
+    },
+    {
+      "name": "file_exists",
+      "ok": true,
+      "detail": "/tmp/renlink-stage-store/l3/7705367833957403946/0.mp4"
+    },
+    {
+      "name": "readback_bytes",
+      "ok": true,
+      "detail": "162700599 vs 162700599"
+    },
+    {
+      "name": "parse_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "parse_schema",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "parse_has_image",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "name": "stage_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "stage_ok",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fileID_cloud",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "kind_image",
+      "ok": true,
+      "detail": "image"
+    },
+    {
+      "name": "ext_nonempty",
+      "ok": true,
+      "detail": "jpg"
+    },
+    {
+      "name": "bytes_positive",
+      "ok": true,
+      "detail": "514859"
+    },
+    {
+      "name": "file_exists",
+      "ok": true,
+      "detail": "/tmp/renlink-stage-store/l3/6af04386000000001500d626/0.jpg"
+    },
+    {
+      "name": "readback_bytes",
+      "ok": true,
+      "detail": "514859 vs 514859"
+    },
+    {
+      "name": "pillow_decode",
+      "ok": true,
+      "detail": "JPEG"
+    }
+  ],
+  "detail": {
+    "video": {
+      "parse": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "platform": "douyin",
+          "content_type": "video",
+          "source_url": "https://www.douyin.com/video/7705367833957403946",
+          "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+          "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+          "item_count": 1,
+          "elapsed_ms": 513,
+          "items": [
+            {
+              "index": 0,
+              "type": "video",
+              "remoteUrl": "https://v26-web.douyinvod.com/01af7a04c741e69ea9725266e2c70288/6af0d36c/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlcsigvv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100K_100o_100w_100B_100H&dy_q=1794155453&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=2026110900305308A91B1F11A6FDF56361",
+              "ext": "mp4",
+              "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109513600&x-signature=0KU0Rkru3lX7%2Bt4ZYgwL%2B%2FBQf5U%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=2026110900305308A91B1F11A6FDF56361",
+              "width": 1080,
+              "height": 1920,
+              "needs_transcode": false
+            }
+          ]
+        },
+        "bytes": 1328,
+        "elapsed_ms": 531
+      },
+      "stage": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "fileID": "cloud://local/l3/7705367833957403946/0.mp4",
+          "kind": "video",
+          "ext": "mp4",
+          "bytes": 162700599
+        },
+        "bytes": 110,
+        "elapsed_ms": 4127
+      }
+    },
+    "image": {
+      "parse": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "platform": "xhs",
+          "content_type": "note",
+          "source_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626",
+          "resolved_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626",
+          "title": "",
+          "item_count": 3,
+          "elapsed_ms": 870,
+          "items": [
+            {
+              "index": 0,
+              "type": "image",
+              "remoteUrl": "http://sns-webpic-qc.xhscdn.com/202611090027/f5819d7e802f41bc6dc9f66f52e45eb4/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+              "ext": "jpg",
+              "cover": "",
+              "width": null,
+              "height": null,
+              "needs_transcode": true
+            },
+            {
+              "index": 1,
+              "type": "image",
+              "remoteUrl": "http://127.0.0.1:18098/real.webp",
+              "ext": "webp",
+              "cover": "",
+              "width": null,
+              "height": null,
+              "needs_transcode": true
+            },
+            {
+              "index": 2,
+              "type": "image",
+              "remoteUrl": "http://sns-webpic-qc.xhscdn.com/202611090027/f5819d7e802f41bc6dc9f66f52e45eb4/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+              "ext": "jpg",
+              "cover": "",
+              "width": null,
+              "height": null,
+              "needs_transcode": true
+            }
+          ]
+        },
+        "bytes": 909,
+        "elapsed_ms": 871
+      },
+      "stage": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "fileID": "cloud://local/l3/6af04386000000001500d626/0.jpg",
+          "kind": "image",
+          "ext": "jpg",
+          "bytes": 514859
+        },
+        "bytes": 112,
+        "elapsed_ms": 133
+      }
+    }
+  }
+}

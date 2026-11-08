@@ -1,0 +1,83 @@
+{
+  "case": "tmp-clean",
+  "status": "PASS",
+  "at": "2026-11-09T00:27:28+08:00",
+  "base": "http://127.0.0.1:18099",
+  "store": "local",
+  "checks": [
+    {
+      "name": "success_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "after_success_zero",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "after_failure_zero",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "before",
+      "ok": true,
+      "detail": "0"
+    }
+  ],
+  "detail": {
+    "parse": {
+      "status": 200,
+      "body": {
+        "ok": true,
+        "platform": "douyin",
+        "content_type": "video",
+        "source_url": "https://www.douyin.com/video/7705367833957403946",
+        "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+        "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+        "item_count": 1,
+        "elapsed_ms": 0,
+        "items": [
+          {
+            "index": 0,
+            "type": "video",
+            "remoteUrl": "https://v11-weba.douyinvod.com/ab6ba24bf69423dac76c1469fd61389c/6af0d28f/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlcT4gvv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100o_100w_100B_100H_100K&dy_q=1794155232&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261109002712E1BEE0AB3672F2D4F8CA",
+            "ext": "mp4",
+            "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109513600&x-signature=0KU0Rkru3lX7%2Bt4ZYgwL%2B%2FBQf5U%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261109002712E1BEE0AB3672F2D4F8CA",
+            "width": 1080,
+            "height": 1920,
+            "needs_transcode": false
+          }
+        ]
+      },
+      "bytes": 1327,
+      "elapsed_ms": 7
+    },
+    "success": {
+      "status": 200,
+      "body": {
+        "ok": true,
+        "fileID": "cloud://local/l3/7705367833957403946/0.mp4",
+        "kind": "video",
+        "ext": "mp4",
+        "bytes": 162700599
+      },
+      "bytes": 110,
+      "elapsed_ms": 1
+    },
+    "failure": {
+      "status": 400,
+      "body": {
+        "ok": false,
+        "error": {
+          "code": "STAGE_FAILED",
+          "message": "清单中不存在这个 index",
+          "retryable": false
+        }
+      },
+      "bytes": 105,
+      "elapsed_ms": 1
+    }
+  }
+}

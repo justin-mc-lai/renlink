@@ -1,0 +1,26 @@
+{
+  "case": "TC-010",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "ten-health-one-read",
+      "ok": true,
+      "detail": "{'2026-11-08T16:52:26+00:00'}"
+    },
+    {
+      "name": "cache-holds-within-ttl",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reload-after-ttl",
+      "ok": true,
+      "detail": "2026-11-08T16:52:26+00:00 -> 2026-11-08T16:52:27+00:00"
+    },
+    {
+      "name": "pool-file-0600",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "case": "TC-007",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "before-expired",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "refresh-exit-0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "after-fresh",
+      "ok": true,
+      "detail": "{'cookie_status': 'fresh', 'last_refresh': '2026-11-09T00:47:12+08:00', 'source': 'env', 'pool_age_s': 2}"
+    },
+    {
+      "name": "last-refresh-updated",
+      "ok": true,
+      "detail": "2026-11-08T14:47:12+00:00 -> 2026-11-09T00:47:12+08:00"
+    },
+    {
+      "name": "write-failure-nonzero",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "pool-unchanged",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

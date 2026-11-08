@@ -1,0 +1,59 @@
+{
+  "at": "2026-11-09T00:36:29+08:00",
+  "store": "local",
+  "case_files": 10,
+  "cases": [
+    {
+      "case": "bad-index",
+      "status": "PASS",
+      "file": "case-bad-index.json"
+    },
+    {
+      "case": "idempotent",
+      "status": "PASS",
+      "file": "case-idempotent.json"
+    },
+    {
+      "case": "image-ok",
+      "status": "PASS",
+      "file": "case-image-ok.json"
+    },
+    {
+      "case": "multi-index",
+      "status": "PASS",
+      "file": "case-multi-index.json"
+    },
+    {
+      "case": "real-video-and-image",
+      "status": "PASS",
+      "file": "case-real-video-and-image.json"
+    },
+    {
+      "case": "response-shape",
+      "status": "PASS",
+      "file": "case-response-shape.json"
+    },
+    {
+      "case": "tmp-clean",
+      "status": "PASS",
+      "file": "case-tmp-clean.json"
+    },
+    {
+      "case": "user-cookie",
+      "status": "PASS",
+      "file": "case-user-cookie.json"
+    },
+    {
+      "case": "video-ok",
+      "status": "PASS",
+      "file": "case-video-ok.json"
+    },
+    {
+      "case": "webp-to-jpg",
+      "status": "PASS",
+      "file": "case-webp-to-jpg.json"
+    }
+  ],
+  "failures": 0,
+  "blocked": 0
+}

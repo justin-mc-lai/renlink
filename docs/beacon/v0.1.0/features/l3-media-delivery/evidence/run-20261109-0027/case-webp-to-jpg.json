@@ -1,0 +1,105 @@
+{
+  "case": "webp-to-jpg",
+  "status": "PASS",
+  "at": "2026-11-09T00:26:17+08:00",
+  "base": "http://127.0.0.1:18104",
+  "store": "local",
+  "checks": [
+    {
+      "name": "parse_image",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "name": "stage_200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "ext_jpg",
+      "ok": true,
+      "detail": "jpg"
+    },
+    {
+      "name": "file_exists",
+      "ok": true,
+      "detail": "/tmp/renlink-stage-store/l3/000000000000000000000000/1.jpg"
+    },
+    {
+      "name": "readback_bytes",
+      "ok": true,
+      "detail": "517309 vs 517309"
+    },
+    {
+      "name": "jpeg_magic",
+      "ok": true,
+      "detail": "ffd8ff"
+    },
+    {
+      "name": "jpeg_decode",
+      "ok": true,
+      "detail": "JPEG"
+    }
+  ],
+  "detail": {
+    "parse": {
+      "status": 200,
+      "body": {
+        "ok": true,
+        "platform": "xhs",
+        "content_type": "note",
+        "source_url": "https://www.xiaohongshu.com/explore/000000000000000000000000",
+        "resolved_url": "https://www.xiaohongshu.com/explore/000000000000000000000000",
+        "title": "",
+        "item_count": 3,
+        "elapsed_ms": 579,
+        "items": [
+          {
+            "index": 0,
+            "type": "image",
+            "remoteUrl": "http://sns-webpic-qc.xhscdn.com/202611090024/b9a8167aab9353923ebb67f8c4731c26/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_prv_wlteh_jpg_3",
+            "ext": "jpg",
+            "cover": "",
+            "width": null,
+            "height": null,
+            "needs_transcode": true
+          },
+          {
+            "index": 1,
+            "type": "image",
+            "remoteUrl": "http://127.0.0.1:18098/real.webp",
+            "ext": "webp",
+            "cover": "",
+            "width": null,
+            "height": null,
+            "needs_transcode": true
+          },
+          {
+            "index": 2,
+            "type": "image",
+            "remoteUrl": "http://sns-webpic-qc.xhscdn.com/202611090024/b9a8167aab9353923ebb67f8c4731c26/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_prv_wlteh_jpg_3",
+            "ext": "jpg",
+            "cover": "",
+            "width": null,
+            "height": null,
+            "needs_transcode": true
+          }
+        ]
+      },
+      "bytes": 909,
+      "elapsed_ms": 587
+    },
+    "stage": {
+      "status": 200,
+      "body": {
+        "ok": true,
+        "fileID": "cloud://local/l3/000000000000000000000000/1.jpg",
+        "kind": "image",
+        "ext": "jpg",
+        "bytes": 517309
+      },
+      "bytes": 112,
+      "elapsed_ms": 100
+    }
+  }
+}

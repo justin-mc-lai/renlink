@@ -1,0 +1,21 @@
+{
+  "case": "TC-002",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "cos-fallback-source-env",
+      "ok": true,
+      "detail": "{'cookie_status': 'fresh', 'last_refresh': '', 'source': 'env', 'pool_age_s': None}"
+    },
+    {
+      "name": "cos-fallback-fresh",
+      "ok": true,
+      "detail": "{'cookie_status': 'fresh', 'last_refresh': '', 'source': 'env', 'pool_age_s': None}"
+    },
+    {
+      "name": "no-cookie-value",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "http_status": 200,
+  "ok": true,
+  "platform": "douyin",
+  "content_type": "video",
+  "item_count": 1,
+  "elapsed_ms": 523,
+  "error_code": null
+}

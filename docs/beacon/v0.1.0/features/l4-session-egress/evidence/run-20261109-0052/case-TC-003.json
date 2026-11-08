@@ -1,0 +1,31 @@
+{
+  "case": "TC-003",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "health-expired",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "parse-503",
+      "ok": true,
+      "detail": "503"
+    },
+    {
+      "name": "code-cookie-expired",
+      "ok": true,
+      "detail": "{\"ok\": false, \"error\": {\"code\": \"COOKIE_EXPIRED\", \"message\": \"运营方 cookie 失效，请运营刷新后重试\", \"retryable\": true}, \"items\": [], \"resolved_url\": \"\", \"elapsed_ms\": 0}"
+    },
+    {
+      "name": "retryable-true",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no-upstream-wait",
+      "ok": true,
+      "detail": "1ms"
+    }
+  ]
+}

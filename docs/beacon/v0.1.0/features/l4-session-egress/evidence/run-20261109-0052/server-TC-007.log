@@ -1,0 +1,15 @@
+INFO:     Started server process [10951]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:53596 (Press CTRL+C to quit)
+2026-11-09 00:52:20,787 INFO renlink.session session loaded platform=douyin source=env status=expired cookie=old=***
+2026-11-09 00:52:20,787 INFO renlink.session session loaded platform=xhs source=env status=missing cookie=
+INFO:     127.0.0.1:53605 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53606 - "GET /health HTTP/1.1" 200 OK
+2026-11-09 00:52:22,134 INFO renlink.session session loaded platform=douyin source=env status=fresh cookie=sess***
+2026-11-09 00:52:22,135 INFO renlink.session session loaded platform=xhs source=env status=missing cookie=
+INFO:     127.0.0.1:53629 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10951]

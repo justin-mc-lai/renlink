@@ -1,0 +1,26 @@
+{
+  "case": "TC-001",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "health-200",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "pool-record-preferred",
+      "ok": true,
+      "detail": "{'cookie_status': 'fresh', 'last_refresh': '2026-11-08T16:52:04+00:00', 'source': 'env', 'pool_age_s': 11}"
+    },
+    {
+      "name": "env-fallback-usable",
+      "ok": true,
+      "detail": "{'cookie_status': 'fresh', 'last_refresh': '', 'source': 'env', 'pool_age_s': None}"
+    },
+    {
+      "name": "both-missing-503",
+      "ok": true,
+      "detail": "{\"ok\": false, \"error\": {\"code\": \"COOKIE_EXPIRED\", \"message\": \"运营方 cookie 失效，请运营刷新后重试\", \"retryable\": true}, \"items\": [], \"resolved_url\": \"\", \"elapsed_ms\": 0}"
+    }
+  ]
+}

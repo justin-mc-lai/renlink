@@ -1,0 +1,31 @@
+{
+  "case": "TC-006",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "parse-400",
+      "ok": true,
+      "detail": "400"
+    },
+    {
+      "name": "parse-invalid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "stage-400",
+      "ok": true,
+      "detail": "400"
+    },
+    {
+      "name": "stage-invalid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no-cookie-write-route",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

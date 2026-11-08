@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-09T00:26:29+08:00",
+  "base": "http://127.0.0.1:18103",
+  "store": "local",
+  "cases": [
+    "not-ready"
+  ],
+  "failures": 0,
+  "blocked": 0
+}

@@ -1,0 +1,31 @@
+{
+  "case": "TC-009",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "error-400",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "health-no-cookie",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "error-no-cookie",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "log-full-cookie-hits-0",
+      "ok": true,
+      "detail": "hits=0"
+    },
+    {
+      "name": "log-redacted-prefix",
+      "ok": true,
+      "detail": "prefix present"
+    }
+  ]
+}

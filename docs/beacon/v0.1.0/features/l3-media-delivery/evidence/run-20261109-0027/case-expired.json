@@ -1,0 +1,39 @@
+{
+  "case": "expired",
+  "status": "PASS",
+  "at": "2026-11-09T00:26:15+08:00",
+  "base": "http://127.0.0.1:18099",
+  "store": "local",
+  "checks": [
+    {
+      "name": "http_410",
+      "ok": true,
+      "detail": "410"
+    },
+    {
+      "name": "code_STAGE_EXPIRED",
+      "ok": true,
+      "detail": "STAGE_EXPIRED"
+    },
+    {
+      "name": "no_fileID",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "detail": {
+    "stage": {
+      "status": 410,
+      "body": {
+        "ok": false,
+        "error": {
+          "code": "STAGE_EXPIRED",
+          "message": "清单缓存已过期，请重新解析",
+          "retryable": false
+        }
+      },
+      "bytes": 115,
+      "elapsed_ms": 9
+    }
+  }
+}

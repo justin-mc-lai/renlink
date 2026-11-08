@@ -1,0 +1,10 @@
+{
+  "suite": "tests/test_stage.py",
+  "tests": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": 9,
+  "junit": "pytest-junit.xml",
+  "output": "pytest-output.txt"
+}

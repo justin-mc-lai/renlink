@@ -1,0 +1,36 @@
+{
+  "case": "TC-005",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "health-200",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "douyin-fields",
+      "ok": true,
+      "detail": "{'cookie_status': 'fresh', 'last_refresh': '', 'source': 'env', 'pool_age_s': None}"
+    },
+    {
+      "name": "xhs-fields",
+      "ok": true,
+      "detail": "{'cookie_status': 'fresh', 'last_refresh': '', 'source': 'env', 'pool_age_s': None}"
+    },
+    {
+      "name": "top-egress",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no-douyin-cookie",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no-xhs-cookie",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

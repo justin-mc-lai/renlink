@@ -1,0 +1,67 @@
+{
+  "case": "timeout",
+  "status": "PASS",
+  "at": "2026-11-09T00:27:41+08:00",
+  "base": "http://127.0.0.1:18102",
+  "store": "local",
+  "checks": [
+    {
+      "name": "http_504",
+      "ok": true,
+      "detail": "504"
+    },
+    {
+      "name": "code_TIMEOUT",
+      "ok": true,
+      "detail": "TIMEOUT"
+    },
+    {
+      "name": "tmp_clean",
+      "ok": true,
+      "detail": "0 -> 0"
+    }
+  ],
+  "detail": {
+    "parse": {
+      "status": 200,
+      "body": {
+        "ok": true,
+        "platform": "douyin",
+        "content_type": "video",
+        "source_url": "https://www.douyin.com/video/7705367833957403946",
+        "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+        "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+        "item_count": 1,
+        "elapsed_ms": 0,
+        "items": [
+          {
+            "index": 0,
+            "type": "video",
+            "remoteUrl": "https://v26-web.douyinvod.com/2c69dc34d70ebe26a9e4e4963dbea510/6af0d262/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlcBagvv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100o_100w_100B_100H_100K&dy_q=1794155187&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=2026110900262796487E7C88AEE47F03E5",
+            "ext": "mp4",
+            "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109513600&x-signature=0KU0Rkru3lX7%2Bt4ZYgwL%2B%2FBQf5U%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=2026110900262796487E7C88AEE47F03E5",
+            "width": 1080,
+            "height": 1920,
+            "needs_transcode": false
+          }
+        ]
+      },
+      "bytes": 1326,
+      "elapsed_ms": 6
+    },
+    "stage": {
+      "status": 504,
+      "body": {
+        "ok": false,
+        "error": {
+          "code": "TIMEOUT",
+          "message": "单请求超过 60 秒",
+          "retryable": true
+        }
+      },
+      "bytes": 91,
+      "elapsed_ms": 2005
+    },
+    "server_env": "STAGE_FAKE_DELAY_MS"
+  }
+}

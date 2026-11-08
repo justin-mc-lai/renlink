@@ -1,0 +1,21 @@
+{
+  "case": "TC-004",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "direct-mode",
+      "ok": true,
+      "detail": "direct"
+    },
+    {
+      "name": "proxy-mode",
+      "ok": true,
+      "detail": "proxy"
+    },
+    {
+      "name": "proxy-not-echoed",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

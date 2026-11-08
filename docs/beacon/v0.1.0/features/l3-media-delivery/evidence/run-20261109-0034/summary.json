@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-09T00:34:46+08:00",
+  "store": "local",
+  "case_files": 1,
+  "cases": [
+    {
+      "case": "real-video-and-image",
+      "status": "PASS",
+      "file": "case-real-video-and-image.json"
+    }
+  ],
+  "failures": 0,
+  "blocked": 0
+}
