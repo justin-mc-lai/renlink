@@ -1,0 +1,58 @@
+{
+  "mode_id": "beacon-go",
+  "run_id": "qa-l5-20261108-2248",
+  "stage": "qa",
+  "feature": "l5-miniprogram-pages",
+  "version": "v0.1.0",
+  "verdict": "FAIL",
+  "repo": "/Users/apple/Developer/Personal/renlink",
+  "head": "b4a1624",
+  "branch": "main",
+  "checked_at": "2026-11-08T22:48:00+08:00",
+  "checks": {
+    "truth_frozen": { "result": "PASS", "status": "frozen", "drift_clean": true, "stack": "uni-app-vue3-vite" },
+    "truth_change_scope": { "result": "PASS", "removed_lines": 2, "added_lines": 28, "ac_unchanged": true },
+    "build_mp_weixin": { "result": "PASS", "exit_code": 0, "app_json_pages": ["pages/index/index", "pages/mine/mine"], "tabbar": ["提取", "我的"] },
+    "build_h5": { "result": "PASS", "exit_code": 0 },
+    "fake_success_removed": { "result": "PASS", "stage_media_all_paths_reject": true, "create_zip_rejects": true, "container_stage_route_exists": false },
+    "hard_constraints": { "result": "PASS", "callcontainer_timeout_ms": 15000, "h5_fetch_timeout_ms": 15000, "parse_body_keys": ["url"], "cookie_present": false, "appid_placeholder": true, "cloud_db_mp_only": true, "ui_library": false },
+    "error_codes": { "result": "PASS", "codes": ["COOKIE_EXPIRED", "SHORTLINK_FAIL", "TIMEOUT", "UNSUPPORTED_PLATFORM", "PARSE_FAILED", "STAGE_NOT_READY", "ZIP_NOT_READY"] },
+    "repo_hygiene": { "result": "PASS", "frontend_untracked_files": 16, "tracked_frontend_files": 0 },
+    "boundary": { "result": "PASS", "new_commits": 0, "container_change_this_round": false },
+    "evidence_consistency": { "result": "FAIL", "reason": "TASK-016 marked done but re-parse handoff has no reader" }
+  },
+  "findings": {
+    "P0": [],
+    "P1": [
+      {
+        "id": "P1-1",
+        "title": "AC-010 再次解析联动断开，TASK-016 标 done",
+        "evidence": "mine.vue:143 setStorageSync('renlink_auto_parse_url') 无任何读取方；index.vue:173-175 onShow 只调 checkClipboard；switchTab 不触发 onLoad query",
+        "must_fix": "index.vue onShow 消费该 key 并自动 handleParse，重跑 build 并更新 evidence.md TASK-016 说明"
+      }
+    ],
+    "P2": [
+      "stageMedia MP 分支仍真打不存在的 /stage（快速失败，无假成功）",
+      "视频下载回调 finally 提前复位 isSaving（stub 下不可达）",
+      "0 成功时文案仍为「保存完成，有 N 项失败」",
+      "AC-005 重试入口为失败项遮罩而非下方独立按钮",
+      "剪贴板提示文案多「社媒」二字",
+      "mine.vue 用户卡片为静态占位，未真实读取 openid",
+      "evidence.md Evidence Index 状态仍写 draft，阶段描述过期",
+      "TASK-005「联调」措辞高于实际证据等级"
+    ]
+  },
+  "blocked": {
+    "TASK-017": "缺真实 appid + iOS/Android 真机",
+    "TASK-009": "l3 truth 未冻结，/stage 不存在（stub，显式失败）",
+    "TASK-013": "l6 truth 未冻结（stub，显式失败）"
+  },
+  "unverified": [
+    "真实 /parse 端到端（需 appid + 云托管）",
+    "真机相册写入与权限弹窗",
+    "云开发 parse_history 读写与 openid 隔离"
+  ],
+  "artifacts": [
+    "docs/beacon/v0.1.0/features/l5-miniprogram-pages/evidence/qa/l5-qa-r1.md"
+  ]
+}

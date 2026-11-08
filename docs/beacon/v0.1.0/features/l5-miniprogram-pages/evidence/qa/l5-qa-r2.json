@@ -1,0 +1,117 @@
+{
+  "mode_id": "beacon-go",
+  "run_id": "qa-l5-20261108-2258",
+  "stage": "qa",
+  "feature": "l5-miniprogram-pages",
+  "version": "v0.1.0",
+  "round": "r2",
+  "verdict": "PASS",
+  "repo": "/Users/apple/Developer/Personal/renlink",
+  "head": "b4a1624",
+  "branch": "main",
+  "checked_at": "2026-11-08T22:58:00+08:00",
+  "checks": {
+    "p1_auto_parse_link": {
+      "result": "PASS",
+      "set_storage": "frontend/src/pages/mine/mine.vue:139",
+      "get_storage": "frontend/src/pages/index/index.vue:174",
+      "remove_storage": "frontend/src/pages/index/index.vue:176",
+      "order": ["getStorageSync", "removeStorageSync", "inputUrl.value", "handleParse"],
+      "handle_parse_depends_on_onload_query": false
+    },
+    "p2_video_saving_state": {
+      "result": "PASS",
+      "location": "frontend/src/pages/index/index.vue:284-290",
+      "pattern": "await new Promise wrap wx.cloud.downloadFile; isSaving reset only in finally"
+    },
+    "p2_zero_success_copy": {
+      "result": "PASS",
+      "location": "frontend/src/pages/index/index.vue:342-350",
+      "zero_success_message": "本次未能保存任何图片，请检查网络或相册权限",
+      "partial_success_message_kept": true
+    },
+    "build_mp_weixin": {
+      "result": "PASS",
+      "clean_dist": true,
+      "exit_code": 0,
+      "tail": "DONE  Build complete.",
+      "app_json_pages": ["pages/index/index", "pages/mine/mine"],
+      "tabbar": ["提取", "我的"]
+    },
+    "build_h5": {
+      "result": "PASS",
+      "exit_code": 0
+    },
+    "regression_r1_pass_items": {
+      "result": "PASS",
+      "stage_media_all_paths_reject": true,
+      "fake_success_resolve_absent": true,
+      "create_zip_rejects_zhip_not_ready": true,
+      "zip_endpoint_called": false,
+      "callcontainer_timeout_ms": 15000,
+      "h5_fetch_timeout_ms": 15000,
+      "parse_body_keys": ["url"],
+      "cookie_or_token_in_src": false,
+      "appid_placeholder": "wx0000000000000000",
+      "cloud_db_mp_weixin_only": true,
+      "error_codes": [
+        "COOKIE_EXPIRED",
+        "SHORTLINK_FAIL",
+        "TIMEOUT",
+        "UNSUPPORTED_PLATFORM",
+        "PARSE_FAILED",
+        "STAGE_NOT_READY",
+        "ZIP_NOT_READY"
+      ],
+      "ui_library": "none"
+    },
+    "repo_hygiene": {
+      "result": "PASS",
+      "frontend_untracked_all": 16,
+      "frontend_tracked_files": 0,
+      "gitignore_entries": ["node_modules/", "dist/", ".env", ".env.*", "!.env.example", ".DS_Store", "unpackage/", "*.log"]
+    },
+    "truth": {
+      "result": "PASS",
+      "status": "frozen",
+      "lifecycle": "Freeze/Completed",
+      "baseline": "uncommitted",
+      "drift_clean": true,
+      "body_drift": false,
+      "stack": "uni-app-vue3-vite",
+      "section_present": "工程结构与条件编译",
+      "diff_removed_lines": 2,
+      "diff_added_lines": 28,
+      "ac_unchanged": true
+    },
+    "boundary": {
+      "result": "PASS",
+      "head_unchanged": true,
+      "commits_made": false,
+      "pushes_made": false,
+      "container_touched_this_round": false,
+      "container_existing_change": "container/app/parsers/render_obscura.py (mtime 22:19:15, predates round)"
+    },
+    "evidence_consistency": {
+      "result": "PASS",
+      "build_row_r2": "2026-11-08 22:55:34",
+      "task_016_note": "onShow 消费 renlink_auto_parse_url",
+      "task_009_013": "stub, explicit failure",
+      "task_017": "BLOCKED"
+    }
+  },
+  "blocked": [
+    {"item": "TASK-017 / AC-012 真机端到端", "reason": "缺真实微信 AppID 与 iOS/Android 真机"},
+    {"item": "TASK-009 / AC-004 逐项保存", "reason": "l3-media-delivery truth 未冻结，/stage 服务未上线"},
+    {"item": "TASK-013 / AC-006 ZIP 导出", "reason": "l6-zip-export truth 未冻结"}
+  ],
+  "p2_open": [
+    "stageMedia MP 分支在 l3 未冻结时仍真打一次 /stage（404 快速失败，无假成功）",
+    "剪贴板提示文案含「社媒」",
+    "mine.vue 用户信息卡片静态占位",
+    "evidence.md Evidence Index 的 truth/tests/tasks 状态仍为 draft",
+    "TASK-005「联调」措辞偏高"
+  ],
+  "unverified": ["真实 /parse 端到端", "真机相册写入与权限弹窗", "云开发 parse_history 与 openid 隔离"],
+  "release_signed": false
+}

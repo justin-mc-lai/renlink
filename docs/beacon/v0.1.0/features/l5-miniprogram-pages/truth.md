@@ -13,7 +13,7 @@ materials_status: current
 intent_confirmed: true
 program_ref: docs/beacon/v0.1.0/lake-proposal.json
 run_ref: run_1084fcb4301353f56601ec48
-stack: wechat-miniprogram-tcb
+stack: uni-app-vue3-vite
 canonical_refs:
   truth: docs/beacon/v0.1.0/features/l5-miniprogram-pages/truth.md
   tests: docs/beacon/v0.1.0/features/l5-miniprogram-pages/tests.md
@@ -190,6 +190,30 @@ scope_mode: lake
 | SAVING_MEDIA | SAVE_ALL_DONE | 存在部分失败项 | PARTIAL_SUCCESS | 提示部分完成，高亮展示失败项单独重试按钮 |
 | PARTIAL_SUCCESS | CLICK_RETRY_ITEM | 点击特定失败项 | RETRYING_ITEM | 仅针对该项重新调用 /stage 与写入相册 |
 
+## 工程结构与条件编译
+
+为支持以微信小程序为第一目标平台，同时具备后续跨端编译至 H5/App/其他小程序的能力，前端代码采用 uni-app（Vue 3 + Vite）架构组织，代码根目录位于 `frontend/`：
+
+1. **工程组织与构建工具**：
+   - 根目录为 `frontend/`，构建基于 Vite 与 `@dcloudio/vite-plugin-uni` 插件；
+   - 依赖统一采用 Vue 3 与 @dcloudio 官方套件，开发语言采用 JavaScript/ESNext + 原生 Vue 3 `<script setup>` 组合式 API；
+   - 样式遵循全局设计规范，使用 SCSS 预处理器与 uni-app 标准 `rpx` 响应式单位，严禁引入第三方 UI 组件库，保证轻量高效。
+
+2. **多端平台适配与条件编译策略**：
+   - **第一目标平台（MP-WEIXIN）**：
+     - 请求通路：使用微信云托管 `wx.cloud.callContainer` 发起 `/parse` 解析请求，超时严格设为 15000ms；
+     - 媒体保存：单文件转存与相册写入使用 `wx.cloud.downloadFile` + `wx.saveVideoToPhotosAlbum` / `wx.saveImageToPhotosAlbum`；权限不足时引导 `wx.openSetting`；
+     - ZIP 导出：调用 `wx.shareFileMessage` 唤起微信聊天选择面板；
+     - 历史记录：通过微信云开发客户端 SDK `wx.cloud.database()` 直连读写 `parse_history` 集合，依赖微信底座天然基于 openid 隔离。
+   - **跨端兜底（H5 / App / 独立 Webview）**：
+     - 请求通路：通过条件编译（`// #ifndef MP-WEIXIN`）降级走环境变量 `VITE_API_BASE` 配置的标准 RESTful API (`fetch` / `uni.request`)；
+     - 媒体保存：H5 降级为直接触发浏览器媒体文件下载或新标签页预览；
+     - 历史记录：降级使用本地存储 `uni.getStorageSync` / `uni.setStorageSync` (`localStorage`) 维持离线历史；
+     - 条件编译严格遵循 uni-app 规范语法（如 `// #ifdef MP-WEIXIN`、`/* #ifdef MP-WEIXIN */`、`<!-- #ifdef MP-WEIXIN -->`）。
+
+3. **双页结构与交互一致性**：
+   - 主页（`src/pages/index/index.vue`）与个人中心（`src/pages/mine/mine.vue`）的双页视觉结构、交互流转、按钮状态机、错误码映射矩阵及所有 AC/TC 验收语义与微信原生小程序规格严格保持 1:1 对齐，不因框架调整产生任何功能降级。
+
 ## 接口契约
 
 ### 1. 依赖 l1-parser-core 契约（POST /parse）
@@ -313,4 +337,4 @@ scope_mode: lake
 
 ## 边界
 
-只允许写 truth.md、tests.md、tasks.md、evidence.md 四个文件；不写小程序业务代码、不改配置、不改价格、不 commit、不 push、不 freeze。truth 包状态保持 draft。
+当前处于 implement 阶段。允许且仅允许编写 `frontend/` 目录下的 uni-app 前端工程代码及本 feature 文档（`truth.md`、`tests.md`、`tasks.md`、`evidence.md`）；禁止改动后端 `container/` 目录、禁止 git commit / git push、禁止自签 QA 结论；前端请求与配置严格禁止包含任何用户 cookie、生产密钥或真实敏感凭据。
