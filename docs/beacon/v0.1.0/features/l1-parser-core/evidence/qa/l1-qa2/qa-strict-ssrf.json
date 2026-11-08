@@ -1,0 +1,9 @@
+{
+  "container": "qa2-obscura-strict",
+  "image": "sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c",
+  "env": {"ENABLE_OBSCURA": "1", "OBSCURA_ALLOW_PRIVATE_NETWORK": "unset"},
+  "process": "obscura serve --port 9222 --host 127.0.0.1 --stealth",
+  "render_probe": {"http": 502, "elapsed_s": 1.66, "body": {"ok": false, "error": {"code": "PARSE_FAILED", "message": "Obscura 渲染失败: Error", "retryable": true}}},
+  "cdp_direct_error": "Page.goto: Protocol error (Page.navigate): Network error: Network error: https://example.com/: error sending request for url (https://example.com/): client error (Connect): dns error: SSRF blocked: 'example.com' resolves to forbidden address 198.18.0.141",
+  "note": "Clash fake-ip DNS (198.18.0.0/15) is rejected by obscura 0.2.6 SSRF guard. Production default keeps strict mode; OBSCURA_ALLOW_PRIVATE_NETWORK is local-evidence only."
+}

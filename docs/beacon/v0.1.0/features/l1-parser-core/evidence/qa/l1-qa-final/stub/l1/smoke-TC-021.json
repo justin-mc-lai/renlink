@@ -1,0 +1,29 @@
+{
+  "tc": "TC-021",
+  "name": "dy-argus-missing-header",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:39:39+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 503,
+  "responseBytes": 172,
+  "clientElapsedMs": 187,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "COOKIE_EXPIRED",
+      "message": "运营方 cookie 失效，请运营刷新后重试",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 185
+  },
+  "failures": [
+    "HTTP 状态 503 != 502",
+    "error.code COOKIE_EXPIRED != PARSE_FAILED"
+  ],
+  "note": "需服务端以 RENLINK_DROP_ARGUS_HEADER=1 启动"
+}

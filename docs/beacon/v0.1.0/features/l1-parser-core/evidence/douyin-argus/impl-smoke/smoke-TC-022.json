@@ -1,0 +1,26 @@
+{
+  "tc": "TC-022",
+  "name": "dy-argus-timeout",
+  "status": "PASS",
+  "startedAt": "2026-11-08T20:54:02+08:00",
+  "base": "http://127.0.0.1:18084",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg"
+  },
+  "httpStatus": 504,
+  "responseBytes": 142,
+  "clientElapsedMs": 12021,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "TIMEOUT",
+      "message": "上游解析超过 12 秒",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 12002
+  },
+  "failures": [],
+  "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504"
+}

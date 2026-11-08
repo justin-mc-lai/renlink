@@ -1,0 +1,39 @@
+{
+  "tc": "TC-023",
+  "name": "obscura-xhs-render",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T21:48:17+08:00",
+  "base": "http://127.0.0.1:18203",
+  "request": {
+    "path": "/render/probe?url=https%3A%2F%2Fwww.xiaohongshu.com%2Fdiscovery%2Fitem%2F6af04386000000001500d626%3Fapp_platform%3Dandroid%26ignoreEngage%3Dtrue%26app_version%3D9.53.0%26share_from_user_hidden%3Dtrue%26xsec_source%3Dapp_share%26type%3Dvideo%26xsec_token%3DCBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%253D%26author_share%3D1%26xhsshare%3DCopyLink%26shareRedId%3DODg7QzQ7ST42NzUyOTgwNjg0OTk5Rz5M%26apptime%3D1794139056%26share_id%3Dab67879c62464af6adf3b23492c1e3c7%26share_channel%3Dcopy_link%26track_code%3D1zbdThHpdb0"
+  },
+  "httpStatus": 502,
+  "responseBytes": 113,
+  "clientElapsedMs": 13330,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "PARSE_FAILED",
+      "message": "Obscura 渲染失败: RenderUnavailable",
+      "retryable": true
+    }
+  },
+  "failures": [
+    "HTTP 状态 502 != 200",
+    "ok 不是 true",
+    "渲染标题为空或过短",
+    "渲染内容不含 xsec_token",
+    "渲染后 obscura CDP 端口不再存活（疑似 browser.close）",
+    "渲染 HTML 过小",
+    "渲染耗时 13330ms 超过 12s",
+    "final_url 不是小红书: None"
+  ],
+  "note": "需 ENABLE_OBSCURA=1 且 obscura serve 已就绪",
+  "extra": {
+    "title": "",
+    "final_url": null,
+    "html_bytes": null,
+    "has_xsec_token": null,
+    "obscura_alive": null
+  }
+}

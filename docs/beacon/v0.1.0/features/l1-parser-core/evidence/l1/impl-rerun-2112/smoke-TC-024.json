@@ -1,0 +1,64 @@
+{
+  "tc": "TC-024",
+  "name": "douyin-no-obscura",
+  "status": "PASS",
+  "startedAt": "2026-11-08T21:14:37+08:00",
+  "base": "http://127.0.0.1:18101",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 200,
+  "responseBytes": 1310,
+  "clientElapsedMs": 1416,
+  "response": {
+    "ok": true,
+    "platform": "douyin",
+    "content_type": "video",
+    "source_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+    "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+    "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+    "item_count": 1,
+    "elapsed_ms": 1413,
+    "items": [
+      {
+        "index": 0,
+        "type": "video",
+        "remoteUrl": "https://v26-web.douyinvod.com/846f788668d78a6f3ab71c64472aab8c/6af0a56d/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlcWZovv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100w_100B_100H_100K_100o&dy_q=1794143678&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=2026110821143873E8E83BA8787EC25707",
+        "ext": "mp4",
+        "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109502800&x-signature=IoGfQMUdELThkkmCSEf%2FZu3nPuU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=2026110821143873E8E83BA8787EC25707",
+        "width": 1080,
+        "height": 1920,
+        "needs_transcode": false
+      }
+    ]
+  },
+  "failures": [],
+  "note": "需 ENABLE_OBSCURA=1；抖音仍走 Argus 直连",
+  "extra": {
+    "render_before": {
+      "enabled": true,
+      "cdp": "ws://127.0.0.1:9222",
+      "wait_ms": 8000,
+      "renders": 1,
+      "failures": 0,
+      "cdp_connects": 1,
+      "browser_launches": 0,
+      "last_url_host": "www.xiaohongshu.com",
+      "last_ms": 9336,
+      "last_error": ""
+    },
+    "render_after": {
+      "enabled": true,
+      "cdp": "ws://127.0.0.1:9222",
+      "wait_ms": 8000,
+      "renders": 1,
+      "failures": 0,
+      "cdp_connects": 1,
+      "browser_launches": 0,
+      "last_url_host": "www.xiaohongshu.com",
+      "last_ms": 9336,
+      "last_error": ""
+    },
+    "obscura_log_douyin_hits": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "sample": "XHS_NOTE_1 (same note URL as impl evidence obscura-xhs-render.json)",
+  "render_budget": {"wait_ms": 8000, "total_s": 12},
+  "obs": {
+    "1c1g": {"attempts": 6, "pass": 0, "fail": 6, "results": [
+      {"attempt": 1, "http": 502, "time_s": 13.081, "error": "Obscura 渲染失败: RenderUnavailable"},
+      {"attempt": 2, "http": 502, "time_s": 12.441, "error": "Obscura 渲染失败: RenderUnavailable"},
+      {"attempt": 3, "http": 504, "time_s": 12.216, "error": "Obscura 渲染超过 12s 总预算"},
+      {"attempt": 4, "http": 502, "time_s": 13.344, "error": "Obscura 渲染失败: RenderUnavailable"},
+      {"attempt": 5, "http": 502, "time_s": 12.633, "error": "Obscura 渲染失败: RenderUnavailable"},
+      {"attempt": 6, "http": 502, "time_s": 13.482, "error": "Obscura 渲染失败: RenderUnavailable"}
+    ], "timeline_ms": {"goto_timeout": 8008, "after_1000ms_wait_actually_at": 12991, "title_ready": 13099, "title": "长安四驱越野升顶皮卡房车#二手房车 #房车旅行 #房车生活 #房车自驾游 - 小红书"}},
+    "2c1g": {"attempts": 3, "pass": 3, "fail": 0, "results": [
+      {"kind": "smoke", "http": 200, "client_elapsed_ms": 11905, "title": "长安四驱越野升顶皮卡房车#二手房车 #房车旅行 #房车生活 #房车自驾游 - 小红书", "has_xsec_token": true, "obscura_alive": true},
+      {"kind": "probe", "http": 200, "elapsed_ms": 9958, "has_xsec_token": true, "obscura_alive": true},
+      {"kind": "probe", "http": 200, "elapsed_ms": 9439, "has_xsec_token": true, "obscura_alive": true}
+    ]},
+    "unlimited_cpu": {"attempts": 2, "pass": 2, "fail": 0, "results": [
+      {"http": 200, "elapsed_ms": 9569}, {"http": 200, "elapsed_ms": 9830}
+    ]}
+  },
+  "root_cause": "Under a 1-CPU quota the V8/JS renderer starves Playwright timers: a nominal 1000ms wait took ~4s, pushing title readiness to 13.1s, beyond the frozen 12s budget. At 2C the same code passes, but cold start is 11.905s (95ms margin).",
+  "conclusion": "Implementation logic is correct; the documented 'when enabled, 1C1G' spec does not hold in this environment."
+}

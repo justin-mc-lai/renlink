@@ -1,0 +1,37 @@
+{
+  "tc": "TC-005",
+  "name": "xhs-video-1",
+  "status": "PASS",
+  "startedAt": "2026-11-08T13:39:32+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://xhslink.cn/o/1zbdThHpdb0"
+  },
+  "httpStatus": 200,
+  "responseBytes": 1125,
+  "clientElapsedMs": 1230,
+  "response": {
+    "ok": true,
+    "platform": "xhs",
+    "content_type": "video",
+    "source_url": "https://xhslink.cn/o/1zbdThHpdb0",
+    "resolved_url": "https://www.xiaohongshu.com/discovery/item/6af04386000000001500d626?app_platform=android&ignoreEngage=true&app_version=9.53.0&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%3D&author_share=1&xhsshare=CopyLink&shareRedId=ODg7QzQ7ST42NzUyOTgwNjg0OTk5Rz5M&apptime=1794139056&share_id=ab67879c62464af6adf3b23492c1e3c7&share_channel=copy_link&track_code=1zbdThHpdb0",
+    "title": "XiaoHongShu video #6af04386000000001500d626",
+    "item_count": 1,
+    "elapsed_ms": 1229,
+    "items": [
+      {
+        "index": 0,
+        "type": "video",
+        "remoteUrl": "http://sns-bak-v6.xhscdn.com/stream/79/110/523/01eaf043855eb5bb4f037001a1ba89bebf_523.mp4?b=c5a3b280339c86b704&csig=55Be02TApWHPLvmu&oi=4598630773806599398171&ou=U1kpbjMDAZO26YdYtUUjUg33cs0&trid=164d1e25ee17a0633ab4a99278067207",
+        "ext": "mp4",
+        "cover": "http://sns-webpic-qc.xhscdn.com/202611082139/f0589400f1ebfdde1a0dd1766575abe3/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+        "width": 2160,
+        "height": 3840,
+        "needs_transcode": false
+      }
+    ]
+  },
+  "failures": [],
+  "note": ""
+}

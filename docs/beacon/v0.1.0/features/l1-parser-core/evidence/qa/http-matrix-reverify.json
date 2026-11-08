@@ -1,0 +1,306 @@
+[
+  {
+    "case": "body_int",
+    "http": 400,
+    "error_code": "INVALID_REQUEST",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "url 字段必须是字符串",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "body_null",
+    "http": 400,
+    "error_code": "INVALID_REQUEST",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "url 字段必须是字符串",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "body_list_value",
+    "http": 400,
+    "error_code": "INVALID_REQUEST",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "url 字段必须是字符串",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "body_object_value",
+    "http": 400,
+    "error_code": "INVALID_REQUEST",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "url 字段必须是字符串",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "body_missing_url",
+    "http": 400,
+    "error_code": "INVALID_URL",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_URL",
+        "message": "url 为空、不是 http(s) 链接或长度超过 2048",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "body_empty",
+    "http": 400,
+    "error_code": "INVALID_URL",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_URL",
+        "message": "url 为空、不是 http(s) 链接或长度超过 2048",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "body_whitespace",
+    "http": 400,
+    "error_code": "INVALID_URL",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_URL",
+        "message": "url 为空、不是 http(s) 链接或长度超过 2048",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "example_com",
+    "http": 400,
+    "error_code": "UNSUPPORTED_PLATFORM",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "UNSUPPORTED_PLATFORM",
+        "message": "只支持抖音与小红书链接",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "bilibili",
+    "http": 400,
+    "error_code": "UNSUPPORTED_PLATFORM",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "UNSUPPORTED_PLATFORM",
+        "message": "只支持抖音与小红书链接",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "evil_douyin",
+    "http": 400,
+    "error_code": "UNSUPPORTED_PLATFORM",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "UNSUPPORTED_PLATFORM",
+        "message": "只支持抖音与小红书链接",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "douyin_dot_evil",
+    "http": 400,
+    "error_code": "UNSUPPORTED_PLATFORM",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "UNSUPPORTED_PLATFORM",
+        "message": "只支持抖音与小红书链接",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "notdouyin",
+    "http": 400,
+    "error_code": "UNSUPPORTED_PLATFORM",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "UNSUPPORTED_PLATFORM",
+        "message": "只支持抖音与小红书链接",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "xhs_cn",
+    "http": 400,
+    "error_code": "UNSUPPORTED_PLATFORM",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "UNSUPPORTED_PLATFORM",
+        "message": "只支持抖音与小红书链接",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "cookie_field",
+    "http": 400,
+    "error_code": "INVALID_REQUEST",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "请求体不得包含 cookie 字段",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "body_is_array",
+    "http": 400,
+    "error_code": "INVALID_REQUEST",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "请求体必须是 JSON 对象",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "bad_json",
+    "http": 400,
+    "error_code": "INVALID_REQUEST",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "请求体不是合法 JSON",
+        "retryable": false
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "allowed_subdomain",
+    "http": 503,
+    "error_code": "COOKIE_EXPIRED",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "COOKIE_EXPIRED",
+        "message": "运营方 cookie 失效，请运营刷新后重试",
+        "retryable": true
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 1
+    }
+  },
+  {
+    "case": "allowed_uppercase",
+    "http": 503,
+    "error_code": "COOKIE_EXPIRED",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "COOKIE_EXPIRED",
+        "message": "运营方 cookie 失效，请运营刷新后重试",
+        "retryable": true
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  },
+  {
+    "case": "allowed_xhs",
+    "http": 503,
+    "error_code": "COOKIE_EXPIRED",
+    "body": {
+      "ok": false,
+      "error": {
+        "code": "COOKIE_EXPIRED",
+        "message": "运营方 cookie 失效，请运营刷新后重试",
+        "retryable": true
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 0
+    }
+  }
+]

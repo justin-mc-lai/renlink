@@ -1,0 +1,14 @@
+[FAIL] douyin note: one item per page image — page images=3, extracted items=9
+[PASS] 120 items -> 100 — len=100 truncated=True
+[PASS] exactly 100 items -> truncated=false
+[PASS] serialized body <= 1024000 — bytes=1007745 items=50 truncated=True
+[PASS] cap keeps item_count == len(items)
+[PASS] xhs note keeps webp URL and marks transcode
+[PASS] eight error codes and HTTP/retryable match truth — {"INVALID_URL": [400, false], "INVALID_REQUEST": [400, false], "UNSUPPORTED_PLATFORM": [400, false], "SHORTLINK_FAIL": [422, true], "COOKIE_EXPIRED": [503, true], "PARSE_FAILED": [502, true], "TIMEOUT": [504, true], "RATE_LIMITED": [429, true]}
+[PASS] whitelist allows target domains — douyin.com,www.douyin.com,v.douyin.com,xhslink.com,www.xiaohongshu.com
+[PASS] whitelist rejects lookalike domains — evil-douyin.com,douyin.com.evil.com,notdouyin.com,bilibili.com,douyin.co
+[PASS] platform mapping
+[PASS] error envelope ok/items/resolved_url/elapsed_ms
+[PASS] schema validates error and success envelopes
+SUMMARY failures=1
+FAILED: douyin note: one item per page image

@@ -30,6 +30,16 @@ export XHS_SHORT_1="小红书短链样本 B"
 export PARSE_UPSTREAM_DELAY_MS=13000
 ```
 
+抖音 Argus 分支与 Obscura 回退的注入开关（TC-019 ~ TC-024 分别对应一组启动环境变量）：
+
+```bash
+export RENLINK_DROP_ARGUS_HEADER=1        # TC-021：去掉 x-tt-argus，复现上游 403
+export RENLINK_PLAY_ADDR_TTL_S=600        # play_addr 缓存，默认 600 秒
+export ENABLE_OBSCURA=0                   # 通用渲染回退，默认关闭；抖音分支无论开关都不使用
+export PLAYWRIGHT_CDP=ws://127.0.0.1:9222 # 启用 Obscura 后应用侧 CDP 接入地址
+export RENLINK_RENDER_WAIT_MS=8000        # Obscura 渲染预算，默认 8000
+```
+
 ## 覆盖矩阵
 
 | AC ID | TC ID | Layer | Command | Assertion |
@@ -52,6 +62,12 @@ export PARSE_UPSTREAM_DELAY_MS=13000
 | AC-012 | TC-016 | behavior | `python3 ops/smoke.py --case no-download` | /tmp 文件数不变且响应无 cloudID 键 |
 | AC-013 | TC-017 | negative | `python3 ops/smoke.py --case user-cookie` | 400 且 error.code=INVALID_REQUEST |
 | AC-014 | TC-018 | contract | `python3 ops/smoke.py --case health` | 200 且 ok=true 且两平台 cookie_status 字段存在 |
+| AC-015 | TC-019 | e2e | `python3 ops/smoke.py --case dy-argus-1` | 抖音真实链接补齐 Argus 头与 a_bogus/msToken 后 200、ok=true、items 长度 1、remoteUrl 为非空 play_addr |
+| AC-015 | TC-020 | e2e | `python3 ops/smoke.py --case dy-argus-stability` | 同一链接连跑 3 次均 200，3 次 remoteUrl 均非空 |
+| AC-016 | TC-021 | negative | `python3 ops/smoke.py --case dy-argus-missing-header` | 去掉 x-tt-argus 时上游 403，/parse 502 PARSE_FAILED retryable=true 且 items 为空数组 |
+| AC-016 | TC-022 | negative | `python3 ops/smoke.py --case dy-argus-timeout` | 抖音上游超过 12s 时 504 TIMEOUT 且响应无半截 items，全程不起浏览器 |
+| AC-017 | TC-023 | e2e | `python3 ops/smoke.py --case obscura-xhs-render` | ENABLE_OBSCURA=1 时 Obscura 渲染小红书笔记页成功，标题正确且含 xsec_token |
+| AC-017 | TC-024 | behavior | `python3 ops/smoke.py --case douyin-no-obscura` | Obscura 开启时抖音 /parse 仍由 Argus 直连返回 play_addr，Obscura 无抖音页面请求，无浏览器进程 |
 
 ## 用例明细
 
@@ -201,6 +217,46 @@ diff /tmp/before.txt /tmp/after.txt
 ```bash
 curl -sS "$PARSE_BASE/health" | jq -e '.ok==true and .platforms.douyin.cookie_status and .platforms.xhs.cookie_status'
 ```
+
+### TC-019 抖音真实链接 Argus 直连
+
+- 输入：DY_VIDEO_1（此前服务端直连 detail API 返回 403 的真实链接）。
+- 通过判据：HTTP 200；ok=true；content_type=video；items 长度 1；items[0].remoteUrl 为非空 http(s) play_addr；响应体不含 base64、文件流或本地路径；elapsed_ms 小于 12000。
+- 说明：请求带 x-tt-argus、uifid 头与 uifid/verifyFp/fp 参数，并带 f2 生成的 a_bogus、msToken；全程不起浏览器。
+
+```bash
+/usr/bin/time -p python3 ops/smoke.py --case dy-argus-1
+```
+
+### TC-020 连跑 3 次稳定性
+
+- 前置：同一真实链接连续请求 3 次，间隔数秒。
+- 通过判据：3 次都是 HTTP 200 且 ok=true；3 次 items[0].remoteUrl 均非空；任一次失败即不通过。
+- 说明：这是对 Argus 参数组合稳定性的直接验证，不依赖缓存命中（可用不同 aweme_id 或先清缓存）。
+
+### TC-021 缺 x-tt-argus → 上游 403
+
+- 输入：DY_VIDEO_1，进程带 RENLINK_DROP_ARGUS_HEADER=1（或代码路径去掉该头）。
+- 通过判据：上游 detail API 返回 403 且响应体含 Blocked by ArgusSecurityPlugin；/parse 返回 HTTP 502；ok=false；error.code=PARSE_FAILED；error.retryable=true；items 为空数组；响应里没有半截 items。
+- 说明：这个用例证明 403 是缺 Argus 头造成的，也证明缺失时整请求失败，不会让调用方存半份清单。
+
+### TC-022 抖音上游超时
+
+- 输入：DY_VIDEO_1，进程注入 PARSE_UPSTREAM_DELAY_MS=13000（或让 Argus 上游挂起到超过 12s）。
+- 通过判据：HTTP 504；error.code=TIMEOUT；items 为空数组；从发出请求到收到响应小于 15s；抖音分支无浏览器进程、无 Obscura 连接。
+- 说明：抖音不做渲染兜底；超时与失败分开返回，调用方按 retryable 决定是否重试。
+
+### TC-023 Obscura 渲染小红书页
+
+- 输入：ENABLE_OBSCURA=1 启动容器（镜像含 obscura，且 `obscura serve --port 9222 --stealth` 已就绪），传入 XHS 笔记链接；应用侧用 PLAYWRIGHT_CDP=ws://127.0.0.1:9222 走 new_context() 渲染。
+- 通过判据：渲染出的页面标题与笔记标题一致；页面内容含 xsec_token；渲染完成后 obscura 进程仍存活（未因 browser.close() 退出）；/parse 不因此新增落盘文件。
+- 说明：Obscura 只是通用渲染回退的接入验证，不改变抖音主路径。
+
+### TC-024 抖音不经 Obscura
+
+- 输入：ENABLE_OBSCURA=1 且 obscura server 正常，传 DY_VIDEO_1 到 /parse。
+- 通过判据：/parse 返回 200、ok=true、items[0].remoteUrl 为非空 play_addr；同时段 obscura 日志与 CDP 会话中没有抖音页面请求；容器内没有为抖音拉起浏览器进程。
+- 说明：证明 Obscura 开启不会把抖音带回渲染路径，抖音始终走 Argus HTTP 直连。
 
 ## 证据留存
 

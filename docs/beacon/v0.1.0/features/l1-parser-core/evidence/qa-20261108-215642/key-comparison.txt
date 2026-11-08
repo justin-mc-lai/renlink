@@ -1,0 +1,13 @@
+=== v2 TC-024 passed, TC-023 failed: raw smoke log ===
+PARSE_BASE=http://127.0.0.1:18314
+TC-023 obscura-xhs-render: FAIL failures=['HTTP 状态 504 != 200', 'ok 不是 true', '渲染标题为空或过短', '渲染内容不含 xsec_token', '渲染后 obscura CDP 端口不再存活（疑似 browser.close）', '渲染 HTML 过小', 'final_url 不是小红书: None'] (需 ENABLE_OBSCURA=1 且 obscura serve 已就绪)
+TC-024 douyin-no-obscura: PASS (需 ENABLE_OBSCURA=1；抖音仍走 Argus 直连)
+SUMMARY pass=1 fail=1 blocked=0
+
+=== old image now (login wall) ===
+{"ok":true,"title":"小红书 - 你的生活兴趣社区","final_url":"https://www.xiaohongshu.com/login?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fdiscovery%2Fitem%2F6af04386000000001500d626%3Fxsec_token%3DCBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%3D%26xsec_source%3Dapp_share%26exSource%3D","html_bytes":216367,"has_xsec_token":false,"elapsed_ms":11582,"wait_ms":8000,"obscura_alive":true}
+HTTP 200 time=11.606283
+
+=== new image now (504) ===
+{"ok":false,"error":{"code":"TIMEOUT","message":"Obscura 渲染超过 12s 总预算","retryable":true}}
+HTTP 504 time=11.904615

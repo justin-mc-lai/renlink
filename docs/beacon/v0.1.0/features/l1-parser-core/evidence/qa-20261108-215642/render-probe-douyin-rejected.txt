@@ -1,0 +1,2 @@
+{"detail":"render probe only supports xhs pages"}
+HTTP 400

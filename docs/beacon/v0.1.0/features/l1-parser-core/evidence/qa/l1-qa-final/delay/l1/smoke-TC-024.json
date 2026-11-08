@@ -1,0 +1,65 @@
+{
+  "tc": "TC-024",
+  "name": "douyin-no-obscura",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:42:30+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 504,
+  "responseBytes": 142,
+  "clientElapsedMs": 12008,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "TIMEOUT",
+      "message": "上游解析超过 12 秒",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 12006
+  },
+  "failures": [
+    "HTTP 状态 504 != 200",
+    "ok 不是 true",
+    "platform 不是字符串",
+    "content_type 不是字符串",
+    "source_url 不是字符串",
+    "title 不是字符串",
+    "item_count 不是整数",
+    "item_count 不等于 items 长度",
+    "platform 不是 douyin",
+    "items 长度不是 1",
+    "ENABLE_OBSCURA 未开启，本用例前提不成立"
+  ],
+  "note": "需 ENABLE_OBSCURA=1；抖音仍走 Argus 直连；SMOKE_CONTAINER_ID 未设置，obscura 日志未检查",
+  "extra": {
+    "render_before": {
+      "enabled": false,
+      "cdp": "ws://127.0.0.1:9222",
+      "wait_ms": 8000,
+      "renders": 0,
+      "failures": 0,
+      "cdp_connects": 0,
+      "browser_launches": 0,
+      "last_url_host": "",
+      "last_ms": 0,
+      "last_error": ""
+    },
+    "render_after": {
+      "enabled": false,
+      "cdp": "ws://127.0.0.1:9222",
+      "wait_ms": 8000,
+      "renders": 0,
+      "failures": 0,
+      "cdp_connects": 0,
+      "browser_launches": 0,
+      "last_url_host": "",
+      "last_ms": 0,
+      "last_error": ""
+    },
+    "obscura_log_douyin_hits": null
+  }
+}

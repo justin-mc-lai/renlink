@@ -1,0 +1,46 @@
+{
+  "tc": "TC-022",
+  "name": "dy-argus-timeout",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:42:50+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 200,
+  "responseBytes": 1310,
+  "clientElapsedMs": 212,
+  "response": {
+    "ok": true,
+    "platform": "douyin",
+    "content_type": "video",
+    "source_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+    "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+    "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+    "item_count": 1,
+    "elapsed_ms": 211,
+    "items": [
+      {
+        "index": 0,
+        "type": "video",
+        "remoteUrl": "https://v11-weba.douyinvod.com/0f489dd6dc4d14c95b8cf4a39a6e2cee/6af0ac02/video/tos/cn/tos-cn-ve-15/o8dYZn2A9IqAiDzftXQja2DqS8aFEAuuBgy6e7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=673&bt=673&cs=0&ds=3&ft=GN7rKGVVywSyRKJ80mo~MWwQlcy~ovv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=aWQ3ZjM8NWk4Njc5PGg0NUBpamZmbXA5cmVoZTMzNGkzM0AzX14yYTMuNTMxX2E0MzJhYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100B_100H_100K_100o_100w&dy_q=1794145363&feature_id=f5241e7604dff1d9d6c943fd20bd51a2&l=20261108214243F47C2BFCF386D8D4A48A",
+        "ext": "mp4",
+        "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109502800&x-signature=IoGfQMUdELThkkmCSEf%2FZu3nPuU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261108214243F47C2BFCF386D8D4A48A",
+        "width": 1080,
+        "height": 1920,
+        "needs_transcode": false
+      }
+    ]
+  },
+  "failures": [
+    "HTTP 状态 200 != 504",
+    "ok 不是 false",
+    "error.code None != TIMEOUT",
+    "error.message 缺失",
+    "error.retryable 不是布尔",
+    "retryable 应为 True",
+    "失败信封 items 不是空数组",
+    "超时响应带半截 items"
+  ],
+  "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504"
+}

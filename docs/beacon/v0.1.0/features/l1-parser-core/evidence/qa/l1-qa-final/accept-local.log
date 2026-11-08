@@ -1,0 +1,5 @@
+douyin: ok type=video items=1 732ms
+  item 0 video -> 121261002B (ffprobe unavailable)
+xhs: ok type=video items=1 1284ms
+  item 0 video -> 21220376B (ffprobe unavailable)
+PASS: 2/2 samples parsed and downloaded

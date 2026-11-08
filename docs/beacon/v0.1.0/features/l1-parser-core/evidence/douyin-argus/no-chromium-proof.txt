@@ -1,0 +1,4 @@
+ms_playwright_dir_exists= False
+playwright_module= False
+f2= 0.0.1.7 curl_cffi= 0.17.0
+NO_BROWSER_PROCESS

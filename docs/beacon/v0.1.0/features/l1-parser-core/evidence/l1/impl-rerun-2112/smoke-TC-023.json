@@ -1,0 +1,32 @@
+{
+  "tc": "TC-023",
+  "name": "obscura-xhs-render",
+  "status": "PASS",
+  "startedAt": "2026-11-08T21:14:28+08:00",
+  "base": "http://127.0.0.1:18101",
+  "request": {
+    "path": "/render/probe?url=https%3A%2F%2Fwww.xiaohongshu.com%2Fdiscovery%2Fitem%2F6af04386000000001500d626%3Fapp_platform%3Dandroid%26ignoreEngage%3Dtrue%26app_version%3D9.53.0%26share_from_user_hidden%3Dtrue%26xsec_source%3Dapp_share%26type%3Dvideo%26xsec_token%3DCBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%253D%26author_share%3D1%26xhsshare%3DCopyLink%26shareRedId%3DODg7QzQ7ST42NzUyOTgwNjg0OTk5Rz5M%26apptime%3D1794139056%26share_id%3Dab67879c62464af6adf3b23492c1e3c7%26share_channel%3Dcopy_link%26track_code%3D1zbdThHpdb0"
+  },
+  "httpStatus": 200,
+  "responseBytes": 379,
+  "clientElapsedMs": 9362,
+  "response": {
+    "ok": true,
+    "title": "长安四驱越野升顶皮卡房车#二手房车 #房车旅行 #房车生活 #房车自驾游 - 小红书",
+    "final_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626?xsec_token=CBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0=&xsec_source=app_share",
+    "html_bytes": 578609,
+    "has_xsec_token": true,
+    "elapsed_ms": 9336,
+    "wait_ms": 8000,
+    "obscura_alive": true
+  },
+  "failures": [],
+  "note": "需 ENABLE_OBSCURA=1 且 obscura serve 已就绪",
+  "extra": {
+    "title": "长安四驱越野升顶皮卡房车#二手房车 #房车旅行 #房车生活 #房车自驾游 - 小红书",
+    "final_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626?xsec_token=CBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0=&xsec_source=app_share",
+    "html_bytes": 578609,
+    "has_xsec_token": true,
+    "obscura_alive": true
+  }
+}

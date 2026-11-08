@@ -1,0 +1,26 @@
+PARSE_BASE=http://127.0.0.1:8080
+TC-001 dy-video-1: PASS
+TC-002 dy-video-2: BLOCKED (缺少样本: DY_VIDEO_2)
+TC-003 dy-note-1: BLOCKED (缺少样本: DY_NOTE_1)
+TC-004 dy-note-2: BLOCKED (缺少样本: DY_NOTE_2)
+TC-005 xhs-video-1: PASS
+TC-006 xhs-video-2: BLOCKED (缺少样本: XHS_VIDEO_2)
+TC-007 dy-short-1: PASS
+TC-008 xhs-short-1: PASS
+TC-009 cookie-expired: FAIL failures=['HTTP 状态 200 != 503', 'ok 不是 false', 'error.code None != COOKIE_EXPIRED', 'error.message 缺失', 'error.retryable 不是布尔', 'retryable 应为 True', '失败信封 items 不是空数组'] (需服务端以 PARSE_STUB_COOKIE_EXPIRED=douyin 启动)
+TC-010 shortlink-fail: PASS (构造的失效短链，不冒充真实样本)
+TC-011 invalid-url: PASS (三组输入：空串、not-a-url、超长 URL)
+TC-012 unsupported-platform: PASS (三个非目标平台)
+TC-013 timeout: FAIL failures=['HTTP 状态 200 != 504', 'ok 不是 false', 'error.code None != TIMEOUT', 'error.message 缺失', 'error.retryable 不是布尔', 'retryable 应为 True', '失败信封 items 不是空数组'] (需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动)
+TC-014 size-cap: BLOCKED (缺少样本: XHS_NOTE_MAX)
+TC-015 field-contract: BLOCKED (缺少样本: DY_NOTE_1)
+TC-016 no-download: PASS (SMOKE_CONTAINER_ID 未设置，/tmp 前后对比未执行)
+TC-017 user-cookie: PASS (请求体含 cookie 字段，不应进入解析分支)
+TC-018 health: PASS
+TC-019 dy-argus-1: PASS (argus requests 1 -> 1，browser_launches 不增)
+TC-020 dy-argus-stability: PASS (连跑 3 次；需服务端以 RENLINK_DISABLE_CACHE=1 启动，避免缓存掩盖上游稳定性)
+TC-021 dy-argus-missing-header: FAIL failures=['HTTP 状态 200 != 502', 'ok 不是 false', 'error.code None != PARSE_FAILED', 'error.message 缺失', 'error.retryable 不是布尔', 'retryable 应为 True', '失败信封 items 不是空数组', '失败响应带半截 items'] (需服务端以 RENLINK_DROP_ARGUS_HEADER=1 启动)
+TC-022 dy-argus-timeout: FAIL failures=['HTTP 状态 200 != 504', 'ok 不是 false', 'error.code None != TIMEOUT', 'error.message 缺失', 'error.retryable 不是布尔', 'retryable 应为 True', '失败信封 items 不是空数组', '超时响应带半截 items'] (需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504)
+TC-023 obscura-xhs-render: BLOCKED (缺少样本: XHS_NOTE_1)
+TC-024 douyin-no-obscura: PASS (需 ENABLE_OBSCURA=1；抖音仍走 Argus 直连；SMOKE_CONTAINER_ID 未设置，obscura 日志未检查)
+SUMMARY pass=13 fail=4 blocked=7

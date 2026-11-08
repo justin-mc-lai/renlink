@@ -1,0 +1,128 @@
+{
+  "tc": "TC-024",
+  "name": "douyin-no-obscura",
+  "status": "PASS",
+  "capturedAt": "2026-11-08T21:08:26+08:00",
+  "base": "http://127.0.0.1:18101",
+  "sample": {
+    "var": "DY_VIDEO_1",
+    "url": "https://v.douyin.com/Y7MgY9YnYAg/"
+  },
+  "parse": {
+    "httpStatus": 200,
+    "clientElapsedMs": 686,
+    "responseBytes": 1310,
+    "response": {
+      "ok": true,
+      "platform": "douyin",
+      "content_type": "video",
+      "source_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+      "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+      "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+      "item_count": 1,
+      "elapsed_ms": 683,
+      "items": [
+        {
+          "index": 0,
+          "type": "video",
+          "remoteUrl": "https://v11-weba.douyinvod.com/2e6db0111b8411d00d1222c375f39a73/6af0a3f9/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlckOovv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100w_100B_100H_100K_100o&dy_q=1794143306&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261108210826616F19A27CD9FBD2093D",
+          "ext": "mp4",
+          "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109502800&x-signature=IoGfQMUdELThkkmCSEf%2FZu3nPuU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261108210826616F19A27CD9FBD2093D",
+          "width": 1080,
+          "height": 1920,
+          "needs_transcode": false
+        }
+      ]
+    }
+  },
+  "healthBefore": {
+    "ok": true,
+    "version": "v0.1.0",
+    "platforms": {
+      "douyin": {
+        "cookie_status": "fresh",
+        "last_refresh": ""
+      },
+      "xhs": {
+        "cookie_status": "fresh",
+        "last_refresh": ""
+      }
+    },
+    "egress_proxy": "direct",
+    "argus": {
+      "argus_requests": 0,
+      "cache_hits": 0,
+      "argus_failures": 0,
+      "dropped_argus_header": 0,
+      "cache_entries": 0,
+      "cache_ttl_s": 600
+    },
+    "render": {
+      "enabled": true,
+      "cdp": "ws://127.0.0.1:9222",
+      "wait_ms": 8000,
+      "renders": 1,
+      "failures": 0,
+      "cdp_connects": 1,
+      "browser_launches": 0,
+      "last_url_host": "www.xiaohongshu.com",
+      "last_ms": 9250,
+      "last_error": ""
+    }
+  },
+  "healthAfter": {
+    "ok": true,
+    "version": "v0.1.0",
+    "platforms": {
+      "douyin": {
+        "cookie_status": "fresh",
+        "last_refresh": ""
+      },
+      "xhs": {
+        "cookie_status": "fresh",
+        "last_refresh": ""
+      }
+    },
+    "egress_proxy": "direct",
+    "argus": {
+      "argus_requests": 1,
+      "cache_hits": 0,
+      "argus_failures": 0,
+      "dropped_argus_header": 0,
+      "cache_entries": 0,
+      "cache_ttl_s": 600
+    },
+    "render": {
+      "enabled": true,
+      "cdp": "ws://127.0.0.1:9222",
+      "wait_ms": 8000,
+      "renders": 1,
+      "failures": 0,
+      "cdp_connects": 1,
+      "browser_launches": 0,
+      "last_url_host": "www.xiaohongshu.com",
+      "last_ms": 9250,
+      "last_error": ""
+    }
+  },
+  "obscura": {
+    "processes": [
+      "7 obscura serve --port 9222 --host 127.0.0.1 --stealth --allow-private-network"
+    ],
+    "logDouyinHits": 0,
+    "cdpConnectsDelta": 0,
+    "rendersDelta": 0
+  },
+  "staticBoundary": {
+    "douyinPyImportsRender": false,
+    "douyinArgusPyImportsRender": false,
+    "renderPyCallsBrowserClose": false
+  },
+  "checks": {
+    "http200": true,
+    "playAddrNonEmpty": true,
+    "obscuraEnabled": true,
+    "noObscuraRenderDuringDouyin": true,
+    "noDouyinInObscuraLog": true
+  }
+}

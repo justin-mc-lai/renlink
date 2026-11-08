@@ -1,0 +1,10 @@
+{
+  "tc": "TC-004",
+  "name": "dy-note-2",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T21:29:16+08:00",
+  "base": "http://127.0.0.1:18094",
+  "request": {},
+  "failures": [],
+  "note": "缺少样本: DY_NOTE_2"
+}

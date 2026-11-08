@@ -1,0 +1,7 @@
+image_inspect_size=247849002
+image_docker_size=1.02GB
+obscura_binary_size=120358400
+default_rss=49.48MiB
+obscura_on_rss=197.7MiB
+chromium_files=0
+ms_playwright=absent

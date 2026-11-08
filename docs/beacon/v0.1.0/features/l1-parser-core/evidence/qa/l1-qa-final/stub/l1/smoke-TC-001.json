@@ -1,0 +1,38 @@
+{
+  "tc": "TC-001",
+  "name": "dy-video-1",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:39:32+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 503,
+  "responseBytes": 172,
+  "clientElapsedMs": 220,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "COOKIE_EXPIRED",
+      "message": "运营方 cookie 失效，请运营刷新后重试",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 212
+  },
+  "failures": [
+    "HTTP 状态 503 != 200",
+    "ok 不是 true",
+    "platform 不是字符串",
+    "content_type 不是字符串",
+    "source_url 不是字符串",
+    "title 不是字符串",
+    "item_count 不是整数",
+    "item_count 不等于 items 长度",
+    "platform 不是 douyin",
+    "content_type 不是 video",
+    "items 长度不是 1"
+  ],
+  "note": ""
+}

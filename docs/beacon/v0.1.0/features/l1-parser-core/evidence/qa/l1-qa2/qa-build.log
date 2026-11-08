@@ -1,0 +1,360 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.96kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/h4ckf0r0day/obscura:latest
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+#3 DONE 0.3s
+
+#4 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#4 DONE 0.3s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [stage-2  1/14] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.0s done
+#6 CACHED
+
+#7 [obscura 1/1] FROM docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c
+#7 resolve docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c 0.0s done
+#7 CACHED
+
+#8 [node 1/1] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+#8 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 0.0s done
+#8 CACHED
+
+#9 [internal] load build context
+#9 transferring context: 2.65kB 0.0s done
+#9 DONE 0.0s
+
+#10 [stage-2  2/14] COPY --from=node /usr/local/bin/node /usr/local/bin/node
+#10 DONE 0.2s
+
+#11 [stage-2  3/14] COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+#11 DONE 0.6s
+
+#12 [stage-2  4/14] RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+#12 DONE 0.3s
+
+#13 [stage-2  5/14] COPY --from=obscura /obscura /usr/local/bin/obscura
+#13 DONE 0.4s
+
+#14 [stage-2  6/14] RUN chmod +x /usr/local/bin/obscura
+#14 DONE 0.4s
+
+#15 [stage-2  7/14] WORKDIR /app
+#15 DONE 0.0s
+
+#16 [stage-2  8/14] COPY container/requirements.txt ./requirements.txt
+#16 DONE 0.0s
+
+#17 [stage-2  9/14] RUN pip install --no-cache-dir -r requirements.txt     && node --version     && python -c "import logging; logging.getLogger('f2').addHandler(logging.NullHandler()); import f2, curl_cffi; print('f2 import ok', getattr(f2, '__version__', 'unknown'), '| curl_cffi', curl_cffi.__version__)"
+#17 4.039 Collecting fastapi==0.115.6 (from -r requirements.txt (line 1))
+#17 5.907   Downloading fastapi-0.115.6-py3-none-any.whl.metadata (27 kB)
+#17 6.568 Collecting uvicorn==0.34.0 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 6.894   Downloading uvicorn-0.34.0-py3-none-any.whl.metadata (6.5 kB)
+#17 7.661 Collecting pydantic==2.9.2 (from -r requirements.txt (line 3))
+#17 7.982   Downloading pydantic-2.9.2-py3-none-any.whl.metadata (149 kB)
+#17 8.440      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 149.4/149.4 kB 337.6 kB/s eta 0:00:00
+#17 8.787 Collecting httpx==0.27.2 (from -r requirements.txt (line 4))
+#17 9.122   Downloading httpx-0.27.2-py3-none-any.whl.metadata (7.1 kB)
+#17 9.642 Collecting yt-dlp>=2024.12.13 (from -r requirements.txt (line 5))
+#17 9.991   Downloading yt_dlp-2026.10.26-py3-none-any.whl.metadata (183 kB)
+#17 10.13      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 183.4/183.4 kB 1.3 MB/s eta 0:00:00
+#17 10.47 Collecting f2==0.0.1.7 (from -r requirements.txt (line 6))
+#17 10.79   Downloading f2-0.0.1.7-py3-none-any.whl.metadata (43 kB)
+#17 10.81      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.1/43.1 kB 1.7 MB/s eta 0:00:00
+#17 11.18 Collecting pyexecjs==1.5.1 (from -r requirements.txt (line 7))
+#17 11.50   Downloading PyExecJS-1.5.1.tar.gz (13 kB)
+#17 11.52   Preparing metadata (setup.py): started
+#17 12.07   Preparing metadata (setup.py): finished with status 'done'
+#17 12.42 Collecting jsonschema==4.23.0 (from -r requirements.txt (line 8))
+#17 12.74   Downloading jsonschema-4.23.0-py3-none-any.whl.metadata (7.9 kB)
+#17 13.24 Collecting curl_cffi==0.17.0 (from -r requirements.txt (line 9))
+#17 13.56   Downloading curl_cffi-0.17.0-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (18 kB)
+#17 14.05 Collecting starlette<0.42.0,>=0.40.0 (from fastapi==0.115.6->-r requirements.txt (line 1))
+#17 14.36   Downloading starlette-0.41.3-py3-none-any.whl.metadata (6.0 kB)
+#17 14.73 Collecting typing-extensions>=4.8.0 (from fastapi==0.115.6->-r requirements.txt (line 1))
+#17 15.04   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#17 15.39 Collecting click>=7.0 (from uvicorn==0.34.0->uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 15.71   Downloading click-8.5.1-py3-none-any.whl.metadata (2.6 kB)
+#17 16.03 Collecting h11>=0.8 (from uvicorn==0.34.0->uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 16.34   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#17 16.68 Collecting annotated-types>=0.6.0 (from pydantic==2.9.2->-r requirements.txt (line 3))
+#17 17.01   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#17 19.06 Collecting pydantic-core==2.23.4 (from pydantic==2.9.2->-r requirements.txt (line 3))
+#17 19.38   Downloading pydantic_core-2.23.4-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (6.6 kB)
+#17 19.74 Collecting anyio (from httpx==0.27.2->-r requirements.txt (line 4))
+#17 20.06   Downloading anyio-4.16.0-py3-none-any.whl.metadata (4.7 kB)
+#17 20.39 Collecting certifi (from httpx==0.27.2->-r requirements.txt (line 4))
+#17 20.71   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#17 21.04 Collecting httpcore==1.* (from httpx==0.27.2->-r requirements.txt (line 4))
+#17 21.36   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#17 21.71 Collecting idna (from httpx==0.27.2->-r requirements.txt (line 4))
+#17 22.03   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#17 22.36 Collecting sniffio (from httpx==0.27.2->-r requirements.txt (line 4))
+#17 22.67   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+#17 23.02 Collecting aiofiles==24.1.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 23.34   Downloading aiofiles-24.1.0-py3-none-any.whl.metadata (10 kB)
+#17 23.77 Collecting aiosqlite==0.20.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 24.09   Downloading aiosqlite-0.20.0-py3-none-any.whl.metadata (4.3 kB)
+#17 24.48 Collecting babel==2.13.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 24.80   Downloading Babel-2.13.0-py3-none-any.whl.metadata (1.6 kB)
+#17 25.18 Collecting black==24.10.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 25.49   Downloading black-24.10.0-py3-none-any.whl.metadata (79 kB)
+#17 25.55      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.2/79.2 kB 1.5 MB/s eta 0:00:00
+#17 25.88 Collecting browser-cookie3==0.20.1 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 26.20   Downloading browser_cookie3-0.20.1-py3-none-any.whl.metadata (713 bytes)
+#17 26.21 Collecting click>=7.0 (from uvicorn==0.34.0->uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 26.54   Downloading click-8.1.7-py3-none-any.whl.metadata (3.0 kB)
+#17 27.14 Collecting cryptography==44.0.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 27.46   Downloading cryptography-44.0.0-cp39-abi3-manylinux_2_34_aarch64.whl.metadata (5.7 kB)
+#17 27.79 Collecting gmssl==3.2.2 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 28.12   Downloading gmssl-3.2.2-py3-none-any.whl.metadata (3.7 kB)
+#17 28.47 Collecting importlib-resources==6.4.5 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 28.80   Downloading importlib_resources-6.4.5-py3-none-any.whl.metadata (4.0 kB)
+#17 29.14 Collecting jsonpath-ng==1.6.1 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 29.45   Downloading jsonpath_ng-1.6.1-py3-none-any.whl.metadata (18 kB)
+#17 29.80 Collecting m3u8==3.6.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 30.12   Downloading m3u8-3.6.0-py3-none-any.whl.metadata (15 kB)
+#17 30.62 Collecting protobuf==5.28.3 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 30.94   Downloading protobuf-5.28.3-cp38-abi3-manylinux2014_aarch64.whl.metadata (592 bytes)
+#17 31.28 Collecting pytest-asyncio==0.25.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 31.60   Downloading pytest_asyncio-0.25.0-py3-none-any.whl.metadata (3.9 kB)
+#17 31.97 Collecting pytest==8.3.4 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 32.29   Downloading pytest-8.3.4-py3-none-any.whl.metadata (7.5 kB)
+#17 32.65 Collecting pyyaml==6.0.2 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 32.97   Downloading PyYAML-6.0.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (2.1 kB)
+#17 33.30 Collecting qrcode==8.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 33.62   Downloading qrcode-8.0-py3-none-any.whl.metadata (17 kB)
+#17 34.03 Collecting rich==13.9.3 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 34.43   Downloading rich-13.9.3-py3-none-any.whl.metadata (18 kB)
+#17 34.81 Collecting websockets-proxy==0.1.2 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 35.13   Downloading websockets_proxy-0.1.2-py3-none-any.whl.metadata (5.9 kB)
+#17 35.90 Collecting websockets<13.0 (from f2==0.0.1.7->-r requirements.txt (line 6))
+#17 36.21   Downloading websockets-12.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (6.6 kB)
+#17 36.56 Collecting six>=1.10.0 (from pyexecjs==1.5.1->-r requirements.txt (line 7))
+#17 36.87   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#17 37.21 Collecting attrs>=22.2.0 (from jsonschema==4.23.0->-r requirements.txt (line 8))
+#17 37.53   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#17 37.96 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema==4.23.0->-r requirements.txt (line 8))
+#17 38.29   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#17 38.63 Collecting referencing>=0.28.4 (from jsonschema==4.23.0->-r requirements.txt (line 8))
+#17 38.95   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#17 39.64 Collecting rpds-py>=0.7.1 (from jsonschema==4.23.0->-r requirements.txt (line 8))
+#17 39.97   Downloading rpds_py-2026.9.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.1 kB)
+#17 40.41 Collecting cffi>=2.1.1 (from curl_cffi==0.17.0->-r requirements.txt (line 9))
+#17 40.73   Downloading cffi-2.1.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.5 kB)
+#17 41.10 Collecting httptools>=0.6.3 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 41.43   Downloading httptools-0.9.0-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (3.5 kB)
+#17 41.76 Collecting python-dotenv>=0.13 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 42.08   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+#17 42.57 Collecting uvloop!=0.15.0,!=0.15.1,>=0.14.0 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 42.90   Downloading uvloop-0.23.0-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (5.1 kB)
+#17 43.40 Collecting watchfiles>=0.13 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+#17 43.72   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+#17 44.07 Collecting mypy-extensions>=0.4.3 (from black==24.10.0->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 44.39   Downloading mypy_extensions-1.2.0-py3-none-any.whl.metadata (1.1 kB)
+#17 44.39 Requirement already satisfied: packaging>=22.0 in /usr/local/lib/python3.11/site-packages (from black==24.10.0->f2==0.0.1.7->-r requirements.txt (line 6)) (26.3)
+#17 44.72 Collecting pathspec>=0.9.0 (from black==24.10.0->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 45.04   Downloading pathspec-1.1.1-py3-none-any.whl.metadata (14 kB)
+#17 45.41 Collecting platformdirs>=2 (from black==24.10.0->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 45.74   Downloading platformdirs-4.14.5-py3-none-any.whl.metadata (5.7 kB)
+#17 46.13 Collecting lz4 (from browser-cookie3==0.20.1->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 46.45   Downloading lz4-4.4.5-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (3.8 kB)
+#17 46.95 Collecting pycryptodomex (from browser-cookie3==0.20.1->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 47.29   Downloading pycryptodomex-3.24.2-cp37-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (3.4 kB)
+#17 47.62 Collecting jeepney (from browser-cookie3==0.20.1->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 47.94   Downloading jeepney-0.9.0-py3-none-any.whl.metadata (1.2 kB)
+#17 48.32 Collecting ply (from jsonpath-ng==1.6.1->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 48.64   Downloading ply-3.11-py2.py3-none-any.whl.metadata (844 bytes)
+#17 48.96 Collecting iso8601 (from m3u8==3.6.0->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 49.29   Downloading iso8601-2.1.0-py3-none-any.whl.metadata (3.7 kB)
+#17 49.65 Collecting iniconfig (from pytest==8.3.4->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 49.96   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#17 50.29 Collecting pluggy<2,>=1.5 (from pytest==8.3.4->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 50.61   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+#17 50.97 Collecting markdown-it-py>=2.2.0 (from rich==13.9.3->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 51.29   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+#17 51.63 Collecting pygments<3.0.0,>=2.13.0 (from rich==13.9.3->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 51.95   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#17 52.29 Collecting python-socks==2.4.4 (from python-socks[asyncio]==2.4.4->websockets-proxy==0.1.2->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 52.61   Downloading python_socks-2.4.4-py3-none-any.whl.metadata (7.1 kB)
+#17 52.95 Collecting async-timeout>=3.0.1 (from python-socks[asyncio]==2.4.4->websockets-proxy==0.1.2->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 53.26   Downloading async_timeout-5.0.1-py3-none-any.whl.metadata (5.1 kB)
+#17 53.63 Collecting pycparser (from cffi>=2.1.1->curl_cffi==0.17.0->-r requirements.txt (line 9))
+#17 53.94   Downloading pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+#17 54.44 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich==13.9.3->f2==0.0.1.7->-r requirements.txt (line 6))
+#17 54.75   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#17 55.17 Downloading fastapi-0.115.6-py3-none-any.whl (94 kB)
+#17 55.74    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 94.8/94.8 kB 251.8 kB/s eta 0:00:00
+#17 56.05 Downloading uvicorn-0.34.0-py3-none-any.whl (62 kB)
+#17 56.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.3/62.3 kB 1.6 MB/s eta 0:00:00
+#17 56.41 Downloading pydantic-2.9.2-py3-none-any.whl (434 kB)
+#17 56.73    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 434.9/434.9 kB 1.4 MB/s eta 0:00:00
+#17 57.05 Downloading httpx-0.27.2-py3-none-any.whl (76 kB)
+#17 57.07    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 76.4/76.4 kB 5.7 MB/s eta 0:00:00
+#17 57.39 Downloading f2-0.0.1.7-py3-none-any.whl (461 kB)
+#17 57.53    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 461.6/461.6 kB 3.2 MB/s eta 0:00:00
+#17 57.86 Downloading jsonschema-4.23.0-py3-none-any.whl (88 kB)
+#17 57.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.5/88.5 kB 4.7 MB/s eta 0:00:00
+#17 58.20 Downloading curl_cffi-0.17.0-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (13.4 MB)
+#17 59.35    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13.4/13.4 MB 19.2 MB/s eta 0:00:00
+#17 59.67 Downloading aiofiles-24.1.0-py3-none-any.whl (15 kB)
+#17 59.99 Downloading aiosqlite-0.20.0-py3-none-any.whl (15 kB)
+#17 60.30 Downloading Babel-2.13.0-py3-none-any.whl (10.1 MB)
+#17 60.63    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.1/10.1 MB 32.5 MB/s eta 0:00:00
+#17 60.95 Downloading black-24.10.0-py3-none-any.whl (206 kB)
+#17 60.96    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 206.9/206.9 kB 82.5 MB/s eta 0:00:00
+#17 61.29 Downloading browser_cookie3-0.20.1-py3-none-any.whl (17 kB)
+#17 61.60 Downloading click-8.1.7-py3-none-any.whl (97 kB)
+#17 61.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 97.9/97.9 kB 377.7 MB/s eta 0:00:00
+#17 61.93 Downloading cryptography-44.0.0-cp39-abi3-manylinux_2_34_aarch64.whl (3.9 MB)
+#17 62.11    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.9/3.9 MB 22.8 MB/s eta 0:00:00
+#17 62.43 Downloading gmssl-3.2.2-py3-none-any.whl (10 kB)
+#17 62.75 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#17 62.76    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 169.2 MB/s eta 0:00:00
+#17 63.07 Downloading importlib_resources-6.4.5-py3-none-any.whl (36 kB)
+#17 63.40 Downloading jsonpath_ng-1.6.1-py3-none-any.whl (29 kB)
+#17 63.72 Downloading m3u8-3.6.0-py3-none-any.whl (25 kB)
+#17 64.40 Downloading protobuf-5.28.3-cp38-abi3-manylinux2014_aarch64.whl (316 kB)
+#17 65.98    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 316.5/316.5 kB 226.4 kB/s eta 0:00:00
+#17 66.33 Downloading pydantic_core-2.23.4-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (1.8 MB)
+#17 67.73    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 1.3 MB/s eta 0:00:00
+#17 68.05 Downloading pytest-8.3.4-py3-none-any.whl (343 kB)
+#17 68.21    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 343.1/343.1 kB 5.6 MB/s eta 0:00:00
+#17 68.53 Downloading pytest_asyncio-0.25.0-py3-none-any.whl (19 kB)
+#17 68.85 Downloading PyYAML-6.0.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (736 kB)
+#17 69.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 736.8/736.8 kB 2.5 MB/s eta 0:00:00
+#17 69.47 Downloading qrcode-8.0-py3-none-any.whl (45 kB)
+#17 69.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.7/45.7 kB 2.7 MB/s eta 0:00:00
+#17 69.81 Downloading rich-13.9.3-py3-none-any.whl (242 kB)
+#17 69.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 242.2/242.2 kB 3.3 MB/s eta 0:00:00
+#17 70.20 Downloading websockets_proxy-0.1.2-py3-none-any.whl (5.3 kB)
+#17 70.52 Downloading python_socks-2.4.4-py3-none-any.whl (52 kB)
+#17 70.55    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52.4/52.4 kB 2.4 MB/s eta 0:00:00
+#17 70.87 Downloading yt_dlp-2026.10.26-py3-none-any.whl (3.2 MB)
+#17 71.69    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 3.9 MB/s eta 0:00:00
+#17 72.02 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#17 72.34 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#17 72.35    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 6.8 MB/s eta 0:00:00
+#17 72.67 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+#17 72.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.1/135.1 kB 5.2 MB/s eta 0:00:00
+#17 73.01 Downloading cffi-2.1.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (218 kB)
+#17 73.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 218.7/218.7 kB 5.2 MB/s eta 0:00:00
+#17 73.37 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#17 73.70 Downloading httptools-0.9.0-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (498 kB)
+#17 73.80    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 498.1/498.1 kB 5.3 MB/s eta 0:00:00
+#17 74.11 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#17 74.43 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+#17 74.77 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#17 75.09 Downloading rpds_py-2026.9.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (377 kB)
+#17 75.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 377.8/377.8 kB 47.2 MB/s eta 0:00:00
+#17 75.51 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#17 75.92 Downloading starlette-0.41.3-py3-none-any.whl (73 kB)
+#17 75.93    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.2/73.2 kB 5.8 MB/s eta 0:00:00
+#17 76.25 Downloading anyio-4.16.0-py3-none-any.whl (134 kB)
+#17 76.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.5/134.5 kB 6.0 MB/s eta 0:00:00
+#17 76.60 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#17 76.62    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 7.0 MB/s eta 0:00:00
+#17 76.93 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#17 76.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 9.5 MB/s eta 0:00:00
+#17 77.25 Downloading uvloop-0.23.0-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (3.9 MB)
+#17 77.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.9/3.9 MB 6.5 MB/s eta 0:00:00
+#17 78.17 Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (454 kB)
+#17 78.23    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 455.0/455.0 kB 8.6 MB/s eta 0:00:00
+#17 78.64 Downloading websockets-12.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (131 kB)
+#17 78.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.5/131.5 kB 140.1 MB/s eta 0:00:00
+#17 78.97 Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+#17 79.28 Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+#17 79.30    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 kB 9.0 MB/s eta 0:00:00
+#17 79.61 Downloading mypy_extensions-1.2.0-py3-none-any.whl (5.1 kB)
+#17 79.93 Downloading pathspec-1.1.1-py3-none-any.whl (57 kB)
+#17 79.93    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.3/57.3 kB 84.3 MB/s eta 0:00:00
+#17 80.25 Downloading platformdirs-4.14.5-py3-none-any.whl (35 kB)
+#17 80.58 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#17 80.89 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#17 81.08    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 13.2 MB/s eta 0:00:00
+#17 81.41 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#17 81.72 Downloading iso8601-2.1.0-py3-none-any.whl (7.5 kB)
+#17 82.04 Downloading jeepney-0.9.0-py3-none-any.whl (49 kB)
+#17 82.05    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.0/49.0 kB 180.3 MB/s eta 0:00:00
+#17 82.36 Downloading lz4-4.4.5-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (1.3 MB)
+#17 82.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 10.3 MB/s eta 0:00:00
+#17 82.81 Downloading ply-3.11-py2.py3-none-any.whl (49 kB)
+#17 82.82    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.6/49.6 kB 20.9 MB/s eta 0:00:00
+#17 83.13 Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+#17 83.14    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.6/62.6 kB 26.6 MB/s eta 0:00:00
+#17 83.45 Downloading pycryptodomex-3.24.2-cp37-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (2.2 MB)
+#17 83.64    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 11.8 MB/s eta 0:00:00
+#17 83.97 Downloading async_timeout-5.0.1-py3-none-any.whl (6.2 kB)
+#17 84.29 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#17 84.39 Building wheels for collected packages: pyexecjs
+#17 84.39   Building wheel for pyexecjs (setup.py): started
+#17 85.00   Building wheel for pyexecjs (setup.py): finished with status 'done'
+#17 85.00   Created wheel for pyexecjs: filename=pyexecjs-1.5.1-py3-none-any.whl size=14650 sha256=08f6952960a9b748bfef9f064f86d097b08e44027c5c804e8e39d7c90f05c169
+#17 85.00   Stored in directory: /tmp/pip-ephem-wheel-cache-q025kl1p/wheels/0e/29/b2/02d071c92586aa5dbfd67cda8aea1a680900a530217d5ecf6c
+#17 85.01 Successfully built pyexecjs
+#17 85.24 Installing collected packages: python-socks, ply, yt-dlp, websockets, uvloop, typing-extensions, sniffio, six, rpds-py, qrcode, pyyaml, python-dotenv, pygments, pycryptodomex, pycparser, protobuf, pluggy, platformdirs, pathspec, mypy-extensions, mdurl, lz4, jsonpath-ng, jeepney, iso8601, iniconfig, importlib-resources, idna, httptools, h11, click, certifi, babel, attrs, async-timeout, annotated-types, aiofiles, uvicorn, referencing, pytest, pyexecjs, pydantic-core, markdown-it-py, m3u8, httpcore, gmssl, cffi, browser-cookie3, black, anyio, aiosqlite, websockets-proxy, watchfiles, starlette, rich, pytest-asyncio, pydantic, jsonschema-specifications, httpx, curl_cffi, cryptography, jsonschema, fastapi, f2
+#17 92.35 Successfully installed aiofiles-24.1.0 aiosqlite-0.20.0 annotated-types-0.8.0 anyio-4.16.0 async-timeout-5.0.1 attrs-26.1.0 babel-2.13.0 black-24.10.0 browser-cookie3-0.20.1 certifi-2026.10.23 cffi-2.1.1 click-8.1.7 cryptography-44.0.0 curl_cffi-0.17.0 f2-0.0.1.7 fastapi-0.115.6 gmssl-3.2.2 h11-0.16.0 httpcore-1.0.9 httptools-0.9.0 httpx-0.27.2 idna-3.20 importlib-resources-6.4.5 iniconfig-2.3.1 iso8601-2.1.0 jeepney-0.9.0 jsonpath-ng-1.6.1 jsonschema-4.23.0 jsonschema-specifications-2025.9.1 lz4-4.4.5 m3u8-3.6.0 markdown-it-py-4.2.0 mdurl-0.1.2 mypy-extensions-1.2.0 pathspec-1.1.1 platformdirs-4.14.5 pluggy-1.7.0 ply-3.11 protobuf-5.28.3 pycparser-3.12 pycryptodomex-3.24.2 pydantic-2.9.2 pydantic-core-2.23.4 pyexecjs-1.5.1 pygments-2.21.0 pytest-8.3.4 pytest-asyncio-0.25.0 python-dotenv-1.2.4 python-socks-2.4.4 pyyaml-6.0.2 qrcode-8.0 referencing-0.37.0 rich-13.9.3 rpds-py-2026.9.1 six-1.17.0 sniffio-1.3.1 starlette-0.41.3 typing-extensions-4.16.0 uvicorn-0.34.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-12.0 websockets-proxy-0.1.2 yt-dlp-2026.10.26
+#17 92.35 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#17 94.59 
+#17 94.59 [notice] A new release of pip is available: 24.0 -> 26.3
+#17 94.59 [notice] To update, run: pip install --upgrade pip
+#17 95.79 v20.20.2
+#17 96.18 f2 import ok 0.0.1.7 | curl_cffi 0.17.0
+#17 DONE 96.4s
+
+#18 [stage-2 10/14] RUN pip install --no-cache-dir playwright==1.64.1     && python -c "from playwright.sync_api import sync_playwright; print('playwright CDP client ok')"     && test ! -d /ms-playwright
+#18 3.797 Collecting playwright==1.64.1
+#18 5.646   Downloading playwright-1.64.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (3.3 kB)
+#18 5.994 Collecting pyee<15,>=13 (from playwright==1.64.1)
+#18 6.307   Downloading pyee-13.0.1-py3-none-any.whl.metadata (3.0 kB)
+#18 7.273 Collecting greenlet<4.0.0,>=3.1.1 (from playwright==1.64.1)
+#18 7.584   Downloading greenlet-3.5.6-cp311-cp311-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl.metadata (3.8 kB)
+#18 7.617 Requirement already satisfied: typing-extensions in /usr/local/lib/python3.11/site-packages (from pyee<15,>=13->playwright==1.64.1) (4.16.0)
+#18 7.933 Downloading playwright-1.64.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (48.2 MB)
+#18 11.45    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 MB 15.6 MB/s eta 0:00:00
+#18 11.77 Downloading greenlet-3.5.6-cp311-cp311-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl (613 kB)
+#18 11.79    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 613.4/613.4 kB 25.3 MB/s eta 0:00:00
+#18 12.10 Downloading pyee-13.0.1-py3-none-any.whl (15 kB)
+#18 12.41 Installing collected packages: pyee, greenlet, playwright
+#18 13.58 Successfully installed greenlet-3.5.6 playwright-1.64.1 pyee-13.0.1
+#18 13.58 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#18 15.86 
+#18 15.86 [notice] A new release of pip is available: 24.0 -> 26.3
+#18 15.86 [notice] To update, run: pip install --upgrade pip
+#18 16.30 playwright CDP client ok
+#18 DONE 16.4s
+
+#19 [stage-2 11/14] COPY container/app ./app
+#19 DONE 0.0s
+
+#20 [stage-2 12/14] COPY contract ./contract
+#20 DONE 0.0s
+
+#21 [stage-2 13/14] COPY container/entrypoint.sh /usr/local/bin/renlink-entrypoint
+#21 DONE 0.0s
+
+#22 [stage-2 14/14] RUN chmod +x /usr/local/bin/renlink-entrypoint
+#22 DONE 0.1s
+
+#23 exporting to image
+#23 exporting layers
+#23 exporting layers 9.4s done
+#23 exporting manifest sha256:054ca30e0b9d0fba842ca57b33f2e018f5618f642b33828507ae908717be358c done
+#23 exporting config sha256:4e8224a7f71db77a1a3572572f86c1af81cfdab12f6fd18ad5bf7c4ced09ca56 done
+#23 exporting attestation manifest sha256:4d47337f6b769a4d51c74c2775e83a0b67ab81548eaa4e5defce9f738768d16e 0.0s done
+#23 exporting manifest list sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c done
+#23 naming to docker.io/library/renlink-l1:qa2 done
+#23 unpacking to docker.io/library/renlink-l1:qa2
+#23 unpacking to docker.io/library/renlink-l1:qa2 3.8s done
+#23 DONE 13.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/sn87u77b7fbss6ktoxyr4wbxm

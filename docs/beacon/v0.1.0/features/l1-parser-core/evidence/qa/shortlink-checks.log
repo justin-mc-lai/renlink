@@ -1,0 +1,5 @@
+[PASS] 3 hops allowed — https://www.douyin.com/video/1234567890
+[PASS] HEAD requested first at every hop — HEAD https://v.douyin.com/a/; HEAD https://v.douyin.com/b/; HEAD https://v.douyin.com/c/
+[PASS] 4 hops rejected — SHORTLINK_FAIL
+[PASS] HEAD 405 falls back to GET headers — HEAD https://v.douyin.com/e/ | GET https://v.douyin.com/e/
+SUMMARY failures=0

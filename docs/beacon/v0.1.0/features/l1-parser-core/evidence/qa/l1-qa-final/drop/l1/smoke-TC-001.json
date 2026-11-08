@@ -1,0 +1,38 @@
+{
+  "tc": "TC-001",
+  "name": "dy-video-1",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:39:40+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 502,
+  "responseBytes": 216,
+  "clientElapsedMs": 556,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "PARSE_FAILED",
+      "message": "抖音 Argus 直连失败: upstream HTTP 403: Blocked by ArgusSecurityPlugin Signature Not Found",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 547
+  },
+  "failures": [
+    "HTTP 状态 502 != 200",
+    "ok 不是 true",
+    "platform 不是字符串",
+    "content_type 不是字符串",
+    "source_url 不是字符串",
+    "title 不是字符串",
+    "item_count 不是整数",
+    "item_count 不等于 items 长度",
+    "platform 不是 douyin",
+    "content_type 不是 video",
+    "items 长度不是 1"
+  ],
+  "note": ""
+}

@@ -1,0 +1,7 @@
+case=3x3-mirrors
+item_count=3 truncated=False
+remoteUrls=["https://cdn-a.example.com/img0.webp", "https://cdn-a.example.com/img1.webp", "https://cdn-a.example.com/img2.webp"]
+case=120-images
+item_count=100 truncated=True
+RESULT=PASS
+checks_exit=0

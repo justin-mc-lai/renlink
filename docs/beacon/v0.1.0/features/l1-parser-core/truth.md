@@ -71,8 +71,12 @@ scope_mode: lake
 | C4 | 手机端 openDocument 不支持 zip，zip 用 wx.shareFileMessage | 本湖不产 zip；/zip 只回 zip 的 cloudID，由 l6 与 l5 用 wx.shareFileMessage 转发聊天，PC 端 saveFileToDisk | 契约条款，l6 AC 承接 |
 | C5 | 小红书 webp 必须后端转 jpg | /parse 对 xhs 图片项标 needs_transcode=true 并保留原始 remoteUrl 不改写；转码在 l3 /stage 落地，因为 /parse 不下载 | AC-011、AC-010 |
 | C6 | cookie 只做运营方池，禁止收用户 cookie | cookie 只从容器环境变量与密钥注入；请求体带 cookie 字段返回 400 INVALID_REQUEST；日志对 cookie 值脱敏 | AC-013、AC-005 |
-| C7 | f2 当 Python 库用（fetch_one_video → PostDetailFilter），/parse 不下载 | 抖音图文分支只调 DouyinHandler.fetch_one_video 并读 PostDetailFilter.images 的 URL，不触发媒体下载；镜像内置 Node20 与 pyexecjs | AC-002、AC-012 |
+| C7 | 抖音视频主路径 = f2 生成 a_bogus/msToken + Argus 头与参数，走 HTTP 直连，不起浏览器；/parse 不下载 | 抖音视频分支用 f2 取 aweme_id、a_bogus、msToken，再用 curl_cffi(impersonate="chrome") 请求 detail API，并补齐 header x-tt-argus、uifid 与 query uifid、verifyFp、fp（取自 cookie 的 s_v_web_id），拿到 play_addr；抖音图文分支仍调 DouyinHandler.fetch_one_video 读 PostDetailFilter.images；全程不触发媒体下载；镜像内置 Node20 与 pyexecjs | AC-001、AC-002、AC-012、AC-015 |
 | C8 | 小红书图文必须自研（yt-dlp 只给缩略图） | xhs 视频走 yt-dlp XiaoHongShuIE；xhs 图文走自研 __INITIAL_STATE__ 到 imageList 加 xsec_token，由 l2 实现，l1 只做路由与字段归一 | AC-003、依赖表 |
+| C9 | 渲染回退统一用 Obscura，默认关闭；抖音禁用 | 默认不装 Chromium、不启动任何浏览器进程；只有显式 ENABLE_OBSCURA=1 才启动 obscura serve --port 9222 --stealth，需要渲染的平台通过 PLAYWRIGHT_CDP=ws://127.0.0.1:9222 接入，连接用 new_context() 且不调用 browser.close()；抖音分支任何情况都不接 Obscura、不起浏览器，继续 Argus HTTP 直连 | AC-003、AC-012、AC-017 |
+| C10 | /parse 总预算 ≤12s；Obscura 渲染等待 ≤8s | 抖音 HTTP 直连失败（403、风控、页面无播放地址）直接返回 502 PARSE_FAILED、retryable=true、items 为空数组，不走渲染兜底；Obscura 只服务小红书等渲染型平台，渲染等待上限 8s，整体超过 12s 返回 504 TIMEOUT；禁止返回半截 items | AC-009、AC-015、AC-016、AC-017 |
+| C11 | 只回 remoteUrl，不下载不落盘 | 拿到的 play_addr 只写进 items[].remoteUrl，不做媒体下载；同一 aweme_id 的 play_addr 进程内缓存 10 分钟；依赖与缓存目录固定 /tmp，请求结束（成功或失败）立即清理 | AC-012、AC-015 |
+| C12 | 容器规格保持轻量 | 镜像默认不装浏览器与 Chromium；Obscura 走可选多阶段（从 h4ckf0r0day/obscura:latest 拷二进制或直接用其镜像），默认关闭；不开 Obscura 时 0.5C1G 可跑，开启时建议 1C1G | AC-017、evidence.md「容器规格」段 |
 
 ## Alignment Surface
 
@@ -105,6 +109,9 @@ scope_mode: lake
 | AC-012 | 非目标与约束 C3、C7：只解析不下载 | tests.md TC-016 |
 | AC-013 | 约束 C6：禁止收用户 cookie | tests.md TC-017 |
 | AC-014 | l4 接缝：运营方可观察 cookie 新鲜度 | tests.md TC-018 |
+| AC-015 | 变更 chg_42d5d41158ba：抖音 403 根因是 Argus 头/参数缺失，主路径改 HTTP 直连取 play_addr | tests.md TC-019、TC-020、TC-021 |
+| AC-016 | 变更 chg_42d5d41158ba：Argus 参数缺失、失败与超时行为，禁止半截 items | tests.md TC-019、TC-022 |
+| AC-017 | 变更 chg_42c00bf71013：Obscura 仅作通用渲染回退，抖音禁用 | tests.md TC-023、TC-024 |
 
 ## Acceptance Criteria
 
@@ -126,6 +133,9 @@ scope_mode: lake
 | AC-012 | POST /parse 全程不写容器磁盘、不传 COS、响应不含 cloudID 字段；请求前后容器 /tmp 新增文件数为 0 |
 | AC-013 | 请求体出现 cookie 字段时返回 HTTP 400、ok=false、error.code=INVALID_REQUEST，服务端只读运营方 cookie 池 |
 | AC-014 | GET /health 返回 200、ok=true 与 douyin、xhs 两平台的 cookie 状态字段，cookie 失效时该平台 status=expired |
+| AC-015 | POST /parse 传抖音真实视频链接时返回 200、ok=true、content_type=video、items 长度 1、items[0].remoteUrl 为非空 http(s) 播放地址；补齐 Argus 头（x-tt-argus + uifid + verifyFp/fp）与 f2 的 a_bogus/msToken 后，同一链接连跑 3 次均 200；响应内无下载内容、无本地路径 |
+| AC-016 | 去掉 x-tt-argus 时上游返回 403 Blocked by ArgusSecurityPlugin，/parse 返回 HTTP 502、ok=false、error.code=PARSE_FAILED、error.retryable=true、items 为空数组；去掉 uifid 时同一路径同样返回 502；整体超过 12s 返回 HTTP 504、error.code=TIMEOUT；三种情况都不带半截 items |
+| AC-017 | ENABLE_OBSCURA=1 时 Obscura 能渲染小红书笔记页（标题正确、含 xsec_token），CDP 可通过 ws://127.0.0.1:9222 用 new_context() 接入；默认关闭时不起 obscura 进程；Obscura 开启时抖音 /parse 仍由 Argus HTTP 直连返回 play_addr，Obscura 侧收不到任何抖音页面请求，抖音分支不启浏览器 |
 
 ## 接口契约
 
@@ -201,6 +211,31 @@ scope_mode: lake
 | PARSE_FAILED | 502 | 页面结构变化、找不到媒体字段 | true |
 | TIMEOUT | 504 | 上游解析超过 12s | true |
 | RATE_LIMITED | 429 | 单 IP 每分钟超过 20 次 | true |
+
+### 抖音解析分支（2026-11-08 变更 chg_42d5d41158ba，取代 chg_a8c858b31f4c）
+
+2026-11-08 追加实测把 403 根因定位清楚：响应体是 Blocked by ArgusSecurityPlugin Uifid Not Found，不是 TLS/JA3 问题；Argus 网关要求成套的 header 与 query。curl_cffi(impersonate="chrome") 补齐下列参数后连跑 3 次全部 200 并返回 play_addr，不需要浏览器。
+
+1. header：x-tt-argus（任意非空）、uifid（cookie 的 UIFID 或 UIFID_TEMP）；query：uifid、verifyFp=<s_v_web_id>、fp=<s_v_web_id>；再带 f2 生成的 a_bogus 与 msToken。
+2. 主路径：链接规范化为 www.douyin.com/video/<aweme_id>（iesdouyin.com/share/video/<id> 一并归一），f2 取 aweme_id/a_bogus/msToken，curl_cffi 直连 detail API 读 play_addr；不启动浏览器、不装 Chromium。
+3. 回退：抖音不走 Obscura、不起浏览器；Argus 直连失败（403、风控、无播放地址）直接返回 PARSE_FAILED（retryable=true），不带半截 items。
+4. 小红书不受影响：继续 yt-dlp，不启动浏览器进程。
+5. 缓存：play_addr 以 aweme_id 为键进程内缓存 10 分钟，命中直接返回，不发上游请求。
+6. 预算：回退渲染等待 ≤8s，/parse 总预算 ≤12s；超时返回 TIMEOUT。
+7. 落盘：不落媒体文件；依赖与缓存目录固定 /tmp，请求结束立即清理，/parse 仍零持久落盘。
+8. 容器：默认不装浏览器与 Chromium；Obscura 是默认关闭的可选组件；不开 Obscura 时云托管 0.5C1G 可跑，开启时建议 1C1G。
+
+### 回退渲染：Obscura（2026-11-08 变更 chg_42c00bf71013）
+
+Obscura 只做通用渲染回退，不参与抖音解析。实测版本 0.2.6（Apache-2.0，Rust + V8 + CDP，无 Chromium），官方镜像 h4ckf0r0day/obscura。
+
+1. 默认关闭：ENABLE_OBSCURA 未置 1 时镜像不含 obscura 二进制、不启动进程，Dockerfile 默认不装 Chromium。
+2. 启用方式：ENABLE_OBSCURA=1 时启动 `obscura serve --port 9222 --stealth`；应用侧读 PLAYWRIGHT_CDP=ws://127.0.0.1:9222 通过 CDP 接入。
+3. 连接纪律：Playwright 连接时用 new_context()，不要调用 browser.close()，否则会把 obscura server 一起带走。
+4. 适用范围：只在小红书或未来需要 JS 渲染的平台启用；抖音分支禁止使用 Obscura。
+5. 资源：镜像约 +70MB、常驻内存约 60MB；不开 Obscura 时 0.5C1G，开启时建议 1C1G。
+6. 实测依据：example.com、quotes.toscrape.com/js（JS 渲染 10 条）、小红书笔记页（标题正确且带 xsec_token）成功；抖音首页/视频/分享页返回验证码中间页，CDP 下目标页还会被关闭，故抖音禁用。
+7. 失败路径：Obscura 不可用或渲染超时，使用它的平台按原错误码返回（PARSE_FAILED / TIMEOUT），不影响抖音主路径。
 
 ### GET /health
 

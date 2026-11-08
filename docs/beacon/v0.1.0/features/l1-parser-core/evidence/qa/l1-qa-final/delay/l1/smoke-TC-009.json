@@ -1,0 +1,29 @@
+{
+  "tc": "TC-009",
+  "name": "cookie-expired",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:40:38+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 504,
+  "responseBytes": 142,
+  "clientElapsedMs": 12009,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "TIMEOUT",
+      "message": "上游解析超过 12 秒",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 12008
+  },
+  "failures": [
+    "HTTP 状态 504 != 503",
+    "error.code TIMEOUT != COOKIE_EXPIRED"
+  ],
+  "note": "需服务端以 PARSE_STUB_COOKIE_EXPIRED=douyin 启动"
+}

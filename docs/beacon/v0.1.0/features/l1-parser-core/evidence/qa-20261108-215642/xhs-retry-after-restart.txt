@@ -1,0 +1,8 @@
+--- 18301
+{"ok":false,"error":{"code":"PARSE_FAILED","message":"l2-xhs-images 的 parse_note 尚未冻结，l1 仅保留接缝","retryable":true},"items":[],"resolved_url":"","elapsed_ms":1158}
+HTTP 502 time=1.170224
+
+--- 18304
+{"ok":false,"error":{"code":"PARSE_FAILED","message":"l2-xhs-images 的 parse_note 尚未冻结，l1 仅保留接缝","retryable":true},"items":[],"resolved_url":"","elapsed_ms":1061}
+HTTP 502 time=1.063619
+

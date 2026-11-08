@@ -1,0 +1,23 @@
+=== task ledger 018-022 ===
+30:- [x] TASK-018 抖音 Argus HTTP 分支：f2 取 aweme_id/a_bogus/msToken，curl_cffi(impersonate="chrome") 直连 detail API，补 x-tt-argus、uifid 头与 uifid/verifyFp/fp 参数；主路径不起浏览器，小红书与图文分支不动 · ac=AC-015
+31:- [x] TASK-019 预算、缓存与清理：抖音 /parse 总预算 ≤12s，超时 TIMEOUT，失败 PARSE_FAILED retryable=true 且无半截 items；play_addr 按 aweme_id 缓存 10 分钟；缺 x-tt-argus 时复现上游 403 · ac=AC-016、AC-012
+32:- [x] TASK-020 真实样本验证与证据：用真实抖音链接跑 /parse 连跑 3 次记录 JSON（remoteUrl 可截断）；把实测输出与容器规格写进 evidence.md；tests.md TC-019 到 TC-024 附实测输出 · ac=AC-015、AC-016、AC-017
+33:- [x] TASK-021 容器与部署说明：Dockerfile 默认不装浏览器与 Chromium；Obscura 走可选多阶段（从 h4ckf0r0day/obscura:latest 拷二进制或直接用其镜像），默认关闭；标注不开 Obscura 0.5C1G 可跑、开启建议 1C1G · ac=AC-015、AC-017
+34:- [x] TASK-022 Obscura 通用渲染回退：ENABLE_OBSCURA=1 时启动 `obscura serve --port 9222 --stealth`，应用侧读 PLAYWRIGHT_CDP=ws://127.0.0.1:9222，用 new_context() 接入且不 browser.close()；只服务小红书/未来平台，抖音分支禁止接 Obscura；默认关闭时零进程零依赖 · ac=AC-017 · 对应 change chg_42c00bf71013（可选回退）；该 change 仍 pending，TC-023 的容器 SSRF P0 未闭合
+50:| TASK-018 | TASK-001、TASK-009 | Argus 直连分支复用统一契约与 cookie 池 |
+51:| TASK-019 | TASK-018、TASK-010 | 预算与缓存挂在 Argus 分支上 |
+52:| TASK-020 | TASK-018、TASK-019 | 有可跑的 Argus 分支才能留证据 |
+53:| TASK-021 | TASK-018、TASK-022 | 镜像默认不带浏览器，Obscura 作为可选组件单独说明 |
+54:| TASK-022 | TASK-007 | 渲染回退接在小红书渲染型链路上，抖音分支不接 |
+
+=== truth revision ===
+---
+slug: l1-parser-core
+version: v0.1.0
+status: frozen
+revision_id: R1
+
+=== change statuses ===
+docs/beacon/v0.1.0/features/l1-parser-core/changes/chg_42c00bf71013.md:status: pending
+docs/beacon/v0.1.0/features/l1-parser-core/changes/chg_a8c858b31f4c.md:status: pending
+docs/beacon/v0.1.0/features/l1-parser-core/changes/chg_42d5d41158ba.md:status: pending

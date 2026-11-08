@@ -1,0 +1,10 @@
+{
+  "tc": "TC-023",
+  "name": "obscura-xhs-render",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T13:42:30+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {},
+  "failures": [],
+  "note": "缺少样本: XHS_NOTE_1"
+}

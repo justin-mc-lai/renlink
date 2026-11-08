@@ -1,0 +1,14 @@
+=== douyin imports ===
+none
+=== browser.close occurrences ===
+12:* close only the context - never ``browser.close()``, which would stop the
+41:# /tmp. We cannot call browser.close(), so remove the dirs ourselves; one
+103:    This is the check that catches an accidental ``browser.close()``: the
+169:        # Fresh context only. Do not call browser.close(): obscura is the server.
+=== connect_over_cdp/new_context ===
+10:* connect with ``playwright.chromium.connect_over_cdp(PLAYWRIGHT_CDP)``
+11:* create a fresh ``new_context()`` per render
+162:            browser = playwright.chromium.connect_over_cdp(endpoint, timeout=remaining_ms())
+170:        context = browser.new_context()
+=== top-level playwright import ===
+none (lazy only)

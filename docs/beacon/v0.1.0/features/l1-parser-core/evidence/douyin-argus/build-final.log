@@ -1,0 +1,69 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.89kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+#2 ...
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#3 DONE 0.3s
+
+#2 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+#2 DONE 0.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 2.49kB done
+#5 DONE 0.0s
+
+#6 [stage-1  1/10] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.0s done
+#6 DONE 0.0s
+
+#7 [node 1/1] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+#7 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 0.0s done
+#7 DONE 0.0s
+
+#8 [stage-1  2/10] COPY --from=node /usr/local/bin/node /usr/local/bin/node
+#8 CACHED
+
+#9 [stage-1  3/10] COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+#9 CACHED
+
+#10 [stage-1  7/10] RUN pip install --no-cache-dir -r requirements.txt     && node --version     && python -c "import logging; logging.getLogger('f2').addHandler(logging.NullHandler()); import f2, curl_cffi; print('f2 import ok', getattr(f2, '__version__', 'unknown'), '| curl_cffi', curl_cffi.__version__)"
+#10 CACHED
+
+#11 [stage-1  5/10] WORKDIR /app
+#11 CACHED
+
+#12 [stage-1  8/10] RUN if [ "0" = "1" ]; then         pip install --no-cache-dir playwright==1.64.1         && python -m playwright install --only-shell chromium --with-deps         && python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); b=p.chromium.launch(headless=True, args=['--no-sandbox','--disable-dev-shm-usage']); print('chromium ok', b.version); b.close(); p.stop()";     else         echo 'Chromium skipped (INSTALL_CHROMIUM=0)';     fi
+#12 CACHED
+
+#13 [stage-1  4/10] RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+#13 CACHED
+
+#14 [stage-1  6/10] COPY container/requirements.txt ./requirements.txt
+#14 CACHED
+
+#15 [stage-1  9/10] COPY container/app ./app
+#15 CACHED
+
+#16 [stage-1 10/10] COPY contract ./contract
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:8fcde1d3ef6f4a503ef0822ab3656ebd5284122c4bedfa22affa253b6750ec8e done
+#17 exporting config sha256:99a870f51f29ecfa537269c4f2dfe017667f4606a0c6e08ff1f832057292e554 done
+#17 exporting attestation manifest sha256:389215ad3c868cfffd7b46ccfaef5807e749f940921d45e590249ef658051ed6 0.0s done
+#17 exporting manifest list sha256:28ace238e702d74c23c6ae6fe4d4626db3c68a6f61195ba344f595a7199bbfac done
+#17 naming to docker.io/library/renlink-l1:argus done
+#17 unpacking to docker.io/library/renlink-l1:argus done
+#17 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/s7qud7mhrad6tc5ejiy10vnxy

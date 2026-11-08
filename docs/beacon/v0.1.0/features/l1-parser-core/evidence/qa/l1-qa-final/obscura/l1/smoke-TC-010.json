@@ -1,0 +1,26 @@
+{
+  "tc": "TC-010",
+  "name": "shortlink-fail",
+  "status": "PASS",
+  "startedAt": "2026-11-08T13:42:45+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/0000000/"
+  },
+  "httpStatus": 422,
+  "responseBytes": 155,
+  "clientElapsedMs": 191,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "SHORTLINK_FAIL",
+      "message": "短链没有落到内容规范页",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 190
+  },
+  "failures": [],
+  "note": "构造的失效短链，不冒充真实样本"
+}

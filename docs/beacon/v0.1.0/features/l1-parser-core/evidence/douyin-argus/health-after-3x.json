@@ -1,0 +1,1 @@
+{"ok":true,"version":"v0.1.0","platforms":{"douyin":{"cookie_status":"fresh","last_refresh":""},"xhs":{"cookie_status":"fresh","last_refresh":""}},"egress_proxy":"direct","argus":{"argus_requests":3,"cache_hits":0,"argus_failures":0,"dropped_argus_header":0,"cache_entries":0,"cache_ttl_s":600}}

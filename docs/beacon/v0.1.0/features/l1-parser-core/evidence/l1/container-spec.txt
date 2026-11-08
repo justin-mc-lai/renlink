@@ -1,0 +1,13 @@
+# l1-parser-core Obscura container spec
+# captured: 2026-11-08T21:09:00+08:00
+
+renlink-obscura-default: mem=52.65MiB / 7.653GiB cpu=0.82%
+renlink-obscura-on: mem=194.5MiB / 7.653GiB cpu=0.13%
+
+image size: 247847968 bytes
+-rwxr-xr-x 1 root root 115M Oct 31 22:11 /usr/local/bin/obscura
+316K	/app
+
+default ENABLE_OBSCURA=0: no obscura process, app RSS ~53MiB, fits 0.5C1G
+enabled ENABLE_OBSCURA=1: app+obscura RSS ~194MiB after two xhs renders, recommend 1C1G
+obscura binary 115MB; image +~100MB over the previous no-renderer image

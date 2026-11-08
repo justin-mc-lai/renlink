@@ -1,0 +1,25 @@
+=== host stage ===
+run:    run_1084fcb4301353f56601ec48
+status: blocked (loop_stage governance_precheck)
+stage:  plan
+blocked: true
+reason: stage_executor_not_registered
+next:   beacon-plan
+
+=== truth drift ===
+package: l1-parser-core
+clean:   true
+body drift: false
+
+=== git status ===
+ M docs/beacon/v0.1.0/features/l1-parser-core/evidence.md
+ M docs/beacon/v0.1.0/features/l1-parser-core/tasks.md
+ M docs/beacon/v0.1.0/features/l1-parser-core/tests.md
+ M docs/beacon/v0.1.0/features/l1-parser-core/truth.md
+?? .gitignore
+?? Dockerfile
+?? container/
+?? contract/
+?? docs/beacon/v0.1.0/features/l1-parser-core/changes/
+?? docs/beacon/v0.1.0/features/l1-parser-core/evidence/
+?? ops/

@@ -1,0 +1,38 @@
+{
+  "tc": "TC-023",
+  "name": "obscura-xhs-render",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T22:09:09+08:00",
+  "base": "http://127.0.0.1:18314",
+  "request": {
+    "path": "/render/probe?url=https%3A%2F%2Fwww.xiaohongshu.com%2Fdiscovery%2Fitem%2F6af04386000000001500d626%3Fxsec_token%3DCBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%253D%26xsec_source%3Dapp_share"
+  },
+  "httpStatus": 504,
+  "responseBytes": 103,
+  "clientElapsedMs": 11883,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "TIMEOUT",
+      "message": "Obscura 渲染超过 12s 总预算",
+      "retryable": true
+    }
+  },
+  "failures": [
+    "HTTP 状态 504 != 200",
+    "ok 不是 true",
+    "渲染标题为空或过短",
+    "渲染内容不含 xsec_token",
+    "渲染后 obscura CDP 端口不再存活（疑似 browser.close）",
+    "渲染 HTML 过小",
+    "final_url 不是小红书: None"
+  ],
+  "note": "需 ENABLE_OBSCURA=1 且 obscura serve 已就绪",
+  "extra": {
+    "title": "",
+    "final_url": null,
+    "html_bytes": null,
+    "has_xsec_token": null,
+    "obscura_alive": null
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-11-08T19:40:00+08:00",
+  "docker": {
+    "daemonVersion": "29.1.5",
+    "buildExit": 0,
+    "image": "renlink-l1:local",
+    "imageId": "sha256:8c0da220d69769635f60ed30de9bb8585882913516ee0edd4ea93b874ae77890",
+    "nodeVersion": "v20.20.2",
+    "f2Import": "f2 import ok 0.0.1.7",
+    "containerRun": "ok",
+    "f2LogsDirAfterParse": false,
+    "containerTmpFilesBeforeParse": 0,
+    "containerTmpFilesAfterParse": 0
+  },
+  "localFallback": {
+    "python": "3.11.14",
+    "pipInstallExit": 0,
+    "compileallExit": 0,
+    "f2Import": "0.0.1.7"
+  },
+  "httpChecks": {
+    "exampleCom": {"httpStatus": 400, "code": "UNSUPPORTED_PLATFORM"},
+    "invalidUrl": {"httpStatus": 400, "code": "INVALID_URL"},
+    "userCookie": {"httpStatus": 400, "code": "INVALID_REQUEST"},
+    "shortlinkFail": {"httpStatus": 422, "code": "SHORTLINK_FAIL", "resolved_url": ""},
+    "cookieExpired": {"httpStatus": 503, "code": "COOKIE_EXPIRED"},
+    "timeout": {"httpStatus": 504, "code": "TIMEOUT", "elapsed_ms": 12001, "wallSeconds": 12.011865},
+    "rateLimit": {"limitPerMinute": 20, "firstLimitedRequest": 21, "httpStatus": 429, "code": "RATE_LIMITED"},
+    "health": {"httpStatus": 200, "ok": true, "cookieStatus": {"douyin": "missing", "xhs": "missing"}}
+  },
+  "unitChecks": {
+    "items120": {"kept": 100, "truncated": true, "lastIndex": 99},
+    "exact100": {"kept": 100, "truncated": false},
+    "sizeTrim": {"inputItems": 100, "kept": 84, "bytes": 1020074, "truncated": true},
+    "f2HandlerInit": "ok",
+    "f2ImageExtraction": {"desc": "三图笔记", "imageCount": 3, "videoUrlFound": true},
+    "xhsNoteSeam": {"contentType": "note", "items": 2, "needsTranscode": [true, true], "webpUrlPreserved": true},
+    "xhsVideoSeam": {"contentType": "video", "items": 1, "ext": "mp4"}
+  }
+}

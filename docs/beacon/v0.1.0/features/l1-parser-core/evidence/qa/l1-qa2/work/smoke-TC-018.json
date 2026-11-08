@@ -1,0 +1,50 @@
+{
+  "tc": "TC-018",
+  "name": "health",
+  "status": "PASS",
+  "startedAt": "2026-11-08T21:48:16+08:00",
+  "base": "http://127.0.0.1:18203",
+  "request": {
+    "path": "/health"
+  },
+  "httpStatus": 200,
+  "responseBytes": 474,
+  "clientElapsedMs": 11,
+  "response": {
+    "ok": true,
+    "version": "v0.1.0",
+    "platforms": {
+      "douyin": {
+        "cookie_status": "fresh",
+        "last_refresh": ""
+      },
+      "xhs": {
+        "cookie_status": "fresh",
+        "last_refresh": ""
+      }
+    },
+    "egress_proxy": "direct",
+    "argus": {
+      "argus_requests": 0,
+      "cache_hits": 0,
+      "argus_failures": 0,
+      "dropped_argus_header": 0,
+      "cache_entries": 0,
+      "cache_ttl_s": 600
+    },
+    "render": {
+      "enabled": true,
+      "cdp": "ws://127.0.0.1:9222",
+      "wait_ms": 8000,
+      "renders": 0,
+      "failures": 0,
+      "cdp_connects": 0,
+      "browser_launches": 0,
+      "last_url_host": "",
+      "last_ms": 0,
+      "last_error": ""
+    }
+  },
+  "failures": [],
+  "note": ""
+}

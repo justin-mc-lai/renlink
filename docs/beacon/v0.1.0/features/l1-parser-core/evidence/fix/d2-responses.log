@@ -1,0 +1,18 @@
+BODY {"url":123}
+{"ok":false,"error":{"code":"INVALID_REQUEST","message":"url 字段必须是字符串","retryable":false},"items":[],"resolved_url":"","elapsed_ms":0}
+http=400
+BODY {"url":null}
+{"ok":false,"error":{"code":"INVALID_REQUEST","message":"url 字段必须是字符串","retryable":false},"items":[],"resolved_url":"","elapsed_ms":0}
+http=400
+BODY {"url":[]}
+{"ok":false,"error":{"code":"INVALID_REQUEST","message":"url 字段必须是字符串","retryable":false},"items":[],"resolved_url":"","elapsed_ms":0}
+http=400
+BODY {}
+{"ok":false,"error":{"code":"INVALID_URL","message":"url 为空、不是 http(s) 链接或长度超过 2048","retryable":false},"items":[],"resolved_url":"","elapsed_ms":0}
+http=400
+BODY {"url":""}
+{"ok":false,"error":{"code":"INVALID_URL","message":"url 为空、不是 http(s) 链接或长度超过 2048","retryable":false},"items":[],"resolved_url":"","elapsed_ms":0}
+http=400
+BODY {"url":"https://example.com"}
+{"ok":false,"error":{"code":"UNSUPPORTED_PLATFORM","message":"只支持抖音与小红书链接","retryable":false},"items":[],"resolved_url":"","elapsed_ms":0}
+http=400

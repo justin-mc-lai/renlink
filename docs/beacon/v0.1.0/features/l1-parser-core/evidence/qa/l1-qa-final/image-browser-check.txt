@@ -1,0 +1,19 @@
+INSTALL_CHROMIUM=[unset] ENABLE_OBSCURA=[unset] PLAYWRIGHT_BROWSERS_PATH=[unset]
+no-bin chromium
+no-bin chromium-browser
+no-bin google-chrome
+no-bin chrome
+no-bin headless_shell
+-- /ms-playwright:
+ABSENT /ms-playwright
+-- /root/.cache/ms-playwright:
+ls: cannot access '/root/.cache/ms-playwright': No such file or directory
+-- find chrome/chromium/headless_shell:
+find-done
+-- obscura:
+-rwxr-xr-x 1 root root 120358400 Oct 31 22:11 /usr/local/bin/obscura
+obscura 0.2.6
+-- playwright client:
+/usr/local/lib/python3.11/site-packages/playwright/__init__.py
+-- chromium launch attempt:
+launch failed: Error BrowserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux-arm64/chrome-headless-shell

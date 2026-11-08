@@ -1,0 +1,16 @@
+== image: sha256:5c2a862471b136d0f7b0d4114e39ce70295aa07d39974f2ad0b91627a2116aae
+== date: 2026-11-08 21:43:17 +0800
+== probe https://www.xiaohongshu.com/
+HTTP 502 in 1.45 s
+{"ok":false,"error":{"code":"PARSE_FAILED","message":"Obscura 渲染失败: Error","retryable":true}}
+== CDP direct test (default obscura flags)
+https://example.com/ ERR Error Page.goto: Protocol error (Page.navigate): Network error: Network error: https://example.com/: error sending request for url (https://example.com/): client error (Connect): dns error: SSRF blocked: 'e
+https://www.xiaohongshu.com/ ERR Error Page.goto: Protocol error (Page.navigate): Network error: Network error: https://www.xiaohongshu.com/: error sending request for url (https://www.xiaohongshu.com/): client error (Connect): dns error: 
+== same-container python egress (control)
+https://www.xiaohongshu.com/ 200 37295
+https://example.com/ 200 577
+== workaround: obscura --allow-private-network on :9333
+https://example.com/ -> 200 title: Example Domain
+https://www.xiaohongshu.com/ -> 200 title: 小红书 - 你的生活兴趣社区
+== health render
+{"enabled": true, "cdp": "ws://127.0.0.1:9222", "wait_ms": 8000, "renders": 0, "failures": 1, "cdp_connects": 1, "browser_launches": 0, "last_url_host": "", "last_ms": 0, "last_error": "render: Error: Page.goto: Protocol error (Page.navigate): Network error: Network error: https://www.xiaohongshu.com/: error sending request for url (https://www.xiaohongshu.co"}

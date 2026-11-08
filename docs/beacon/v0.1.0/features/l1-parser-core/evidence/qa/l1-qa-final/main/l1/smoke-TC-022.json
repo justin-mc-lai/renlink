@@ -1,0 +1,29 @@
+{
+  "tc": "TC-022",
+  "name": "dy-argus-timeout",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:39:29+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 429,
+  "responseBytes": 153,
+  "clientElapsedMs": 0,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "RATE_LIMITED",
+      "message": "单 IP 每分钟请求超过 20 次",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 0
+  },
+  "failures": [
+    "HTTP 状态 429 != 504",
+    "error.code RATE_LIMITED != TIMEOUT"
+  ],
+  "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504"
+}

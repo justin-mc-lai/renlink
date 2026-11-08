@@ -1,0 +1,4 @@
+PARSE_BASE=http://127.0.0.1:18304
+TC-023 obscura-xhs-render: PASS (需 ENABLE_OBSCURA=1 且 obscura serve 已就绪)
+TC-024 douyin-no-obscura: PASS (需 ENABLE_OBSCURA=1；抖音仍走 Argus 直连)
+SUMMARY pass=2 fail=0 blocked=0

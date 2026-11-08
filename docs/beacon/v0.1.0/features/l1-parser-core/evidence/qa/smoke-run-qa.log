@@ -1,0 +1,20 @@
+PARSE_BASE=http://localhost:18081
+TC-001 dy-video-1: BLOCKED (缺少样本: DY_VIDEO_1)
+TC-002 dy-video-2: BLOCKED (缺少样本: DY_VIDEO_2)
+TC-003 dy-note-1: BLOCKED (缺少样本: DY_NOTE_1)
+TC-004 dy-note-2: BLOCKED (缺少样本: DY_NOTE_2)
+TC-005 xhs-video-1: BLOCKED (缺少样本: XHS_VIDEO_1)
+TC-006 xhs-video-2: BLOCKED (缺少样本: XHS_VIDEO_2)
+TC-007 dy-short-1: BLOCKED (缺少样本: DY_SHORT_1)
+TC-008 xhs-short-1: BLOCKED (缺少样本: XHS_SHORT_1)
+TC-009 cookie-expired: BLOCKED (缺少样本: DY_VIDEO_1)
+TC-010 shortlink-fail: PASS (构造的失效短链，不冒充真实样本)
+TC-011 invalid-url: PASS (三组输入：空串、not-a-url、超长 URL)
+TC-012 unsupported-platform: PASS (三个非目标平台)
+TC-013 timeout: BLOCKED (缺少样本: DY_VIDEO_1)
+TC-014 size-cap: BLOCKED (缺少样本: XHS_NOTE_MAX)
+TC-015 field-contract: BLOCKED (缺少样本: DY_VIDEO_1, DY_NOTE_1, XHS_VIDEO_1, DY_SHORT_1)
+TC-016 no-download: BLOCKED (缺少样本: DY_VIDEO_1)
+TC-017 user-cookie: PASS (请求体含 cookie 字段，不应进入解析分支)
+TC-018 health: PASS
+SUMMARY pass=5 fail=0 blocked=13

@@ -1,0 +1,8 @@
+2026-11-08 19:51:20,858 INFO renlink.parse parse ok platform=douyin content_type=note items=84 elapsed_ms=7 host=www.douyin.com
+2026-11-08 19:51:20,860 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 200 OK"
+http 200
+bytes 1020996 cap_ok True
+items 84 item_count 84 truncated True
+item_count_matches True
+indices True
+schema PASS

@@ -1,0 +1,10 @@
+=== /ms-playwright ===
+ABSENT
+=== browser executables ===
+0
+=== obscura ===
+/usr/local/bin/obscura
+obscura 0.2.6
+-rwxr-xr-x 1 root root 120358400 Oct 31 22:11 /usr/local/bin/obscura
+=== playwright client ===
+/usr/local/lib/python3.11/site-packages/playwright/__init__.py

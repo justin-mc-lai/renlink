@@ -1,0 +1,77 @@
+{
+  "mode_id": "beacon-go",
+  "run_id": "qa-l1-20261108-2145",
+  "stage": "qa",
+  "verdict": "FAIL",
+  "image": "sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c",
+  "build": {"command": "docker build --no-cache -t renlink-l1:qa2 .", "exit": 0, "size": "1.02GB", "built_at": "2026-11-08T21:47:27+08:00"},
+  "cases": [
+    {
+      "tc": "TC-023",
+      "name": "obscura-xhs-render",
+      "result": "FAIL",
+      "documented_spec": "1C1G",
+      "measurements": {
+        "1C1G": {"attempts": 6, "pass": 0, "fail": 6, "detail": "5x HTTP 502 PARSE_FAILED, 1x HTTP 504 TIMEOUT; 12.2-13.5s; title ready at 13.099s"},
+        "2C1G": {"attempts": 3, "pass": 3, "fail": 0, "detail": "probe 9.439s/9.958s; smoke cold start 11.905s (95ms margin)"},
+        "unlimited_cpu": {"attempts": 2, "pass": 2, "fail": 0, "detail": "9.569s/9.830s"},
+        "strict_no_allow_flag": {"attempts": 1, "pass": 0, "fail": 1, "detail": "HTTP 502 in 1.66s; dns error: SSRF blocked: 'example.com' resolves to forbidden address 198.18.0.141"}
+      },
+      "functional_checks_at_2c": {"title": "长安四驱越野升顶皮卡房车#二手房车 #房车旅行 #房车生活 #房车自驾游 - 小红书", "has_xsec_token": true, "html_bytes": 578067, "obscura_alive": true}
+    },
+    {
+      "tc": "TC-024",
+      "name": "douyin-no-obscura",
+      "result": "PASS",
+      "measurements": {"http": 200, "elapsed_ms": 173, "platform": "douyin", "item_count": 1, "ext": "mp4", "play_addr_present": true, "renders_delta": 0, "cdp_connects_delta": 0, "obscura_log_douyin_hits": 0, "douyin_py_imports_render": false, "douyin_argus_py_imports_render": false}
+    },
+    {
+      "tc": "DEFAULT-OFF",
+      "name": "obscura-default-disabled",
+      "result": "PASS",
+      "measurements": {"render_enabled": false, "obscura_processes": 0, "render_probe_http": 404}
+    },
+    {
+      "tc": "TC-018",
+      "name": "health",
+      "result": "PASS",
+      "measurements": {"http": 200, "ok": true}
+    },
+    {
+      "tc": "TC-019",
+      "name": "dy-argus-1",
+      "result": "PASS",
+      "measurements": {"http": 200, "argus_requests": "0->1", "browser_launches_delta": 0}
+    },
+    {
+      "tc": "BOUNDARY",
+      "name": "render-probe-domain",
+      "result": "PASS",
+      "measurements": {"douyin.com": 400, "xiaohongshu.com.evil.example": 400}
+    }
+  ],
+  "must_fix": [
+    {"priority": "P0", "item": "Opening-Obscura container spec: documented 1C1G fails 6/6; measured minimum 2C1G (2C1G: 2/2 warm + 1/1 cold, cold margin 95ms). Update truth C12/evidence.md to >=2C1G (human confirmation required for truth), or reduce cold-start cost."},
+    {"priority": "P1", "item": "Document the production DNS prerequisite: strict mode blocks Clash fake-ip 198.18.0.0/15 with SSRF guard; do not relax default security."}
+  ],
+  "evidence_refs": [
+    "qa-verdict.md",
+    "qa-matrix.json",
+    "qa-build.log",
+    "qa-image.txt",
+    "qa-source-digest.txt",
+    "qa-git-status.txt",
+    "qa-strict-ssrf.json",
+    "qa-1c-vs-2c.json",
+    "default/smoke-TC-018.json",
+    "default/smoke-TC-019.json",
+    "work/smoke-TC-023.json",
+    "work/smoke-TC-024.json",
+    "work/smoke-TC-018.json",
+    "work/smoke-TC-019.json",
+    "work2c/smoke-TC-023.json",
+    "qa-probes/"
+  ],
+  "host_run": {"run_id": "run_1084fcb4301353f56601ec48", "current_stage": "plan", "status": "blocked", "reason": "stage_executor_not_registered"},
+  "plain_summary": "Obscura 渲染链路在 2C 机器上通过；按文档 1C1G 连续 6 次失败；抖音禁用 Obscura、默认关闭、回归和域名边界均通过。"
+}

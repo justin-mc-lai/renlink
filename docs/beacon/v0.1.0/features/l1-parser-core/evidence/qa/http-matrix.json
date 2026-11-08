@@ -1,0 +1,192 @@
+{
+  "generatedAt": "2026-11-08T19:41:41+0800",
+  "containerA": "http://localhost:18081",
+  "checks": {
+    "example_com": {
+      "http": 400,
+      "code": "UNSUPPORTED_PLATFORM",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 6,
+      "wall_ms": 34,
+      "bytes": 160
+    },
+    "bilibili": {
+      "http": 400,
+      "code": "UNSUPPORTED_PLATFORM",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 3,
+      "bytes": 160
+    },
+    "evil_douyin": {
+      "http": 400,
+      "code": "UNSUPPORTED_PLATFORM",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 9,
+      "bytes": 160
+    },
+    "douyin_com_evil_com": {
+      "http": 400,
+      "code": "UNSUPPORTED_PLATFORM",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 5,
+      "bytes": 160
+    },
+    "invalid_url": {
+      "http": 400,
+      "code": "INVALID_URL",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 16,
+      "bytes": 172
+    },
+    "empty_url": {
+      "http": 400,
+      "code": "INVALID_URL",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 2,
+      "wall_ms": 7,
+      "bytes": 172
+    },
+    "url_wrong_type_number": {
+      "http": 400,
+      "code": "INVALID_URL",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 4,
+      "bytes": 172
+    },
+    "user_cookie": {
+      "http": 400,
+      "code": "INVALID_REQUEST",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 4,
+      "bytes": 157
+    },
+    "cookie_uppercase": {
+      "http": 400,
+      "code": "INVALID_REQUEST",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 12,
+      "bytes": 157
+    },
+    "body_array": {
+      "http": 400,
+      "code": "INVALID_REQUEST",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 0,
+      "wall_ms": 3,
+      "bytes": 152
+    },
+    "shortlink_fail": {
+      "http": 422,
+      "code": "SHORTLINK_FAIL",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 212,
+      "wall_ms": 217,
+      "bytes": 155
+    },
+    "health_A": {
+      "http": 200,
+      "body": {
+        "ok": true,
+        "version": "v0.1.0",
+        "platforms": {
+          "douyin": {
+            "cookie_status": "fresh",
+            "last_refresh": ""
+          },
+          "xhs": {
+            "cookie_status": "fresh",
+            "last_refresh": ""
+          }
+        },
+        "egress_proxy": "direct"
+      }
+    },
+    "timeout_delay_13s": {
+      "http": 504,
+      "code": "TIMEOUT",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 12003,
+      "wall_ms": 12015,
+      "bytes": 142
+    },
+    "cookie_expired": {
+      "http": 503,
+      "code": "COOKIE_EXPIRED",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 4,
+      "wall_ms": 16,
+      "bytes": 170
+    },
+    "health_missing_cookie": {
+      "http": 200,
+      "body": {
+        "ok": true,
+        "version": "v0.1.0",
+        "platforms": {
+          "douyin": {
+            "cookie_status": "missing",
+            "last_refresh": ""
+          },
+          "xhs": {
+            "cookie_status": "missing",
+            "last_refresh": ""
+          }
+        },
+        "egress_proxy": "direct"
+      }
+    },
+    "xhs_note_stub_120_items": {
+      "http": 200,
+      "code": null,
+      "ok": true,
+      "items": 100,
+      "resolved_url": "https://www.xiaohongshu.com/explore/64a1b2c3000000001e012345",
+      "elapsed_ms": 723,
+      "wall_ms": 742,
+      "bytes": 16665
+    },
+    "f2_403_parse_failed": {
+      "http": 502,
+      "code": "PARSE_FAILED",
+      "ok": false,
+      "items": 0,
+      "resolved_url": "",
+      "elapsed_ms": 154,
+      "wall_ms": 159,
+      "bytes": 153
+    }
+  }
+}

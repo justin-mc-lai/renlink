@@ -1,0 +1,76 @@
+2026-11-08 19:48:19,763 INFO renlink.parse parse ok platform=douyin content_type=note items=3 elapsed_ms=0 host=www.douyin.com
+2026-11-08 19:48:19,764 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 200 OK"
+2026-11-08 19:48:19,773 INFO renlink.parse parse ok platform=douyin content_type=note items=100 elapsed_ms=1 host=www.douyin.com
+2026-11-08 19:48:19,774 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 200 OK"
+2026-11-08 19:48:19,775 INFO renlink.parse parse ok platform=xhs content_type=note items=3 elapsed_ms=0 host=www.xiaohongshu.com
+2026-11-08 19:48:19,776 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 200 OK"
+2026-11-08 19:48:19,784 INFO renlink.parse parse ok platform=xhs content_type=note items=100 elapsed_ms=1 host=www.xiaohongshu.com
+2026-11-08 19:48:19,785 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 200 OK"
+2026-11-08 19:48:19,786 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,788 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,790 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,792 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,793 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,794 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,795 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,796 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,798 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,800 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,801 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,803 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,804 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 400 Bad Request"
+2026-11-08 19:48:19,806 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 502 Bad Gateway"
+2026-11-08 19:48:19,808 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 503 Service Unavailable"
+2026-11-08 19:48:19,810 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 422 Unprocessable Entity"
+2026-11-08 19:48:19,810 INFO f2 GET https://www.douyin.com/x?msToken=[REDACTED]&a_bogus=[REDACTED]&ok=1
+PASS D1:http200 :: 200
+PASS D1:item_count :: item_count=3 len=3
+PASS D1:url_list0 :: ["https://cdn-a.example.com/img0.webp", "https://cdn-a.example.com/img1.webp", "https://cdn-a.example.com/img2.webp"]
+PASS D1:all_image :: ['image', 'image', 'image']
+PASS D1:index_contiguous
+PASS D1:schema
+PASS D1b:http200 :: 200
+PASS D1b:cap100 :: 100
+PASS D1b:truncated :: True
+PASS D1b:item_count :: 100
+PASS D1b:bytes :: 15628
+PASS XHS:http200 :: 200
+PASS XHS:needs_transcode :: [True, True, True]
+PASS XHS:webp_kept :: ['https://sns-img.example.com/note/0.webp?xsec_token=ABC&xsec_source=pc', 'https://sns-img.example.com/note/1.webp?xsec_token=ABC&xsec_source=pc', 'https://sns-img.example.com/note/2.webp?xsec_token=ABC&xsec_source=pc']
+PASS XHS:ext_webp :: ['webp', 'webp', 'webp']
+PASS XHS:schema
+PASS XHS120:cap100 :: len=100 truncated=True
+PASS XHS120:bytes :: 17428
+PASS D2:int :: http=400 code=INVALID_REQUEST
+PASS D2:int:envelope
+PASS D2:null :: http=400 code=INVALID_REQUEST
+PASS D2:null:envelope
+PASS D2:list :: http=400 code=INVALID_REQUEST
+PASS D2:list:envelope
+PASS D2:object :: http=400 code=INVALID_REQUEST
+PASS D2:object:envelope
+PASS D2:missing :: http=400 code=INVALID_URL
+PASS D2:missing:envelope
+PASS D2:empty :: http=400 code=INVALID_URL
+PASS D2:empty:envelope
+PASS D2:whitespace :: http=400 code=INVALID_URL
+PASS D2:whitespace:envelope
+PASS D2:not_a_url :: http=400 code=INVALID_URL
+PASS D2:not_a_url:envelope
+PASS D2:ftp :: http=400 code=INVALID_URL
+PASS D2:ftp:envelope
+PASS D2:too_long :: http=400 code=INVALID_URL
+PASS D2:too_long:envelope
+PASS D2:body_list :: http=400 code=INVALID_REQUEST
+PASS D2:body_list:envelope
+PASS D2:bad_json :: http=400
+PASS AC013:cookie_field :: http=400
+PASS AC013:no_echo :: response does not echo cookie
+PASS PARSE_FAILED:502 :: http=502
+PASS COOKIE_EXPIRED:503 :: http=503
+PASS SHORTLINK_FAIL:422 :: http=422 resolved=''
+PASS WL:allowed :: ['douyin.com', 'www.douyin.com', 'v.douyin.com', 'xiaohongshu.com', 'www.xiaohongshu.com', 'xhslink.com', 's.xhslink.com']
+PASS WL:blocked :: ['evil-douyin.com', 'douyin.com.evil.com', 'notdouyin.com', 'xiaohongshu.com.cn', 'evil-xhslink.com']
+PASS LOG:msToken_redacted :: GET https://www.douyin.com/x?msToken=[REDACTED]&a_bogus=[REDACTED]&ok=1
+PASS LOG:a_bogus_redacted :: GET https://www.douyin.com/x?msToken=[REDACTED]&a_bogus=[REDACTED]&ok=1
+SUMMARY checks=50 fails=0

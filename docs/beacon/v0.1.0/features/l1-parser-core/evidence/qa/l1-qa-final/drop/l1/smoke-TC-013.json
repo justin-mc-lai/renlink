@@ -1,0 +1,29 @@
+{
+  "tc": "TC-013",
+  "name": "timeout",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:39:44+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 502,
+  "responseBytes": 216,
+  "clientElapsedMs": 335,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "PARSE_FAILED",
+      "message": "抖音 Argus 直连失败: upstream HTTP 403: Blocked by ArgusSecurityPlugin Signature Not Found",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 334
+  },
+  "failures": [
+    "HTTP 状态 502 != 504",
+    "error.code PARSE_FAILED != TIMEOUT"
+  ],
+  "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动"
+}

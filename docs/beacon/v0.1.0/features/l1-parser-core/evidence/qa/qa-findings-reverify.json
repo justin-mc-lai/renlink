@@ -1,0 +1,129 @@
+{
+  "mode_id": "beacon-go/qa",
+  "run_id": "run_1084fcb4301353f56601ec48",
+  "stage": "implement(lake, implement-fix) -> independent QA re-verification",
+  "verdict": "PASS",
+  "host_run": {
+    "stage": "plan",
+    "status": "blocked (loop_stage governance_precheck)",
+    "reason": "stage_executor_not_registered",
+    "note": "not rebuilt"
+  },
+  "environment": {
+    "image": "renlink-l1:qa-reverify",
+    "image_id": "9b378b056835",
+    "python": "3.11.18",
+    "node": "v20.20.2",
+    "f2": "0.0.1.7",
+    "pyexecjs": "1.5.1"
+  },
+  "independent_runs": {
+    "docker_build_no_cache": {
+      "exit": 0,
+      "errors": 0
+    },
+    "compileall": {
+      "exit": 0,
+      "cmd": ".venv/bin/python -m compileall -q container ops"
+    },
+    "smoke": {
+      "exit": 3,
+      "summary": "pass=5 fail=0 blocked=13",
+      "cmd": "PARSE_BASE=http://localhost:18083 python ops/smoke.py --out evidence/qa/l1"
+    },
+    "timeout": {
+      "http": 504,
+      "code": "TIMEOUT",
+      "wall_s": 12.006252,
+      "elapsed_ms": 12000
+    },
+    "rate_limit": {
+      "21st_http": 429,
+      "code": "RATE_LIMITED",
+      "retryable": true
+    },
+    "zero_disk": {
+      "tmp_before": 0,
+      "tmp_after": 0,
+      "app_logs_dir": "absent",
+      "upstream": "real f2 attempt, 502 PARSE_FAILED"
+    },
+    "shortlink_fail": {
+      "http": 422,
+      "code": "SHORTLINK_FAIL",
+      "resolved_url": ""
+    }
+  },
+  "d1_reverification": {
+    "status": "fixed",
+    "path": "POST /parse (ASGI TestClient, injected upstream double)",
+    "three_by_three": {
+      "items": 3,
+      "item_count": 3,
+      "urls": [
+        "url_list[0]"
+      ]
+    },
+    "hundred_twenty": {
+      "items": 100,
+      "truncated": true,
+      "bytes": 15628
+    },
+    "f2_semantics_confirmed": "f2 0.0.1.7 filter.images uses url_list[0] per image"
+  },
+  "d2_reverification": {
+    "status": "fixed",
+    "int_null_list_object": "INVALID_REQUEST 400",
+    "missing_empty_whitespace_not_url_ftp_too_long": "INVALID_URL 400",
+    "body_array_bad_json": "INVALID_REQUEST 400"
+  },
+  "contract_checks": {
+    "success_fields": "PASS",
+    "index_contiguous": "PASS",
+    "schema": "PASS",
+    "xhs_webp_kept_and_transcode": "PASS",
+    "byte_cap_long_urls": {
+      "bytes": 1020996,
+      "items": 84,
+      "truncated": true,
+      "schema": "PASS"
+    },
+    "whitelist_evil_domains": "PASS",
+    "log_redaction": {
+      "msToken": "[REDACTED]",
+      "a_bogus": "[REDACTED]",
+      "cookie_value": "absent"
+    }
+  },
+  "task_status": {
+    "001": "PASS",
+    "002": "PASS",
+    "003": "PASS",
+    "004": "PASS",
+    "005": "implemented, real-network BLOCKED",
+    "006": "PASS",
+    "007": "implemented, real-network BLOCKED",
+    "008": "PASS (stub seam)",
+    "009": "PASS (stub seam)",
+    "010": "PASS",
+    "011": "PASS",
+    "012": "PASS",
+    "013": "PASS",
+    "014": "PASS",
+    "015": "PASS",
+    "016": "BLOCKED (8 real samples missing)",
+    "017": "BLOCKED (depends on 016)"
+  },
+  "non_blocking": [
+    "/health returns `missing` when no cookie (session_bridge.py:53), not in truth example",
+    "asyncio.to_thread cancellation leaves f2 thread running (douyin.py:50, xhs.py:47)",
+    "failure envelope carries resolved_url:'' (required by AC-006, accepted)",
+    "tasks.md checkboxes 001-015 remain unchecked (documentation only)",
+    "rate limiter keys on direct client IP (main.py:81); behind Cloud Run proxy all callers may share one bucket - production risk, unverified locally"
+  ],
+  "unverified": [
+    "real douyin/xhs network parsing",
+    "real shortlink expansion (TC-007/008)",
+    "real xhs note via l2"
+  ]
+}

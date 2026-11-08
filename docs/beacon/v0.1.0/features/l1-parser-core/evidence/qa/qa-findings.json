@@ -1,0 +1,122 @@
+{
+  "mode_id": "beacon-go/qa",
+  "run_id": "run_1084fcb4301353f56601ec48",
+  "feature": "l1-parser-core",
+  "stage": "implement (lake level) -> independent QA",
+  "verdict": "FAIL",
+  "gate": "blocked",
+  "independentBuild": {
+    "command": "docker build --no-cache -t renlink-l1:qa-verify .",
+    "exit": 0,
+    "image": "renlink-l1:qa-verify",
+    "imageId": "52eb2dffd549",
+    "errorLines": 0,
+    "node": "v20.20.2",
+    "f2Import": "f2 0.0.1.7"
+  },
+  "independentCompile": {
+    "command": ".venv/bin/python -m compileall -q container ops",
+    "exit": 0
+  },
+  "independentSmoke": {
+    "command": "PARSE_BASE=http://localhost:18081 .venv/bin/python ops/smoke.py",
+    "summary": "pass=5 fail=0 blocked=13",
+    "exit": 3
+  },
+  "deviations": [
+    {
+      "id": "D1",
+      "severity": "high",
+      "mustFix": true,
+      "task": "TASK-006 / AC-002",
+      "file": "container/app/parsers/douyin.py",
+      "lines": "139, 218-247",
+      "finding": "抖音图文用 _image_urls 递归收集 data['images'][*].url_list 的全部 CDN 镜像，每张图返回 3 条 item。f2 0.0.1.7 的 PostDetailFilter.images 明确只取 url_list[0]。",
+      "repro": "docs/.../evidence/qa/qa_unit_checks.py: 构造 3 张图、每张 url_list 3 个镜像 -> extracted items=9，页面张数=3",
+      "impact": "AC-002 item_count 与页面张数不符；l3 会把同一张图下载 3 次。真实样本到位前即可判定，不能等到 TASK-017。",
+      "fix": "每张图只取 url_list[0]（或用 filter.images 属性），保证 item 数 == 图片张数。"
+    },
+    {
+      "id": "D2",
+      "severity": "low",
+      "mustFix": true,
+      "task": "TASK-003 / 错误码表",
+      "file": "container/app/routes_parse.py",
+      "lines": "70-71",
+      "finding": "url 为非字符串（如 123）时返回 INVALID_URL；truth 错误码表把「字段类型错误」归 INVALID_REQUEST。",
+      "repro": "POST /parse {\"url\":123} -> 400 INVALID_URL（evidence/qa/http-matrix.json checks.url_wrong_type_number）",
+      "impact": "同为 400/retryable=false，行为影响小，但错误码与 truth 字面不符。",
+      "fix": "类型不是字符串时抛 INVALID_REQUEST；空串/非 http(s)/超长仍为 INVALID_URL。或走 truth change 明确改表。"
+    },
+    {
+      "id": "D3",
+      "severity": "low",
+      "mustFix": false,
+      "task": "TASK-013 / AC-014",
+      "file": "container/app/session_bridge.py",
+      "lines": "47-53",
+      "finding": "cookie 缺失时 /health 返回 cookie_status=\"missing\"；truth 示例只有 fresh / expired 两种取值。",
+      "repro": "无 cookie 容器 GET /health -> douyin/xhs 均 missing",
+      "impact": "AC-014 只要求字段存在且失效为 expired，字面满足；但 l5/运维可能未处理 missing。建议改为 expired 或在 truth 补第三种取值。"
+    },
+    {
+      "id": "D4",
+      "severity": "medium-risk",
+      "mustFix": false,
+      "task": "TASK-005 / TASK-010 / TC-013",
+      "file": "container/app/parsers/douyin.py",
+      "lines": "50, 134",
+      "finding": "解析在 asyncio.to_thread 里跑，内部再 asyncio.run(f2.fetch_one_video)。12s wait_for 取消的是外层协程，工作线程不会被取消，上游慢请求会在响应返回后继续跑。",
+      "repro": "代码审阅；注入延迟测试只覆盖协程 sleep，未覆盖线程内真实上游",
+      "impact": "TC-013 的「无残留协程」字面满足，但生产上超时请求会短线泄漏线程/连接。"
+    },
+    {
+      "id": "D5",
+      "severity": "low",
+      "mustFix": false,
+      "task": "TASK-009 / C6",
+      "file": "container/app/main.py",
+      "lines": "20；f2 日志经 root logger 传播",
+      "finding": "容器日志出现 f2 的完整上游 URL（含 msToken、a_bogus）。cookie 值本身没有出现（grep qa-dummy = 0），C6 字面通过，但令牌被写进日志。",
+      "repro": "docker logs renlink-qa-a | grep qa-dummy -> 0；同日志含 msToken=...&a_bogus=...",
+      "impact": "非 truth 违规，属日志脱敏范围以外的敏感信息泄漏，建议抑制 f2 的 INFO/ERROR 传播。"
+    }
+  ],
+  "observations": [
+    "TC-014 需要第 9 个环境变量 XHS_NOTE_MAX（tests.md 明确定义），不在 8 个样本槽位内；「缺 8 个样本」不足以解除 TC-014 的 BLOCKED。",
+    "TC-016 的出网日志与 COS 桶新增对象两条判据 smoke.py 未实现，只自动校验了 /tmp 与 cloudID；代码无下载路径（skip_download=True），风险低但判据未机器验证。",
+    "真实样本的抖音/小红书网络解析未验证；TC-001~009、013~016 保持 BLOCKED，不得据此判 PASS。",
+    "无 cookie 时 get_cookie 直接抛 CookieExpired，因此真实样本 smoke 必须注入 DOUYIN_COOKIE/XHS_COOKIE 与 l4 池，否则会得到 503 而非解析结果。",
+    "PARSE_L2_NOTE_STUB 与 PARSE_STUB_COOKIE_EXPIRED 是 env 门控的测试接缝，生产环境需确认不被设置。"
+  ],
+  "taskVerdicts": {
+    "TASK-001": "PASS",
+    "TASK-002": "PASS",
+    "TASK-003": "PASS (D2 轻微偏差)",
+    "TASK-004": "PASS",
+    "TASK-005": "IMPLEMENTED / real-network BLOCKED (D4 风险)",
+    "TASK-006": "FAIL (D1)",
+    "TASK-007": "IMPLEMENTED / real-network BLOCKED",
+    "TASK-008": "PASS (stub seam)",
+    "TASK-009": "PASS (stub seam)",
+    "TASK-010": "PASS",
+    "TASK-011": "PASS",
+    "TASK-012": "PASS",
+    "TASK-013": "PASS (D3 备注)",
+    "TASK-014": "PASS",
+    "TASK-015": "PASS",
+    "TASK-016": "BLOCKED (缺 8 个真实样本)",
+    "TASK-017": "BLOCKED (依赖 TASK-016；另需先修 D1)"
+  },
+  "evidenceRefs": [
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/build-docker-qa.log",
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/compile.log",
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/smoke-run-qa.log",
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/http-matrix.json",
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/unit-checks.log",
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/shortlink-checks.log",
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/qa_unit_checks.py",
+    "docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/qa_shortlink_checks.py"
+  ],
+  "next": "implement-fix (D1 必改，D2 必改或 truth change)，修后由验收员复验 TASK-006 并重跑 smoke；TASK-016 样本到位后才进 TASK-017"
+}

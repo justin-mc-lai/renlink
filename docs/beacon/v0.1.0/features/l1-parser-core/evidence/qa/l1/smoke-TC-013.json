@@ -1,0 +1,10 @@
+{
+  "tc": "TC-013",
+  "name": "timeout",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T19:50:54+08:00",
+  "base": "http://localhost:18083",
+  "request": {},
+  "failures": [],
+  "note": "缺少样本: DY_VIDEO_1"
+}

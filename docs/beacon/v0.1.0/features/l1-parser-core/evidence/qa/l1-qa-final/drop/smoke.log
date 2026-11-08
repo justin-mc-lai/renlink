@@ -1,0 +1,26 @@
+PARSE_BASE=http://127.0.0.1:8080
+TC-001 dy-video-1: FAIL failures=['HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度', 'platform 不是 douyin', 'content_type 不是 video', 'items 长度不是 1']
+TC-002 dy-video-2: BLOCKED (缺少样本: DY_VIDEO_2)
+TC-003 dy-note-1: BLOCKED (缺少样本: DY_NOTE_1)
+TC-004 dy-note-2: BLOCKED (缺少样本: DY_NOTE_2)
+TC-005 xhs-video-1: PASS
+TC-006 xhs-video-2: BLOCKED (缺少样本: XHS_VIDEO_2)
+TC-007 dy-short-1: FAIL failures=['HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度', 'resolved_url 不是抖音规范页: ', 'source_url 未保留原始短链']
+TC-008 xhs-short-1: PASS
+TC-009 cookie-expired: FAIL failures=['HTTP 状态 502 != 503', 'error.code PARSE_FAILED != COOKIE_EXPIRED'] (需服务端以 PARSE_STUB_COOKIE_EXPIRED=douyin 启动)
+TC-010 shortlink-fail: PASS (构造的失效短链，不冒充真实样本)
+TC-011 invalid-url: PASS (三组输入：空串、not-a-url、超长 URL)
+TC-012 unsupported-platform: PASS (三个非目标平台)
+TC-013 timeout: FAIL failures=['HTTP 状态 502 != 504', 'error.code PARSE_FAILED != TIMEOUT'] (需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动)
+TC-014 size-cap: BLOCKED (缺少样本: XHS_NOTE_MAX)
+TC-015 field-contract: BLOCKED (缺少样本: DY_NOTE_1)
+TC-016 no-download: FAIL failures=['HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度'] (SMOKE_CONTAINER_ID 未设置，/tmp 前后对比未执行)
+TC-017 user-cookie: PASS (请求体含 cookie 字段，不应进入解析分支)
+TC-018 health: PASS
+TC-019 dy-argus-1: FAIL failures=['HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度', 'platform 不是 douyin', 'content_type 不是 video', 'items 长度不是 1'] (argus requests 5 -> 6，browser_launches 不增)
+TC-020 dy-argus-stability: FAIL failures=['第 1 次 HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度', '第 1 次 remoteUrl 为空', '第 2 次 HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度', '第 2 次 remoteUrl 为空', '第 3 次 HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度', '第 3 次 remoteUrl 为空'] (连跑 3 次；需服务端以 RENLINK_DISABLE_CACHE=1 启动，避免缓存掩盖上游稳定性)
+TC-021 dy-argus-missing-header: PASS (需服务端以 RENLINK_DROP_ARGUS_HEADER=1 启动)
+TC-022 dy-argus-timeout: FAIL failures=['HTTP 状态 502 != 504', 'error.code PARSE_FAILED != TIMEOUT'] (需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504)
+TC-023 obscura-xhs-render: BLOCKED (缺少样本: XHS_NOTE_1)
+TC-024 douyin-no-obscura: FAIL failures=['HTTP 状态 502 != 200', 'ok 不是 true', 'platform 不是字符串', 'content_type 不是字符串', 'source_url 不是字符串', 'title 不是字符串', 'item_count 不是整数', 'item_count 不等于 items 长度', 'platform 不是 douyin', 'items 长度不是 1', 'ENABLE_OBSCURA 未开启，本用例前提不成立'] (需 ENABLE_OBSCURA=1；抖音仍走 Argus 直连；SMOKE_CONTAINER_ID 未设置，obscura 日志未检查)
+SUMMARY pass=8 fail=9 blocked=7

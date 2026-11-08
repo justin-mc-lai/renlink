@@ -1,0 +1,2 @@
+2026-11-08 11:45:37,328 INFO f2.apps.douyin.handler https://www.douyin.com/aweme/v1/web/aweme/detail/?msToken=[REDACTED]&a_bogus=[REDACTED]&X-Bogus=[REDACTED]&device_platform=webapp
+redaction_exit=0

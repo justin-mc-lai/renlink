@@ -1,0 +1,78 @@
+{
+  "url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=",
+  "runs": [
+    {
+      "run": 1,
+      "http": 502,
+      "client_s": 12.004,
+      "body": {
+        "ok": false,
+        "error": {
+          "code": "PARSE_FAILED",
+          "message": "页面仍停留在 loading shell",
+          "retryable": true
+        }
+      }
+    },
+    {
+      "run": 2,
+      "http": 200,
+      "client_s": 11.464,
+      "body": {
+        "ok": true,
+        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
+        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+        "html_bytes": 497341,
+        "has_xsec_token": true,
+        "elapsed_ms": 11456,
+        "wait_ms": 8000,
+        "obscura_alive": true
+      }
+    },
+    {
+      "run": 3,
+      "http": 200,
+      "client_s": 11.301,
+      "body": {
+        "ok": true,
+        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
+        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+        "html_bytes": 581195,
+        "has_xsec_token": true,
+        "elapsed_ms": 11294,
+        "wait_ms": 8000,
+        "obscura_alive": true
+      }
+    },
+    {
+      "run": 4,
+      "http": 200,
+      "client_s": 11.313,
+      "body": {
+        "ok": true,
+        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
+        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+        "html_bytes": 581236,
+        "has_xsec_token": true,
+        "elapsed_ms": 11306,
+        "wait_ms": 8000,
+        "obscura_alive": true
+      }
+    },
+    {
+      "run": 5,
+      "http": 200,
+      "client_s": 11.903,
+      "body": {
+        "ok": true,
+        "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰 - 小红书",
+        "final_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+        "html_bytes": 579786,
+        "has_xsec_token": true,
+        "elapsed_ms": 11893,
+        "wait_ms": 8000,
+        "obscura_alive": true
+      }
+    }
+  ]
+}

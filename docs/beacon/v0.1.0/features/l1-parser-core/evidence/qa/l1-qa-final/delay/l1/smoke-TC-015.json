@@ -1,0 +1,10 @@
+{
+  "tc": "TC-015",
+  "name": "field-contract",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T13:41:03+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {},
+  "failures": [],
+  "note": "缺少样本: DY_NOTE_1"
+}

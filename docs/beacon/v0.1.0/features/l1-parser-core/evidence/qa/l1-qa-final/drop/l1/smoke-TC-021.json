@@ -1,0 +1,26 @@
+{
+  "tc": "TC-021",
+  "name": "dy-argus-missing-header",
+  "status": "PASS",
+  "startedAt": "2026-11-08T13:39:49+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 502,
+  "responseBytes": 216,
+  "clientElapsedMs": 373,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "PARSE_FAILED",
+      "message": "抖音 Argus 直连失败: upstream HTTP 403: Blocked by ArgusSecurityPlugin Signature Not Found",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 372
+  },
+  "failures": [],
+  "note": "需服务端以 RENLINK_DROP_ARGUS_HEADER=1 启动"
+}

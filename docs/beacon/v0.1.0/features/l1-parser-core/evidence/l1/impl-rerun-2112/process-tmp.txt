@@ -1,0 +1,4 @@
+default_procs: 1 uvicorn
+obscura_on_procs: 1 uvicorn, 7 obscura
+default_tmp_entries=0
+obscura_on_tmp_entries=1 (obscura.log)

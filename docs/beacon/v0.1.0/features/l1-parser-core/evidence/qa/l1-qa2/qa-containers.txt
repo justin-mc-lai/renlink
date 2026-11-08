@@ -1,0 +1,22 @@
+== qa2-default
+image=sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c cpus=500000000 mem=1073741824 ports={"8080/tcp":[{"HostIp":"0.0.0.0","HostPort":"18201"},{"HostIp":"::","HostPort":"18201"}]}
+PARSE_RATE_LIMIT_PER_MIN=0
+== qa2-obscura-strict
+image=sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c cpus=1000000000 mem=1073741824 ports={"8080/tcp":[{"HostIp":"0.0.0.0","HostPort":"18202"},{"HostIp":"::","HostPort":"18202"}]}
+PARSE_RATE_LIMIT_PER_MIN=0
+ENABLE_OBSCURA=1
+== qa2-obscura-work
+image=sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c cpus=1000000000 mem=1073741824 ports={"8080/tcp":[{"HostIp":"0.0.0.0","HostPort":"18203"},{"HostIp":"::","HostPort":"18203"}]}
+PARSE_RATE_LIMIT_PER_MIN=0
+ENABLE_OBSCURA=1
+OBSCURA_ALLOW_PRIVATE_NETWORK=1
+== qa2-obscura-2c
+image=sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c cpus=2000000000 mem=1073741824 ports={"8080/tcp":[{"HostIp":"0.0.0.0","HostPort":"18205"},{"HostIp":"::","HostPort":"18205"}]}
+PARSE_RATE_LIMIT_PER_MIN=0
+ENABLE_OBSCURA=1
+OBSCURA_ALLOW_PRIVATE_NETWORK=1
+== qa2-obscura-nolimit
+image=sha256:8b4f47626ff402a7cac59697764a4f1f406562debd7663cdff8e8ec37f187a6c cpus=0 mem=0 ports={"8080/tcp":[{"HostIp":"0.0.0.0","HostPort":"18204"},{"HostIp":"::","HostPort":"18204"}]}
+PARSE_RATE_LIMIT_PER_MIN=0
+ENABLE_OBSCURA=1
+OBSCURA_ALLOW_PRIVATE_NETWORK=1

@@ -1,0 +1,17 @@
+# l1-parser-core: default image has no Chromium and no Playwright browser
+# captured: 2026-11-08T21:08:59+08:00
+
+$ grep -n -i "chromium\|playwright install\|ms-playwright" Dockerfile
+17:# It is a single static Rust binary (no Chromium, no system browser stack).
+30:# no Chromium, no Playwright browser binaries.
+33:    && test ! -d /ms-playwright
+
+$ docker image inspect renlink-l1:obscura --format "{{.Size}}"
+247847968
+
+$ docker run --rm --entrypoint sh renlink-l1:obscura -c "ls -d /ms-playwright 2>&1; find / -xdev -type f \( -name chrome -o -name chromium -o -name headless_shell \) | wc -l"
+ls: cannot access '/ms-playwright': No such file or directory
+0
+
+$ docker run --rm --entrypoint python renlink-l1:obscura -c "import importlib.metadata as m; print(m.version(\"playwright\"))"
+playwright client 1.64.1 (no browser downloaded)

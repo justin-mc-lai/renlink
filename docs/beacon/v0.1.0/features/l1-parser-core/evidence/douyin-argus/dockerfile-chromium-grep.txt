@@ -1,0 +1,9 @@
+# Dockerfile chromium-related lines
+23:#   docker build --build-arg INSTALL_CHROMIUM=1 ...
+24:ARG INSTALL_CHROMIUM=0
+25:ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+26:RUN if [ "$INSTALL_CHROMIUM" = "1" ]; then \
+27:        pip install --no-cache-dir playwright==1.64.1 \
+28:        && python -m playwright install --only-shell chromium --with-deps \
+29:        && python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); b=p.chromium.launch(headless=True, args=['--no-sandbox','--disable-dev-shm-usage']); print('chromium ok', b.version); b.close(); p.stop()"; \
+31:        echo 'Chromium skipped (INSTALL_CHROMIUM=0)'; \

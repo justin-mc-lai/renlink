@@ -1,0 +1,12 @@
+2026-11-08 19:51:16,583 INFO renlink.parse parse ok platform=douyin content_type=note items=100 elapsed_ms=4 host=www.douyin.com
+2026-11-08 19:51:16,585 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 200 OK"
+2026-11-08 19:51:16,598 INFO renlink.parse parse ok platform=douyin content_type=video items=1 elapsed_ms=0 host=www.douyin.com
+2026-11-08 19:51:16,598 INFO httpx HTTP Request: POST http://testserver/parse "HTTP/1.1 200 OK"
+LONG:http 200
+LONG:bytes 715412 <=1024000? True
+LONG:items 100 item_count 100 truncated None
+LONG:item_count_matches True
+LONG:index_ok True
+LONG:schema PASS
+VIDEO:http 200 items 1 ext mp4 type video
+VIDEO:source_url https://www.douyin.com/video/1234567890123456

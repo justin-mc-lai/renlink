@@ -1,0 +1,10 @@
+{
+  "tc": "TC-021",
+  "name": "dy-argus-missing-header",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T21:29:17+08:00",
+  "base": "http://127.0.0.1:18094",
+  "request": {},
+  "failures": [],
+  "note": "服务端未以 RENLINK_DROP_ARGUS_HEADER 启动"
+}

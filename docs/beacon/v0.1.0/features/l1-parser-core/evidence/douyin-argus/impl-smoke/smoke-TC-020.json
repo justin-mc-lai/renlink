@@ -1,0 +1,37 @@
+{
+  "tc": "TC-020",
+  "name": "dy-argus-stability",
+  "status": "PASS",
+  "startedAt": "2026-11-08T20:53:56+08:00",
+  "base": "http://127.0.0.1:18082",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg"
+  },
+  "httpStatus": 200,
+  "responseBytes": 1315,
+  "clientElapsedMs": 618,
+  "response": {
+    "ok": true,
+    "platform": "douyin",
+    "content_type": "video",
+    "source_url": "https://v.douyin.com/Y7MgY9YnYAg",
+    "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+    "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+    "item_count": 1,
+    "elapsed_ms": 614,
+    "items": [
+      {
+        "index": 0,
+        "type": "video",
+        "remoteUrl": "https://v11-weba.douyinvod.com/cb16fcdbea6013b4ee66722e7fa49524/6af0a097/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlcv9ovv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100o_100w_100B_100H_100K&dy_q=1794142440&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261108205400DC9C829BF9C4F469C1FA",
+        "ext": "mp4",
+        "cover": "https://p9-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109499200&x-signature=D59%2F1jL%2BhQUFxK%2Fz%2FD9R8CVMpm0%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261108205400DC9C829BF9C4F469C1FA",
+        "width": 1080,
+        "height": 1920,
+        "needs_transcode": false
+      }
+    ]
+  },
+  "failures": [],
+  "note": "连跑 3 次；需服务端以 RENLINK_DISABLE_CACHE=1 启动，避免缓存掩盖上游稳定性"
+}

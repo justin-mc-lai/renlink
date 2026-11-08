@@ -1,0 +1,29 @@
+{
+  "tc": "TC-009",
+  "name": "cookie-expired",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:39:43+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 502,
+  "responseBytes": 216,
+  "clientElapsedMs": 339,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "PARSE_FAILED",
+      "message": "抖音 Argus 直连失败: upstream HTTP 403: Blocked by ArgusSecurityPlugin Signature Not Found",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 338
+  },
+  "failures": [
+    "HTTP 状态 502 != 503",
+    "error.code PARSE_FAILED != COOKIE_EXPIRED"
+  ],
+  "note": "需服务端以 PARSE_STUB_COOKIE_EXPIRED=douyin 启动"
+}

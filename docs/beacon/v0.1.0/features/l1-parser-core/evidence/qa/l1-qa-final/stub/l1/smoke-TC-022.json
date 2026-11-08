@@ -1,0 +1,29 @@
+{
+  "tc": "TC-022",
+  "name": "dy-argus-timeout",
+  "status": "FAIL",
+  "startedAt": "2026-11-08T13:39:39+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+  },
+  "httpStatus": 503,
+  "responseBytes": 172,
+  "clientElapsedMs": 198,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "COOKIE_EXPIRED",
+      "message": "运营方 cookie 失效，请运营刷新后重试",
+      "retryable": true
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 197
+  },
+  "failures": [
+    "HTTP 状态 503 != 504",
+    "error.code COOKIE_EXPIRED != TIMEOUT"
+  ],
+  "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504"
+}

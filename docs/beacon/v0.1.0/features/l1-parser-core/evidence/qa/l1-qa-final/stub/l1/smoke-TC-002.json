@@ -1,0 +1,10 @@
+{
+  "tc": "TC-002",
+  "name": "dy-video-2",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-08T13:39:32+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {},
+  "failures": [],
+  "note": "缺少样本: DY_VIDEO_2"
+}

@@ -1,0 +1,314 @@
+[
+ {
+  "tc": "TC-001",
+  "name": "dy-video-1",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-002",
+  "name": "dy-video-2",
+  "verdict": "BLOCKED",
+  "from": "-",
+  "detail": {
+   "main": "BLOCKED",
+   "stub": "BLOCKED",
+   "drop": "BLOCKED",
+   "delay": "BLOCKED",
+   "obscura": "BLOCKED"
+  }
+ },
+ {
+  "tc": "TC-003",
+  "name": "dy-note-1",
+  "verdict": "BLOCKED",
+  "from": "-",
+  "detail": {
+   "main": "BLOCKED",
+   "stub": "BLOCKED",
+   "drop": "BLOCKED",
+   "delay": "BLOCKED",
+   "obscura": "BLOCKED"
+  }
+ },
+ {
+  "tc": "TC-004",
+  "name": "dy-note-2",
+  "verdict": "BLOCKED",
+  "from": "-",
+  "detail": {
+   "main": "BLOCKED",
+   "stub": "BLOCKED",
+   "drop": "BLOCKED",
+   "delay": "BLOCKED",
+   "obscura": "BLOCKED"
+  }
+ },
+ {
+  "tc": "TC-005",
+  "name": "xhs-video-1",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "PASS",
+   "drop": "PASS",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-006",
+  "name": "xhs-video-2",
+  "verdict": "BLOCKED",
+  "from": "-",
+  "detail": {
+   "main": "BLOCKED",
+   "stub": "BLOCKED",
+   "drop": "BLOCKED",
+   "delay": "BLOCKED",
+   "obscura": "BLOCKED"
+  }
+ },
+ {
+  "tc": "TC-007",
+  "name": "dy-short-1",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-008",
+  "name": "xhs-short-1",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "PASS",
+   "drop": "PASS",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-009",
+  "name": "cookie-expired",
+  "verdict": "PASS",
+  "from": "stub",
+  "detail": {
+   "main": "FAIL",
+   "stub": "PASS",
+   "drop": "FAIL",
+   "delay": "FAIL",
+   "obscura": "FAIL"
+  }
+ },
+ {
+  "tc": "TC-010",
+  "name": "shortlink-fail",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "PASS",
+   "drop": "PASS",
+   "delay": "PASS",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-011",
+  "name": "invalid-url",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "PASS",
+   "drop": "PASS",
+   "delay": "PASS",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-012",
+  "name": "unsupported-platform",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "PASS",
+   "drop": "PASS",
+   "delay": "PASS",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-013",
+  "name": "timeout",
+  "verdict": "PASS",
+  "from": "delay",
+  "detail": {
+   "main": "FAIL",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "PASS",
+   "obscura": "FAIL"
+  }
+ },
+ {
+  "tc": "TC-014",
+  "name": "size-cap",
+  "verdict": "BLOCKED",
+  "from": "-",
+  "detail": {
+   "main": "BLOCKED",
+   "stub": "BLOCKED",
+   "drop": "BLOCKED",
+   "delay": "BLOCKED",
+   "obscura": "BLOCKED"
+  }
+ },
+ {
+  "tc": "TC-015",
+  "name": "field-contract",
+  "verdict": "BLOCKED",
+  "from": "-",
+  "detail": {
+   "main": "BLOCKED",
+   "stub": "BLOCKED",
+   "drop": "BLOCKED",
+   "delay": "BLOCKED",
+   "obscura": "BLOCKED"
+  }
+ },
+ {
+  "tc": "TC-016",
+  "name": "no-download",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-017",
+  "name": "user-cookie",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "PASS",
+   "drop": "PASS",
+   "delay": "PASS",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-018",
+  "name": "health",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "PASS",
+   "drop": "PASS",
+   "delay": "PASS",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-019",
+  "name": "dy-argus-1",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-020",
+  "name": "dy-argus-stability",
+  "verdict": "PASS",
+  "from": "main",
+  "detail": {
+   "main": "PASS",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ },
+ {
+  "tc": "TC-021",
+  "name": "dy-argus-missing-header",
+  "verdict": "PASS",
+  "from": "drop",
+  "detail": {
+   "main": "FAIL",
+   "stub": "FAIL",
+   "drop": "PASS",
+   "delay": "FAIL",
+   "obscura": "FAIL"
+  }
+ },
+ {
+  "tc": "TC-022",
+  "name": "dy-argus-timeout",
+  "verdict": "PASS",
+  "from": "delay",
+  "detail": {
+   "main": "FAIL",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "PASS",
+   "obscura": "FAIL"
+  }
+ },
+ {
+  "tc": "TC-023",
+  "name": "obscura-xhs-render",
+  "verdict": "BLOCKED",
+  "from": "-",
+  "detail": {
+   "main": "BLOCKED",
+   "stub": "BLOCKED",
+   "drop": "BLOCKED",
+   "delay": "BLOCKED",
+   "obscura": "BLOCKED"
+  }
+ },
+ {
+  "tc": "TC-024",
+  "name": "douyin-no-obscura",
+  "verdict": "PASS",
+  "from": "obscura",
+  "detail": {
+   "main": "FAIL",
+   "stub": "FAIL",
+   "drop": "FAIL",
+   "delay": "FAIL",
+   "obscura": "PASS"
+  }
+ }
+]

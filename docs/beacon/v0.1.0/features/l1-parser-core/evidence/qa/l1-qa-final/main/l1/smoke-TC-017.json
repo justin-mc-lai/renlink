@@ -1,0 +1,26 @@
+{
+  "tc": "TC-017",
+  "name": "user-cookie",
+  "status": "PASS",
+  "startedAt": "2026-11-08T13:39:25+00:00",
+  "base": "http://127.0.0.1:8080",
+  "request": {
+    "url": "https://v.douyin.com/XXXXXXX/"
+  },
+  "httpStatus": 400,
+  "responseBytes": 157,
+  "clientElapsedMs": 1,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "INVALID_REQUEST",
+      "message": "请求体不得包含 cookie 字段",
+      "retryable": false
+    },
+    "items": [],
+    "resolved_url": "",
+    "elapsed_ms": 0
+  },
+  "failures": [],
+  "note": "请求体含 cookie 字段，不应进入解析分支"
+}

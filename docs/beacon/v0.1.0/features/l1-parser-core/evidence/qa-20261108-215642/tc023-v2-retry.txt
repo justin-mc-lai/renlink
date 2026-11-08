@@ -1,0 +1,8 @@
+--- retry 1
+{"ok":false,"error":{"code":"TIMEOUT","message":"Obscura 渲染超过 12s 总预算","retryable":true}}
+HTTP 504 time=13.004280
+
+--- retry 2
+{"ok":false,"error":{"code":"TIMEOUT","message":"Obscura 渲染超过 12s 总预算","retryable":true}}
+HTTP 504 time=12.553893
+
