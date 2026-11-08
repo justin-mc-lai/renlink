@@ -19,6 +19,7 @@ from .errors import ApiError, error_envelope
 from .parsers import douyin_argus, render
 from .routes_parse import router as parse_router
 from .routes_stage import router as stage_router
+from .routes_zip import router as zip_router
 from .egress import mode as egress_mode
 from .session_bridge import health_snapshot
 
@@ -53,6 +54,7 @@ _install_log_redaction()
 app = FastAPI(title="Renlink l1 parser core", version=__version__)
 app.include_router(parse_router)
 app.include_router(stage_router)
+app.include_router(zip_router)
 
 
 @app.on_event("startup")

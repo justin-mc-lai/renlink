@@ -22,6 +22,13 @@ ERROR_SPECS: Dict[str, ErrorSpec] = {
     "PARSE_FAILED": ErrorSpec(502, True, "页面结构变化，找不到媒体字段"),
     "TIMEOUT": ErrorSpec(504, True, "上游解析超过 12 秒"),
     "RATE_LIMITED": ErrorSpec(429, True, "单 IP 每分钟请求超过 20 次"),
+    # l2-xhs-images: URL query -> note.xsecToken -> state 顶层，三者全缺才报。
+    "NEED_XSEC_TOKEN": ErrorSpec(422, True, "缺少 xsec_token，无法读取小红书图文"),
+    # l6-zip-export: 与 l3 同名的 stage 错误补进固定表，供 /zip 复用。
+    "STAGE_EXPIRED": ErrorSpec(410, False, "清单缓存已过期，请重新解析"),
+    "TOO_LARGE": ErrorSpec(413, False, "图片数量或体积超过上限"),
+    "ZIP_NOT_READY": ErrorSpec(503, True, "打包服务未配置对象存储"),
+    "ZIP_FAILED": ErrorSpec(502, True, "读取、打包或上传 zip 失败"),
 }
 
 

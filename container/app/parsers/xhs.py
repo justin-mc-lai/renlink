@@ -1,25 +1,43 @@
 """Xiaohongshu branch.
 
-Video: yt-dlp XiaoHongShuIE. Note: delegated to l2-xhs-images `parse_note`;
-this round only ships the seam and an injectable stub. l1 never parses
-__INITIAL_STATE__ itself and never rewrites the webp image URL.
+Video: yt-dlp XiaoHongShuIE. Note (l2-xhs-images): fetch the canonical note
+page, read window.__INITIAL_STATE__, pick the original image URL from
+urlDefault -> infoList WB_DFT -> CRD_WM_WEBP in imageList order, and require
+an xsec_token. l1 still owns /parse fields, normalization and truncation.
 """
 
 from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
+import re
+import time
+from pathlib import Path
 from typing import Any, Awaitable, Callable, Dict, List, Optional
+from urllib.parse import parse_qs, urljoin, urlparse
+
+import httpx
 
 from ..contract import ext_from_url
 from ..egress import ytdlp_options
 from ..errors import ApiError
 from ..session_bridge import CookieExpired, get_cookie
 
+logger = logging.getLogger("renlink.xhs")
+
 NoteParser = Callable[[str, str], Awaitable[Dict[str, Any]]]
 
 _note_parser: Optional[NoteParser] = None
+
+_DEFAULT_UA = (
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+    "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 "
+    "Mobile/15E148 Safari/604.1"
+)
+_NOTE_PATH = re.compile(r"^/(?:explore|discovery/item)/[^/]+/?$")
+_STATE_MARK = "window.__INITIAL_STATE__"
 
 
 class _QuietLogger:
@@ -39,13 +57,33 @@ def configure_note_parser(parser: Optional[NoteParser]) -> None:
     _note_parser = parser
 
 
+def _env_int(name: str, default: int) -> int:
+    raw = os.getenv(name, "")
+    if not raw:
+        return default
+    try:
+        return max(0, int(raw))
+    except ValueError:
+        return default
+
+
+def _skip_ytdlp() -> bool:
+    return os.getenv("PARSE_XHS_SKIP_YTDLP", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+
+
 async def parse(url: str, cookie: Optional[str] = None) -> Dict[str, Any]:
     if cookie is None:
         try:
             cookie = get_cookie("xhs")
         except CookieExpired as exc:
             raise ApiError("COOKIE_EXPIRED") from exc
-    info = await asyncio.to_thread(_ytdlp_info, url, cookie)
+    info = None
+    if not _skip_ytdlp():
+        info = await asyncio.to_thread(_ytdlp_info, url, cookie)
     video_url = _info_video_url(info) if info else ""
     if video_url:
         return {
@@ -63,7 +101,7 @@ async def parse(url: str, cookie: Optional[str] = None) -> Dict[str, Any]:
                 }
             ],
         }
-    note = await _call_note_parser(url, cookie)
+    note = await _call_note_parser(url, cookie or "")
     return _note_payload(note)
 
 
@@ -107,17 +145,13 @@ async def _call_note_parser(url: str, cookie: str) -> Dict[str, Any]:
     stub = _env_note_stub(url)
     if stub is not None:
         return stub
-    raise ApiError(
-        "PARSE_FAILED",
-        "l2-xhs-images 的 parse_note 尚未冻结，l1 仅保留接缝",
-    )
+    return await parse_note(url, cookie)
 
 
 def _env_note_stub(url: str) -> Optional[Dict[str, Any]]:
     """Optional in-memory stub: PARSE_L2_NOTE_STUB='{"items": [...]}'.
 
-    Only for local tests. It never writes to disk and the real l2 module will
-    replace this path once l2 is frozen.
+    Only for local tests. It never writes to disk.
     """
     raw = os.getenv("PARSE_L2_NOTE_STUB", "").strip()
     if not raw:
@@ -174,8 +208,321 @@ def _note_payload(note: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+# --- l2 note parsing ---------------------------------------------------------
+
+
+def _note_id_from_url(url: str) -> str:
+    segments = [part for part in (urlparse(url).path or "").split("/") if part]
+    return segments[-1] if segments else ""
+
+
+def _check_note_url(url: str) -> None:
+    parsed = urlparse(url)
+    host = (parsed.hostname or "").lower().rstrip(".")
+    if not (host == "xiaohongshu.com" or host.endswith(".xiaohongshu.com")):
+        raise ApiError("PARSE_FAILED", "没有落到小红书规范域名")
+    if not _NOTE_PATH.match(parsed.path or ""):
+        raise ApiError("PARSE_FAILED", "没有落到笔记规范页")
+
+
+def _stub_path() -> str:
+    return os.getenv("XHS_NOTE_HTTP_STUB", "").strip()
+
+
+def _load_stub() -> Dict[str, Any]:
+    path = _stub_path()
+    if not path:
+        return {}
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ApiError("PARSE_FAILED", "XHS_NOTE_HTTP_STUB 不是合法 JSON") from exc
+    if not isinstance(data, dict):
+        raise ApiError("PARSE_FAILED", "XHS_NOTE_HTTP_STUB 必须是 JSON 对象")
+    if isinstance(data.get("responses"), dict):
+        data = data["responses"]
+    return {str(key): value for key, value in data.items() if isinstance(value, dict)}
+
+
+def _stub_body(entry: Dict[str, Any]) -> str:
+    inline = entry.get("body")
+    if isinstance(inline, str):
+        return inline
+    name = entry.get("body_file")
+    if not isinstance(name, str) or not name:
+        raise ApiError("PARSE_FAILED", "构造桩缺少页面内容")
+    path = Path(name)
+    if not path.is_absolute():
+        stub = _stub_path()
+        path = Path(stub).parent / path if stub else path
+    try:
+        return path.read_text(encoding="utf-8", errors="replace")
+    except OSError as exc:
+        raise ApiError("PARSE_FAILED", "构造桩页面读取失败") from exc
+
+
+async def _stub_fetch(url: str, max_hops: int, timeout_s: float) -> tuple:
+    responses = _load_stub()
+    current = url
+    hops = 0
+    while True:
+        entry = responses.get(current)
+        if entry is None:
+            raise ApiError("PARSE_FAILED", "构造桩没有覆盖这个 URL")
+        delay_ms = 0
+        try:
+            delay_ms = int(entry.get("delay_ms") or 0)
+        except (TypeError, ValueError):
+            delay_ms = 0
+        if delay_ms > 0:
+            try:
+                await asyncio.wait_for(
+                    asyncio.sleep(delay_ms / 1000.0), timeout=timeout_s
+                )
+            except asyncio.TimeoutError as exc:
+                raise ApiError("TIMEOUT", "小红书图文抓取超时") from exc
+        status = int(entry.get("status") or 200)
+        location = str(entry.get("location") or "")
+        if location or status in (301, 302, 303, 307, 308):
+            hops += 1
+            if hops > max_hops:
+                raise ApiError("PARSE_FAILED", "重定向超过 {0} 跳".format(max_hops))
+            if not location:
+                raise ApiError("PARSE_FAILED", "重定向缺少 Location")
+            current = urljoin(current, location)
+            continue
+        if status >= 400:
+            raise ApiError("PARSE_FAILED", "构造桩页面返回 {0}".format(status))
+        return _stub_body(entry), current
+
+
+async def _fetch_note(url: str, cookie: str) -> tuple:
+    timeout_s = float(_env_int("XHS_NOTE_TIMEOUT_S", 8) or 8)
+    max_bytes = _env_int("XHS_NOTE_MAX_BYTES", 5242880) or 5242880
+    max_hops = _env_int("XHS_NOTE_MAX_HOPS", 3)
+    if _stub_path():
+        html, final_url = await _stub_fetch(url, max_hops, timeout_s)
+    else:
+        headers = {
+            "User-Agent": os.getenv("XHS_NOTE_UA", "").strip() or _DEFAULT_UA,
+            "Accept": "text/html,application/xhtml+xml",
+        }
+        if cookie:
+            headers["Cookie"] = cookie
+        try:
+            async with httpx.AsyncClient(
+                follow_redirects=True, timeout=httpx.Timeout(timeout_s)
+            ) as client:
+                response = await client.get(url, headers=headers)
+        except httpx.TimeoutException as exc:
+            raise ApiError("TIMEOUT", "小红书图文抓取超时") from exc
+        except httpx.HTTPError as exc:
+            raise ApiError("PARSE_FAILED", "小红书图文抓取失败") from exc
+        if len(response.history) > max_hops:
+            raise ApiError("PARSE_FAILED", "重定向超过 {0} 跳".format(max_hops))
+        if response.status_code >= 400:
+            raise ApiError(
+                "PARSE_FAILED",
+                "小红书页面返回 {0}".format(response.status_code),
+            )
+        html, final_url = response.text, str(response.url)
+    if len(html.encode("utf-8")) > max_bytes:
+        raise ApiError("PARSE_FAILED", "小红书页面超过大小上限")
+    _check_note_url(final_url)
+    return html, final_url
+
+
+def _tolerant_json(text: str) -> str:
+    """Quote bare keys and turn JS undefined into null, skipping strings."""
+    out: List[str] = []
+    index = 0
+    length = len(text)
+    in_string = False
+    escaped = False
+    while index < length:
+        char = text[index]
+        if in_string:
+            out.append(char)
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+            index += 1
+            continue
+        if char == '"':
+            in_string = True
+            out.append(char)
+            index += 1
+            continue
+        if text.startswith("undefined", index):
+            out.append("null")
+            index += len("undefined")
+            continue
+        if char in "{,":
+            out.append(char)
+            index += 1
+            while index < length and text[index] in " \t\r\n":
+                out.append(text[index])
+                index += 1
+            key_start = index
+            if key_start < length and (text[key_start].isalpha() or text[key_start] in "_$"):
+                cursor = key_start
+                while cursor < length and (
+                    text[cursor].isalnum() or text[cursor] in "_$"
+                ):
+                    cursor += 1
+                after = cursor
+                while after < length and text[after] in " \t\r\n":
+                    after += 1
+                if after < length and text[after] == ":":
+                    out.append('"' + text[key_start:cursor] + '"')
+                    index = cursor
+                    continue
+            continue
+        out.append(char)
+        index += 1
+    return "".join(out)
+
+
+def _extract_state(html: str) -> Dict[str, Any]:
+    marker = html.find(_STATE_MARK)
+    if marker < 0:
+        raise ApiError("PARSE_FAILED", "页面没有 window.__INITIAL_STATE__")
+    start = html.find("{", marker)
+    if start < 0:
+        raise ApiError("PARSE_FAILED", "初始状态没有对象")
+    blob = html[start:]
+    decoder = json.JSONDecoder()
+    state: Any = None
+    for candidate in (blob, _tolerant_json(blob)):
+        try:
+            decoded, _ = decoder.raw_decode(candidate)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(decoded, dict):
+            state = decoded
+            break
+    if state is None:
+        raise ApiError("PARSE_FAILED", "初始状态 JSON 解析失败")
+    return state
+
+
+def _note_from_state(state: Dict[str, Any], note_id: str) -> Dict[str, Any]:
+    holder = state.get("note")
+    detail_map = holder.get("noteDetailMap") if isinstance(holder, dict) else None
+    if not isinstance(detail_map, dict) or not detail_map:
+        raise ApiError("PARSE_FAILED", "页面缺少 noteDetailMap")
+    entry = detail_map.get(note_id)
+    if entry is None:
+        if len(detail_map) == 1:
+            entry = next(iter(detail_map.values()))
+        else:
+            raise ApiError("PARSE_FAILED", "noteDetailMap 里没有这个笔记")
+    if not isinstance(entry, dict):
+        raise ApiError("PARSE_FAILED", "noteDetailMap 条目不是对象")
+    note = entry.get("note")
+    if not isinstance(note, dict):
+        raise ApiError("PARSE_FAILED", "页面缺少 note 正文")
+    return note
+
+
+def _image_url(raw: Dict[str, Any]) -> str:
+    direct = raw.get("urlDefault")
+    if isinstance(direct, str) and direct.startswith(("http://", "https://")):
+        return direct
+    info = raw.get("infoList")
+    if isinstance(info, list):
+        for scene in ("WB_DFT", "CRD_WM_WEBP"):
+            for entry in info:
+                if not isinstance(entry, dict) or entry.get("imageScene") != scene:
+                    continue
+                url = entry.get("url")
+                if isinstance(url, str) and url.startswith(("http://", "https://")):
+                    return url
+    return ""
+
+
+def _note_items(note: Dict[str, Any]) -> List[Dict[str, Any]]:
+    image_list = note.get("imageList")
+    if not isinstance(image_list, list) or not image_list:
+        raise ApiError("PARSE_FAILED", "imageList 为空或不是数组")
+    items: List[Dict[str, Any]] = []
+    for raw in image_list:
+        if not isinstance(raw, dict):
+            continue
+        remote_url = _image_url(raw)
+        if not remote_url:
+            continue
+        items.append(
+            {
+                "index": len(items),
+                "type": "image",
+                "remoteUrl": remote_url,
+                "ext": ext_from_url(remote_url, "webp"),
+                "cover": "",
+                "width": _as_int(raw.get("width")),
+                "height": _as_int(raw.get("height")),
+                "needs_transcode": True,
+            }
+        )
+    if not items:
+        raise ApiError("PARSE_FAILED", "imageList 没有可用的原图地址")
+    return items
+
+
+def _xsec_token(final_url: str, note: Dict[str, Any], state: Dict[str, Any]) -> str:
+    values = parse_qs(urlparse(final_url).query).get("xsec_token") or []
+    for value in values:
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    for candidate in (note.get("xsecToken"), state.get("xsecToken")):
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    raise ApiError("NEED_XSEC_TOKEN")
+
+
+async def parse_note(url: str, cookie: str) -> Dict[str, Any]:
+    """l2 seam: canonical note page -> ordered original image items."""
+    started = time.perf_counter()
+    note_id = _note_id_from_url(url)
+    try:
+        html, final_url = await _fetch_note(url, cookie)
+        note_id = _note_id_from_url(final_url) or note_id
+        state = _extract_state(html)
+        note = _note_from_state(state, note_id)
+        token = _xsec_token(final_url, note, state)
+        items = _note_items(note)
+    except ApiError as exc:
+        logger.info(
+            "xhs_note_parse note_id=%s image_count=0 xsec_token=%s "
+            "cache=miss elapsed_ms=%s code=%s",
+            note_id,
+            "missing" if exc.code == "NEED_XSEC_TOKEN" else "present",
+            int((time.perf_counter() - started) * 1000),
+            exc.code,
+        )
+        raise
+    logger.info(
+        "xhs_note_parse note_id=%s image_count=%s xsec_token=present "
+        "cache=miss elapsed_ms=%s code=ok",
+        note_id,
+        len(items),
+        int((time.perf_counter() - started) * 1000),
+    )
+    return {
+        "note_id": note_id,
+        "title": str(note.get("title") or note.get("desc") or ""),
+        "xsec_token": token,
+        "items": items,
+    }
+
+
 def _as_int(value: Any) -> Optional[int]:
     try:
         return int(value) if value is not None else None
     except (TypeError, ValueError):
         return None
+

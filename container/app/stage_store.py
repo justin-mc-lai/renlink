@@ -41,6 +41,14 @@ class StageStore:
     def exists(self, file_id: str) -> bool:
         return True
 
+    def fetch_sync(self, file_id: str, dest: Path) -> int:
+        """Copy a previously stored object to a local temp file (l6 readback).
+
+        Runs in a worker thread; raises StoreFailed when the object cannot be
+        read. Callers must call ready() first.
+        """
+        raise NotImplementedError
+
 
 class LocalStore(StageStore):
     mode = "local"
@@ -66,6 +74,16 @@ class LocalStore(StageStore):
     def exists(self, file_id: str) -> bool:
         path = self.path_for(file_id)
         return path is not None and path.is_file() and path.stat().st_size > 0
+
+    def fetch_sync(self, file_id: str, dest: Path) -> int:
+        path = self.path_for(file_id)
+        if path is None or not path.is_file():
+            raise StoreFailed("本地对象不存在")
+        try:
+            shutil.copyfile(path, dest)
+        except OSError as exc:
+            raise StoreFailed("本地对象读取失败") from exc
+        return dest.stat().st_size
 
     def path_for(self, file_id: str) -> Optional[Path]:
         prefix = "cloud://local/"
@@ -185,6 +203,41 @@ class CosStore(StageStore):
         except Exception as exc:  # noqa: BLE001 - one fixed upload error
             raise StoreFailed("COS 上传请求失败") from exc
         return "cloud://" + self.bucket + "/" + key
+
+    def key_for(self, file_id: str) -> Optional[str]:
+        prefix = "cloud://" + self.bucket + "/"
+        if not self.bucket or not file_id.startswith(prefix):
+            return None
+        key = file_id[len(prefix) :]
+        return key or None
+
+    def fetch_sync(self, file_id: str, dest: Path) -> int:
+        """Download one stored object. ready() already fetched the credentials."""
+        key = self.key_for(file_id)
+        if key is None:
+            raise StoreFailed("COS 对象键不属于当前桶")
+        creds = self._creds
+        if not creds:
+            raise StoreNotReady("COS 临时密钥未就绪")
+        try:
+            from qcloud_cos import CosConfig, CosS3Client
+
+            config = CosConfig(
+                Region=self.region,
+                SecretId=creds["secret_id"],
+                SecretKey=creds["secret_key"],
+                Token=creds.get("token") or None,
+                Scheme="https",
+                Endpoint=self.endpoint or None,
+                Timeout=60,
+            )
+            client = CosS3Client(config)
+            client.download_file(
+                Bucket=self.bucket, Key=key, DestFilePath=str(dest)
+            )
+        except Exception as exc:  # noqa: BLE001 - one fixed read error
+            raise StoreFailed("COS 对象读取失败") from exc
+        return dest.stat().st_size
 
     def _put_sync(
         self, source: Path, key: str, content_type: str, creds: Dict[str, str]
