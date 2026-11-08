@@ -73,4 +73,23 @@ else
   : > "$STATE"
 fi
 
+# ---- daily digest: one message per day, after 09:00 ----
+TODAY="$(date +%Y%m%d)"
+DAILY_STATE="$LOG_DIR/.daily-sent"
+HOUR="$(date +%H)"; HOUR="${HOUR#0}"; HOUR="${HOUR:-0}"
+if { [ "${HOURLY_FORCE_DIGEST:-0}" = "1" ] || [ "$HOUR" -ge 9 ]; } && [ "$(cat "$DAILY_STATE" 2>/dev/null || true)" != "$TODAY" ]; then
+  COMMITS="$(git -C "$ROOT" log --since='24 hours ago' --oneline 2>/dev/null | wc -l | tr -d ' ')"
+  FROZEN="$(printf '%s\n' "$TRUTH" | grep -c 'frozen/Freeze' || true)"
+  SUMMARY="[daily] ${TS} 任链接进度
+提交(24h)=${COMMITS} | 未提交=${DIRTY} | 未推送=${AHEAD}
+truth 冻结=${FROZEN}/9 | l3=${L3} | l4=${L4} | 前端构建=${FE_BUILD}
+beacon-go=${BGL} | 未推送=${BGAHEAD}
+关注：${ATTENTION[*]:-无}
+日志：$LOG_DIR/hourly-status.log"
+  OPENMAUSBOT_TOKEN="$(cat "$HOME/.openmausbot/cli.token" 2>/dev/null)" \
+  OPENMAUSBOT_URL="http://127.0.0.1:8799" \
+    "$OM" send "Renlink · 任链接开发群" --text "$SUMMARY" >/dev/null 2>&1 \
+    && printf '%s' "$TODAY" > "$DAILY_STATE"
+fi
+
 exit 0
