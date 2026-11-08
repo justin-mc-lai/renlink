@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
+import time
 from pathlib import Path
 
 import pytest
@@ -18,17 +20,20 @@ TOKEN_URL = PAGE_URL + "?xsec_token=query-token"
 
 @pytest.fixture(autouse=True)
 def xhs_env(monkeypatch: pytest.MonkeyPatch):
+    xhs.reset_cache()
     for name in (
         "XHS_NOTE_HTTP_STUB",
         "XHS_NOTE_TIMEOUT_S",
         "XHS_NOTE_MAX_BYTES",
         "XHS_NOTE_MAX_HOPS",
         "XHS_NOTE_UA",
+        "XHS_NOTE_CACHE_TTL_S",
         "PARSE_XHS_SKIP_YTDLP",
         "PARSE_L2_NOTE_STUB",
     ):
         monkeypatch.delenv(name, raising=False)
     yield
+    xhs.reset_cache()
 
 
 def page(state: dict) -> str:
@@ -181,6 +186,101 @@ def test_note_missing_state_is_parse_failed(
         asyncio.run(xhs.parse_note(PAGE_URL + "?xsec_token=t", "c=1"))
 
     assert caught.value.code == "PARSE_FAILED"
+
+
+def _count_fetches(
+    monkeypatch: pytest.MonkeyPatch, calls: list, state: dict
+) -> None:
+    async def fake_fetch(url: str, cookie: str) -> tuple:
+        calls.append(url)
+        return page(state), url
+
+    monkeypatch.setattr(xhs, "_fetch_note", fake_fetch)
+
+
+def test_note_cache_hit_skips_upstream(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    calls: list = []
+    state = note_state(
+        [
+            {"urlDefault": "https://sns-img-qc.xhscdn.com/j.webp"},
+            {"urlDefault": "https://sns-img-qc.xhscdn.com/k.webp"},
+        ]
+    )
+    _count_fetches(monkeypatch, calls, state)
+
+    with caplog.at_level(logging.INFO, logger="renlink.xhs"):
+        first = asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+        second = asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    assert calls == [TOKEN_URL]
+    assert first == second
+    stats = xhs.counters()
+    assert stats["xhs_note_cache_hit_total"] == 1
+    assert stats["xhs_note_cache_miss_total"] == 1
+    assert stats["xhs_note_parse_total{result=ok}"] == 2
+    assert stats["xhs_note_images_total"] == 4
+    logs = "\n".join(record.getMessage() for record in caplog.records)
+    assert "event=xhs_note_parse" in logs
+    assert "cache=hit" in logs
+    assert "cache=miss" in logs
+
+
+def test_note_cache_expires_after_ttl(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list = []
+    state = note_state([{"urlDefault": "https://sns-img-qc.xhscdn.com/l.webp"}])
+    _count_fetches(monkeypatch, calls, state)
+    monkeypatch.setenv("XHS_NOTE_CACHE_TTL_S", "1")
+
+    asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+    time.sleep(1.1)
+    asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    assert len(calls) == 2
+    assert xhs.counters()["xhs_note_cache_hit_total"] == 0
+    assert xhs.counters()["xhs_note_cache_miss_total"] == 2
+
+
+def test_note_cache_ttl_zero_disables(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    calls: list = []
+    state = note_state([{"urlDefault": "https://sns-img-qc.xhscdn.com/m.webp"}])
+    _count_fetches(monkeypatch, calls, state)
+    monkeypatch.setenv("XHS_NOTE_CACHE_TTL_S", "0")
+
+    with caplog.at_level(logging.INFO, logger="renlink.xhs"):
+        asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+        asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    assert len(calls) == 2
+    assert xhs.counters()["xhs_note_cache_hit_total"] == 0
+    assert xhs.counters()["xhs_note_cache_miss_total"] == 0
+    logs = "\n".join(record.getMessage() for record in caplog.records)
+    assert "cache_state=disabled" in logs
+
+
+def test_note_failure_is_not_cached(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list = []
+
+    async def failing_fetch(url: str, cookie: str) -> tuple:
+        calls.append(url)
+        raise ApiError("PARSE_FAILED", "页面没有 window.__INITIAL_STATE__")
+
+    monkeypatch.setattr(xhs, "_fetch_note", failing_fetch)
+
+    for _ in range(2):
+        with pytest.raises(ApiError) as caught:
+            asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+        assert caught.value.code == "PARSE_FAILED"
+
+    assert len(calls) == 2
+    stats = xhs.counters()
+    assert stats["xhs_note_parse_total{result=failed}"] == 2
+    assert stats["xhs_note_cache_hit_total"] == 0
 
 
 def test_note_empty_image_list_is_parse_failed(

@@ -9,10 +9,12 @@ an xsec_token. l1 still owns /parse fields, normalization and truncation.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 import os
 import re
+import threading
 import time
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Dict, List, Optional
@@ -38,6 +40,17 @@ _DEFAULT_UA = (
 )
 _NOTE_PATH = re.compile(r"^/(?:explore|discovery/item)/[^/]+/?$")
 _STATE_MARK = "window.__INITIAL_STATE__"
+
+_cache_lock = threading.Lock()
+_note_cache: Dict[str, Dict[str, Any]] = {}
+_counters: Dict[str, int] = {
+    "xhs_note_parse_total{result=ok}": 0,
+    "xhs_note_parse_total{result=need_xsec}": 0,
+    "xhs_note_parse_total{result=failed}": 0,
+    "xhs_note_cache_hit_total": 0,
+    "xhs_note_cache_miss_total": 0,
+    "xhs_note_images_total": 0,
+}
 
 
 class _QuietLogger:
@@ -65,6 +78,96 @@ def _env_int(name: str, default: int) -> int:
         return max(0, int(raw))
     except ValueError:
         return default
+
+
+def cache_ttl_s() -> int:
+    return _env_int("XHS_NOTE_CACHE_TTL_S", 600)
+
+
+def counters() -> Dict[str, int]:
+    """Process-local counters read by l7; AC-010 fixes the names."""
+    with _cache_lock:
+        return dict(_counters)
+
+
+def reset_cache() -> None:
+    """Test helper: drop cached notes and zero the counters."""
+    with _cache_lock:
+        _note_cache.clear()
+        for name in _counters:
+            _counters[name] = 0
+
+
+def _bump(name: str, amount: int = 1) -> None:
+    with _cache_lock:
+        if name in _counters:
+            _counters[name] += amount
+
+
+def _cache_key(note_id: str, token: str) -> str:
+    digest = hashlib.sha256(token.encode("utf-8")).hexdigest()[:12]
+    return "xhs:note:v1:{0}:{1}".format(note_id, digest)
+
+
+def _cache_get(key: str) -> Optional[Dict[str, Any]]:
+    now = time.monotonic()
+    with _cache_lock:
+        entry = _note_cache.get(key)
+        if entry is None:
+            return None
+        if entry["expires_at"] <= now:
+            _note_cache.pop(key, None)
+            return None
+        return entry["value"]  # immutable by convention: copied on return
+
+
+def _cache_put(key: str, value: Dict[str, Any], ttl: int) -> None:
+    if ttl <= 0 or not key:
+        return
+    with _cache_lock:
+        _note_cache[key] = {
+            "value": value,
+            "expires_at": time.monotonic() + ttl,
+        }
+
+
+def _copy_note(note: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "note_id": note["note_id"],
+        "title": note["title"],
+        "xsec_token": note["xsec_token"],
+        "items": [dict(item) for item in note["items"]],
+    }
+
+
+def _url_xsec_token(url: str) -> str:
+    for value in parse_qs(urlparse(url).query).get("xsec_token") or []:
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return ""
+
+
+def _log_parse(
+    *,
+    note_id: str,
+    image_count: int,
+    token_state: str,
+    cache: str,
+    cache_state: str,
+    started: float,
+    code: str,
+) -> None:
+    logger.info(
+        "event=xhs_note_parse note_id=%s image_count=%s xsec_token=%s "
+        "cache=%s cache_state=%s elapsed_ms=%s code=%s",
+        note_id,
+        image_count,
+        token_state,
+        cache,
+        cache_state,
+        int((time.perf_counter() - started) * 1000),
+        code,
+    )
 
 
 def _skip_ytdlp() -> bool:
@@ -488,6 +591,28 @@ async def parse_note(url: str, cookie: str) -> Dict[str, Any]:
     """l2 seam: canonical note page -> ordered original image items."""
     started = time.perf_counter()
     note_id = _note_id_from_url(url)
+    ttl = cache_ttl_s()
+    url_token = _url_xsec_token(url)
+    key = _cache_key(note_id, url_token) if url_token else ""
+    cache_state = "disabled" if ttl <= 0 else "enabled"
+    if ttl > 0 and key:
+        hit = _cache_get(key)
+        if hit is not None:
+            _bump("xhs_note_cache_hit_total")
+            _bump("xhs_note_parse_total{result=ok}")
+            _bump("xhs_note_images_total", len(hit["items"]))
+            _log_parse(
+                note_id=hit["note_id"],
+                image_count=len(hit["items"]),
+                token_state="present",
+                cache="hit",
+                cache_state=cache_state,
+                started=started,
+                code="ok",
+            )
+            return _copy_note(hit)
+    if ttl > 0:
+        _bump("xhs_note_cache_miss_total")
     try:
         html, final_url = await _fetch_note(url, cookie)
         note_id = _note_id_from_url(final_url) or note_id
@@ -496,28 +621,39 @@ async def parse_note(url: str, cookie: str) -> Dict[str, Any]:
         token = _xsec_token(final_url, note, state)
         items = _note_items(note)
     except ApiError as exc:
-        logger.info(
-            "xhs_note_parse note_id=%s image_count=0 xsec_token=%s "
-            "cache=miss elapsed_ms=%s code=%s",
-            note_id,
-            "missing" if exc.code == "NEED_XSEC_TOKEN" else "present",
-            int((time.perf_counter() - started) * 1000),
-            exc.code,
+        if exc.code == "NEED_XSEC_TOKEN":
+            _bump("xhs_note_parse_total{result=need_xsec}")
+        else:
+            _bump("xhs_note_parse_total{result=failed}")
+        _log_parse(
+            note_id=note_id,
+            image_count=0,
+            token_state="missing" if exc.code == "NEED_XSEC_TOKEN" else "present",
+            cache="miss",
+            cache_state=cache_state,
+            started=started,
+            code=exc.code,
         )
         raise
-    logger.info(
-        "xhs_note_parse note_id=%s image_count=%s xsec_token=present "
-        "cache=miss elapsed_ms=%s code=ok",
-        note_id,
-        len(items),
-        int((time.perf_counter() - started) * 1000),
-    )
-    return {
+    result = {
         "note_id": note_id,
         "title": str(note.get("title") or note.get("desc") or ""),
         "xsec_token": token,
         "items": items,
     }
+    _cache_put(key or _cache_key(note_id, token), result, ttl)
+    _bump("xhs_note_parse_total{result=ok}")
+    _bump("xhs_note_images_total", len(items))
+    _log_parse(
+        note_id=note_id,
+        image_count=len(items),
+        token_state="present",
+        cache="miss",
+        cache_state=cache_state,
+        started=started,
+        code="ok",
+    )
+    return _copy_note(result)
 
 
 def _as_int(value: Any) -> Optional[int]:
@@ -525,4 +661,3 @@ def _as_int(value: Any) -> Optional[int]:
         return int(value) if value is not None else None
     except (TypeError, ValueError):
         return None
-
