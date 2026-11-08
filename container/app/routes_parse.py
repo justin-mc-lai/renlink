@@ -19,6 +19,7 @@ from .contract import (
     finalize_success,
     normalize_items,
 )
+from . import stage_cache
 from .errors import ApiError
 from .parsers import douyin, xhs
 from .parsers.shortlink import expand_shortlink, is_shortlink
@@ -166,6 +167,7 @@ async def _parse_pipeline(source_url: str, started: float) -> Response:
         elapsed_ms,
         host,
     )
+    stage_cache.remember(payload)
     return Response(content=data, media_type="application/json")
 
 

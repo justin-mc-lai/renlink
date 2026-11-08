@@ -7,6 +7,7 @@ from urllib.parse import urljoin, urlparse
 
 import httpx
 
+from ..egress import httpx_proxy
 from ..errors import ApiError
 
 MAX_HOPS = 3
@@ -34,6 +35,7 @@ async def expand_shortlink(url: str, timeout_s: float = 3.0) -> str:
     current = url
     try:
         async with httpx.AsyncClient(
+            proxy=httpx_proxy(),
             follow_redirects=False,
             timeout=httpx.Timeout(timeout_s),
         ) as client:

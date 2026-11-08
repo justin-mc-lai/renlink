@@ -13,6 +13,7 @@ import os
 from typing import Any, Awaitable, Callable, Dict, List, Optional
 
 from ..contract import ext_from_url
+from ..egress import ytdlp_options
 from ..errors import ApiError
 from ..session_bridge import CookieExpired, get_cookie
 
@@ -78,6 +79,7 @@ def _ytdlp_info(url: str, cookie: str) -> Optional[Dict[str, Any]]:
         "noplaylist": True,
         "logger": _QuietLogger(),
     }
+    options.update(ytdlp_options())
     if cookie:
         options["http_headers"] = {"Cookie": cookie}
     try:

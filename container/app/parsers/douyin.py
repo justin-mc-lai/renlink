@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 from ..contract import ext_from_url
+from ..egress import f2_proxies, ytdlp_options
 from ..errors import ApiError
 from ..session_bridge import CookieExpired, get_cookie
 from . import douyin_argus
@@ -105,6 +106,7 @@ def _ytdlp_info(url: str, cookie: str) -> Optional[Dict[str, Any]]:
         "noplaylist": True,
         "logger": _QuietLogger(),
     }
+    options.update(ytdlp_options())
     if cookie:
         options["http_headers"] = {"Cookie": cookie}
     try:
@@ -158,6 +160,9 @@ def _f2_result(url: str, cookie: str, content_type: str) -> Dict[str, Any]:
     aweme_id = extract_aweme_id(url)
     # f2 0.0.1.7 requires both keys even when headers is empty.
     kwargs = {"cookie": cookie or "", "headers": {}}
+    proxies = f2_proxies()
+    if proxies:
+        kwargs["proxies"] = proxies
     try:
         handler = DouyinHandler(kwargs)
     except TypeError as exc:

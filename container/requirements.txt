@@ -7,3 +7,5 @@ f2==0.0.1.7
 pyexecjs==1.5.1
 jsonschema==4.23.0
 curl_cffi==0.17.0
+Pillow==11.3.0
+cos-python-sdk-v5==1.9.44

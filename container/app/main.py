@@ -18,7 +18,9 @@ from .contract import encode_payload
 from .errors import ApiError, error_envelope
 from .parsers import douyin_argus, render
 from .routes_parse import router as parse_router
-from .session_bridge import PLATFORMS, cookie_status, last_refresh
+from .routes_stage import router as stage_router
+from .egress import mode as egress_mode
+from .session_bridge import health_snapshot
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 logger = logging.getLogger("renlink")
@@ -50,6 +52,7 @@ _install_log_redaction()
 
 app = FastAPI(title="Renlink l1 parser core", version=__version__)
 app.include_router(parse_router)
+app.include_router(stage_router)
 
 
 @app.on_event("startup")
@@ -128,19 +131,12 @@ async def handle_unexpected(request: Request, exc: Exception) -> Response:
 
 @app.get("/health")
 async def health() -> JSONResponse:
-    platforms = {
-        platform: {
-            "cookie_status": cookie_status(platform),
-            "last_refresh": last_refresh(platform),
-        }
-        for platform in PLATFORMS
-    }
     return JSONResponse(
         {
             "ok": True,
             "version": __version__,
-            "platforms": platforms,
-            "egress_proxy": os.getenv("EGRESS_PROXY", "").strip() or "direct",
+            "platforms": health_snapshot(),
+            "egress_proxy": egress_mode(),
             "argus": douyin_argus.stats(),
             "render": render.stats(),
         }

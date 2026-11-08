@@ -23,6 +23,8 @@ from collections import OrderedDict
 from typing import Any, Dict, Optional, Tuple
 from urllib.parse import quote
 
+from ..egress import curl_cffi_proxies
+
 logger = logging.getLogger("renlink.douyin.argus")
 
 DEFAULT_USER_AGENT = (
@@ -226,6 +228,7 @@ def _request_detail(
         headers=headers,
         cookies=cookie_map,
         impersonate="chrome",
+        proxies=curl_cffi_proxies(),
         timeout=_env_float("RENLINK_ARGUS_TIMEOUT_S", DEFAULT_TIMEOUT_S),
     )
     body = response.content or b""
