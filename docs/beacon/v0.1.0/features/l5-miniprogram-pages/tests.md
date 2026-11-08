@@ -1,7 +1,7 @@
 ---
 slug: l5-miniprogram-pages
 version: v0.1.0
-materials_status: current
+materials_status: stale
 test_source: acceptance_criteria
 env: wechat-miniprogram-real-device
 ---

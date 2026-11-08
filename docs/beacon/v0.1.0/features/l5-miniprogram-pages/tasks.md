@@ -1,7 +1,7 @@
 ---
 slug: l5-miniprogram-pages
 version: v0.1.0
-materials_status: current
+materials_status: stale
 task_source: acceptance_criteria
 depends_on: l1-parser-core, l3-media-delivery
 ---
