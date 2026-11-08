@@ -32,7 +32,7 @@ STALE_DISPATCH="$(/usr/bin/python3 "$ROOT/ops/stale_dispatches.py" 2 2>/dev/null
 # ---- beacon-go ----
 cd "$BG" 2>/dev/null && {
   BGL="$(git log --oneline -1)"
-  BGAHEAD="$(git log --oneline origin/main..HEAD 2>/dev/null | wc -l | tr -d ' ')"
+  BGAHEAD="$(git rev-list --count origin/main..main 2>/dev/null || echo 0)"
 } || { BGL="n/a"; BGAHEAD=0; }
 
 {
