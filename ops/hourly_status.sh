@@ -25,6 +25,10 @@ L3="$(printf '%s\n' "$TRUTH" | awk '$1=="l3-media-delivery"{print $3}')"
 L4="$(printf '%s\n' "$TRUTH" | awk '$1=="l4-session-egress"{print $3}')"
 FE_BUILD="missing"; [ -f "$ROOT/frontend/dist/build/mp-weixin/app.json" ] && FE_BUILD="present"
 
+# ---- openmausbot (server + dispatch hygiene) ----
+OMB_HEALTH="$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8799/health 2>/dev/null || echo 000)"
+STALE_DISPATCH="$(/usr/bin/python3 "$ROOT/ops/stale_dispatches.py" 2 2>/dev/null || echo 0)"
+
 # ---- beacon-go ----
 cd "$BG" 2>/dev/null && {
   BGL="$(git log --oneline -1)"
@@ -35,6 +39,7 @@ cd "$BG" 2>/dev/null && {
   echo "== $TS =="
   echo "renlink: dirty=$DIRTY ahead=$AHEAD l3=$L3 l4=$L4 frontend_build=$FE_BUILD"
   echo "beacon-go: $BGL ahead=$BGAHEAD"
+  echo "openmausbot: health=$OMB_HEALTH stale_dispatch=$STALE_DISPATCH"
   echo "-- truth --"
   printf '%s\n' "$TRUTH"
   echo "-- recent commits --"
@@ -48,6 +53,8 @@ cd "$BG" 2>/dev/null && {
 [ "$L3" != "frozen/Freeze" ] && ATTENTION+=("l3 truth 未冻结($L3)")
 [ "$L4" != "frozen/Freeze" ] && ATTENTION+=("l4 truth 未冻结($L4)")
 [ "$BGAHEAD" -gt 0 ] && ATTENTION+=("beacon-go 有 $BGAHEAD 个提交未推送")
+[ "$OMB_HEALTH" = "200" ] || ATTENTION+=("OpenMausBot server 不可达($OMB_HEALTH)")
+[ "${STALE_DISPATCH:-0}" -gt 0 ] && ATTENTION+=("有 $STALE_DISPATCH 个派活超 2h 未验收")
 
 printf '%s | dirty=%s ahead=%s l3=%s l4=%s fe=%s bg_ahead=%s | %s\n' \
   "$TS" "$DIRTY" "$AHEAD" "$L3" "$L4" "$FE_BUILD" "$BGAHEAD" \
