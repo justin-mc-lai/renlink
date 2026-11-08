@@ -1,0 +1,17 @@
+---
+slug: l4-session-egress
+version: v0.1.0
+materials_status: draft
+task_source: acceptance_criteria
+---
+
+# Tasks: l4-session-egress
+
+## Task Ledger
+
+- [ ] TASK-001 Implement AC-001 · ac=AC-001
+- [ ] TASK-002 Validate package gates (truth review + freeze) · ac=GATES
+
+## Boundary
+
+Checkboxes are AC-bound ledgers. `[x]` is valid only when the bound evidence file exists (completion ≠ self-tick).

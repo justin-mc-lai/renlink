@@ -1,0 +1,93 @@
+{
+  "schema": "lake-proposal.v1",
+  "proposal_id": "lp_renlink_v1",
+  "utterance": "任链接：微信小程序（云托管）把抖音/小红书等社媒链接解析并下载到用户手机（视频存相册、图文逐张+zip）。",
+  "version": "v0.1",
+  "commercial_lens": ["工具即用即走", "零服务器运维", "不做 token 消耗", "个人可上线"],
+  "lakes": [
+    {
+      "slug": "l1-parser-core",
+      "title": "L1 解析内核",
+      "outcome": "云托管容器提供 /parse，输入链接返回标准化逐项媒体清单（不下载）。",
+      "value": "全流程地基，没有它后面全是空的。",
+      "metric": "抖音视频/抖音图文/小红书视频/短链 4 类真实链接各返回正确清单。",
+      "operable": "运营方可直接用 curl 验证，不依赖小程序。",
+      "size": "M",
+      "acceptance_seed": "ops/smoke.py 输出 4 类样本 JSON，字段 items[].remoteUrl 非空。"
+    },
+    {
+      "slug": "l2-xhs-images",
+      "title": "L2 小红书图文",
+      "outcome": "自研小红书 note 解析：短链→__INITIAL_STATE__→imageList 原图 + xsec_token。",
+      "value": "现有工具唯一缺口，补上产品才完整。",
+      "metric": "10 条图文样本 ≥9 条拿到原图 URL。",
+      "operable": "单条链接可独立跑通，不依赖前端。",
+      "depends_on": ["l1-parser-core"],
+      "size": "M",
+      "acceptance_seed": "p_xhs.py 对 10 条样本输出 images[] 数量与页面一致。"
+    },
+    {
+      "slug": "l3-media-delivery",
+      "title": "L3 文件下发闭环",
+      "outcome": "/stage 按 index 下载→webp转jpg→对象存储COS→返回 cloudID；小程序 downloadFile 存相册。",
+      "value": "用户真正拿到文件，产品价值兑现点。",
+      "metric": "真机成功保存 1 个 mp4 视频 + 9 张 jpg 图片。",
+      "operable": "真机可复现，失败有明确错误码。",
+      "depends_on": ["l1-parser-core"],
+      "size": "M",
+      "acceptance_seed": "真机截图 + cloudID + 相册到手。"
+    },
+    {
+      "slug": "l4-session-egress",
+      "title": "L4 登录态与出口",
+      "outcome": "运营方 cookie 池 + 可切换 EGRESS_PROXY + 失效返回 COOKIE_EXPIRED。",
+      "value": "决定反爬稳定性与能活多久。",
+      "metric": "带 cookie 解析成功率达标；改 EGRESS_PROXY 生效。",
+      "operable": "运营方可独立刷新 cookie 并观察健康探针。",
+      "depends_on": ["l1-parser-core"],
+      "size": "M",
+      "acceptance_seed": "ops/refresh_cookie.py 写入后 /health 显示新鲜；失效路径可复现。"
+    },
+    {
+      "slug": "l5-miniprogram-pages",
+      "title": "L5 两页前端",
+      "outcome": "主页（粘贴/读剪贴板/解析/保存）+ 个人中心（openid 历史）。",
+      "value": "用户可见的产品本体。",
+      "metric": "真机两页可用，历史自动落库。",
+      "operable": "体验版可安装可用。",
+      "depends_on": ["l1-parser-core", "l3-media-delivery"],
+      "size": "S",
+      "acceptance_seed": "真机录屏：粘贴→解析→保存→历史出现。"
+    },
+    {
+      "slug": "l6-zip-export",
+      "title": "L6 压缩包导出",
+      "outcome": "/zip 打包已转存图片→cloudID→wx.shareFileMessage 转发聊天 / PC saveFileToDisk。",
+      "value": "满足“图文保存为 zip”的原始诉求。",
+      "metric": "真机收到 zip 并能在文件 App 打开。",
+      "operable": "单条图文可独立导出。",
+      "depends_on": ["l3-media-delivery"],
+      "size": "S",
+      "acceptance_seed": "真机转发 zip 到文件传输助手并解压成功。"
+    },
+    {
+      "slug": "l7-risk-compliance",
+      "title": "L7 风控与合规",
+      "outcome": "限流/缓存/大小上限/版权声明/投诉入口/内容安全。",
+      "value": "决定账号与小程序能活多久。",
+      "metric": "清单全绿，压测不触发平台封禁。",
+      "operable": "上线前一次性核查表。",
+      "depends_on": ["l1-parser-core", "l3-media-delivery", "l5-miniprogram-pages"],
+      "size": "S",
+      "acceptance_seed": "限流与缓存命中可观测；版权/投诉页可访问。"
+    }
+  ],
+  "not_proposed": [
+    { "slug": "mini-program-submit", "reason": "个人主体+下载类功能审核基本必拒，需单独商业决策，不在本期。" },
+    { "slug": "user-cookie-upload", "reason": "收用户 cookie 是账号安全事故，公开小程序必被拒，只做运营方池。" },
+    { "slug": "extra-platforms", "reason": "B站/微博/YouTube/X 本期不做，先做抖音+小红书。" },
+    { "slug": "monetization", "reason": "付费/会员/广告不在本期，先保证能跑通。" },
+    { "slug": "headless-captcha", "reason": "服务端自动过滑块属灰色且成本高，本期只做人工刷新。" },
+    { "slug": "self-hosted-vps", "reason": "已确认用云托管，不自建服务器替代。" }
+  ]
+}
