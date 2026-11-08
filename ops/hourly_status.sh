@@ -64,7 +64,9 @@ printf '%s | dirty=%s ahead=%s l3=%s l4=%s fe=%s bg_ahead=%s | %s\n' \
 ls -1t "$LOG_DIR"/[0-9]*.log 2>/dev/null | tail -n +73 | xargs -r rm -f
 
 # ---- alert the room (dedup: same alert text within 3h) ----
-if [ ${#ATTENTION[@]} -gt 0 ]; then
+if [ "${HOURLY_NO_SEND:-0}" = "1" ]; then
+  :
+elif [ ${#ATTENTION[@]} -gt 0 ]; then
   CUR="${ATTENTION[*]}"
   LAST="$(cat "$STATE" 2>/dev/null || true)"
   AGE=99999
