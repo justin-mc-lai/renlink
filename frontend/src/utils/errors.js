@@ -10,7 +10,9 @@ export const ERROR_MESSAGES = {
   PARSE_FAILED: '解析失败，请检查链接后重试',
   NETWORK_ERROR: '网络连接失败，请检查网络设置',
   STAGE_NOT_READY: '转存服务暂未上线',
-  ZIP_NOT_READY: '打包导出暂未上线'
+  ZIP_NOT_READY: '打包导出暂未上线',
+  RATE_LIMITED: '请求过于频繁，请稍后重试',
+  TOO_LARGE: '内容超出限制：视频超过 200MB 或图文超过 20 张，请压缩视频或减少张数后重试'
 }
 
 /**

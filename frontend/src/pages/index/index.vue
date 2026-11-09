@@ -128,6 +128,11 @@
         </view>
       </view>
     </view>
+    <!-- 底部版权声明与投诉入口 (TASK-008 / AC-008) -->
+    <view class="footer-copyright">
+      <text class="copyright-text">仅供个人备份，版权归原作者所有</text>
+      <text class="complaint-link" @tap="goToComplaint">侵权投诉</text>
+    </view>
   </view>
 </template>
 
@@ -453,6 +458,12 @@ async function handleExportZip() {
   } finally {
     isZipping.value = false
   }
+}
+function goToComplaint() {
+  uni.setStorageSync("renlink_open_complaint", "1")
+  uni.switchTab({
+    url: "/pages/mine/mine"
+  })
 }
 </script>
 
@@ -786,6 +797,24 @@ async function handleExportZip() {
       font-size: 30rpx;
       border-radius: 40rpx;
     }
+  }
+}
+.footer-copyright {
+  margin-top: 32rpx;
+  margin-bottom: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16rpx;
+  font-size: 22rpx;
+
+  .copyright-text {
+    color: #999999;
+  }
+
+  .complaint-link {
+    color: #07C160;
+    text-decoration: underline;
   }
 }
 </style>
