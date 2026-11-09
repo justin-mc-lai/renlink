@@ -15,3 +15,14 @@ base_package_fingerprint: 44c9cf2e14d6f6ad1df02e54c207f50c8b4ed722933c17d90e2698
 ## Route
 
 Edit the package truth (and its tests/tasks/evidence as needed), then close this change with `beacon truth refreeze`. The change stays pending — and the truth_freeze gate stays blocked — until the refreeze lands.
+
+## AC Diff
+
+added:
+- (none)
+
+changed:
+- (none)
+
+removed:
+- (none)

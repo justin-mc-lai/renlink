@@ -42,9 +42,14 @@
 
 实现者：任链接 后端。本轮只写代码与单测：未 commit、未 push、未改 truth 正文、未跑 gate integrity。
 
-- 接入落在 `container/app/parsers/xhs.py`（按本轮收窄口径，未新建 tasks.md 里的 `xhs_note.py`）：定位 window.__INITIAL_STATE__ 并容忍裸键与 undefined、noteDetailMap 定位与唯一项兜底、imageList 原图选择 urlDefault → WB_DFT → CRD_WM_WEBP（保持顺序、不用缩略地址）、xsec_token 链 URL → note.xsecToken → state 顶层、缺 token 抛 NEED_XSEC_TOKEN；新增 PARSE_XHS_SKIP_YTDLP 测试开关。
+- 接入落在 <container/app/parsers/xhs.py>（按本轮收窄口径，未新建 tasks.md 里的 <xhs_note.py>）：定位 window.__INITIAL_STATE__ 并容忍裸键与 undefined、noteDetailMap 定位与唯一项兜底、imageList 原图选择 urlDefault → WB_DFT → CRD_WM_WEBP（保持顺序、不用缩略地址）、xsec_token 链 URL → note.xsecToken → state 顶层、缺 token 抛 NEED_XSEC_TOKEN；新增 PARSE_XHS_SKIP_YTDLP 测试开关。
 - `errors.py` 增补 NEED_XSEC_TOKEN(422, retryable=true)，既有码未动。
-- `python3 -m pytest tests/test_xhs.py -q`：7 passed。
+- python3 -m pytest <tests/test_xhs.py> -q：7 passed。
 - 覆盖路径：图文多图顺序与原图地址（urlPre 不入选、无地址条目跳过）、token 回退 note、裸键 + undefined、缺 token → NEED_XSEC_TOKEN、无 state → PARSE_FAILED、空 imageList → PARSE_FAILED、xhs.parse 接缝返回 note 且 needs_transcode=true。
-- 未做/未验证：解析缓存 AC-009、xhs_note_* 计数器 AC-010、直连短链 3 跳 AC-003、真实样本 AC-001/AC-003、ops/xhs_note_smoke.py 与 curl 复跑。
+- 未做/未验证：解析缓存 AC-009、xhs_note_* 计数器 AC-010、直连短链 3 跳 AC-003、真实样本（AC-001、AC-003）、<ops/xhs_note_smoke.py> 与 curl 复跑。
 
+## 冻结时序治理记录（2026-11-09）
+
+变更 chg_6a639cf6df40 登记事实：实现提交 8ed9b2e 时本包 truth 仍为 status=draft、AC 表为占位符；完整 AC 与 status=frozen 直到其后 65c3112 才写入。
+本记录只登记该时序事实，不修改任何 AC、约束或既有结论正文。
+truth_freeze 门以本次 refreeze 关闭该治理变更。
