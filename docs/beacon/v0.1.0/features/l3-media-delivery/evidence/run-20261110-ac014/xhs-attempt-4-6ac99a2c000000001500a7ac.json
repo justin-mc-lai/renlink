@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "platform": "xhs",
+  "content_type": "video",
+  "source_url": "https://www.xiaohongshu.com/explore/6ac99a2c000000001500a7ac?xsec_token=***&xsec_source=pc_feed",
+  "resolved_url": "https://www.xiaohongshu.com/explore/6ac99a2c000000001500a7ac?xsec_token=***&xsec_source=pc_feed",
+  "title": "老妈出去旅游，花4000多元买双银筷子",
+  "item_count": 1,
+  "elapsed_ms": 670,
+  "task_id": "st_cbfef4aadd3a1573a9e2f8ce",
+  "items": [
+    {
+      "index": 0,
+      "type": "video",
+      "remoteUrl": "http://sns-bak-v6.xhscdn.com/stream/1/110/617/01eac99a0e92ff8801037001a1273edf1b_617.mp4",
+      "ext": "mp4",
+      "cover": "http://sns-webpic-qc.xhscdn.com/202611100144/37f5847b145e9c7353581e5ec5435cc1/1040g0083264i9ib0ka5g5pd7f8120gf9led5vc0!nd_prv_wlteh_jpg_3",
+      "width": 1080,
+      "height": 1920,
+      "needs_transcode": false
+    }
+  ]
+}

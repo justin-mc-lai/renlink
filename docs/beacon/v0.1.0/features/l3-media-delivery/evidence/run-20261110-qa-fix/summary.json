@@ -1,0 +1,40 @@
+{
+  "run": "run-20261110-qa-fix",
+  "feature": "l3-media-delivery",
+  "ac": "AC-016",
+  "at": "2026-11-10T01:19:30+08:00",
+  "head": "ebbb70c",
+  "base_url": "http://127.0.0.1:18116",
+  "store": "local",
+  "store_env": {
+    "STAGE_STORE": "local",
+    "STAGE_LOCAL_DIR": "/tmp/renlink-stage-store-fix",
+    "SESSION_POOL_SOURCE": "env"
+  },
+  "sample": {
+    "platform": "douyin",
+    "share_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+    "resolved_url": "https://www.douyin.com/video/7705367833957403946"
+  },
+  "commands": [
+    "nohup env DOUYIN_COOKIE=<operator pool value> SESSION_POOL_SOURCE=env STAGE_STORE=local STAGE_LOCAL_DIR=/tmp/renlink-stage-store-fix PARSE_RATE_LIMIT_PER_MIN=0 PYTHONPATH=<worktree>/container .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 18116",
+    "curl -s -X POST http://127.0.0.1:18116/parse -H 'content-type: application/json' --data '{\"url\":\"https://v.douyin.com/Y7MgY9YnYAg/\"}' > parse-response.json",
+    ".venv/bin/python - <<'PY' (jsonschema Draft202012 validation + POST /stage + GET /stage/file)",
+    "jsonschema.Draft202012Validator(contract/parse_response.schema.json).iter_errors(parse_response)"
+  ],
+  "checks": [
+    {"name": "parse_http_200", "ok": true, "detail": "200"},
+    {"name": "task_id_format", "ok": true, "detail": "st_79d23ecb056057db7cbffd8b matches ^st_[0-9a-f]{24}$"},
+    {"name": "parse_schema", "ok": true, "detail": "contract/parse_response.schema.json (Draft 2020-12), valid=true"},
+    {"name": "stage_direct_with_parse_task_id", "ok": true, "detail": "HTTP 200, ok=true"},
+    {"name": "stage_file_id_readable", "ok": true, "detail": "cloud://local/l3/7705367833957403946/0.mp4, GET /stage/file 200"},
+    {"name": "readback_bytes_match", "ok": true, "detail": "162700599 == 162700599"}
+  ],
+  "artifacts": {
+    "parse_raw": "parse-response.json",
+    "schema_validation": "schema-validation.json",
+    "stage_response": "stage-response.json",
+    "stage_file_readback": "stage-file-readback.json"
+  },
+  "result": "PASS"
+}

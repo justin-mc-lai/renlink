@@ -1,0 +1,33 @@
+{
+  "page_saved_from": "https://www.xiaohongshu.com/explore/6a93b57b0000000007007deb (fetched 2026-11-10 01:38 +08, iPhone H5 UA, operator cookie)",
+  "state_top_keys": [
+    "global",
+    "fakeModal",
+    "noteData",
+    "expFlags",
+    "profile",
+    "UseAbExpStore"
+  ],
+  "has_note_detail_map": false,
+  "has_note_data": true,
+  "state_note_path_keys": [
+    "imageList",
+    "video",
+    "tagList",
+    "atUserList",
+    "time",
+    "noteId",
+    "user",
+    "interactInfo",
+    "lastUpdateTime",
+    "shareInfo"
+  ],
+  "note_type_when_present": "video",
+  "imageList_count_when_present": 1,
+  "parser_error": {
+    "type": "ApiError",
+    "code": "PARSE_FAILED",
+    "message": "页面缺少 noteDetailMap"
+  },
+  "code_anchor": "container/app/parsers/xhs.py:_note_from_state reads state['note']['noteDetailMap']"
+}

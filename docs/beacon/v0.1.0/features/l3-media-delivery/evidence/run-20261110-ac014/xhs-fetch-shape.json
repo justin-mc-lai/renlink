@@ -1,0 +1,29 @@
+{
+  "note_id": "6acb3b6c000000001c02e067",
+  "xsec_token_prefix": "AB9B0-G-…",
+  "attempts": [
+    {
+      "ua": "iphone_h5",
+      "status": 200,
+      "final_host_path": "https://www.xiaohongshu.com/404/sec_mqvHPMyg",
+      "final_query_masked": "source=xhs_sec_server&originalUrl=http%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6acb3b6c000000001c02e067%3Fxsec_token%3D***",
+      "bytes": 23551,
+      "has_initial_state": true,
+      "has_note_detail_map": false,
+      "has_note_data": true,
+      "has_login_form": false
+    },
+    {
+      "ua": "desktop_chrome",
+      "status": 200,
+      "final_host_path": "https://www.xiaohongshu.com/login",
+      "final_query_masked": "redirectPath=http%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6acb3b6c000000001c02e067%3Fxsec_token%3D***",
+      "bytes": 37294,
+      "has_initial_state": true,
+      "has_note_detail_map": false,
+      "has_note_data": false,
+      "has_login_form": true
+    }
+  ],
+  "code_path": "container/app/parsers/xhs.py:_note_from_state requires state.note.noteDetailMap"
+}
