@@ -1,0 +1,10 @@
+{
+  "schema": "/private/tmp/l3-qa-fix-20261110/contract/parse_response.schema.json",
+  "draft": "2020-12",
+  "valid": true,
+  "errors": [],
+  "task_id": "st_79d23ecb056057db7cbffd8b",
+  "task_id_pattern": "^st_[0-9a-f]{24}$",
+  "task_id_pattern_ok": true,
+  "schema_task_id_pattern": "^st_[0-9a-f]{24}$|^$"
+}

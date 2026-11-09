@@ -30,6 +30,9 @@
 | AC-012 | case-user-cookie.json | 请求体带 cookie 字段 | collected |
 | AC-013 | case-timeout.json | STAGE_TIMEOUT_S=2、延迟 5000ms | collected |
 | AC-014 | case-real-video-and-image.json | 真实抖音视频 + 真实 xhs 图片 URL | collected（图片清单经 l2 stub，见限制） |
+| AC-016 | run-20261110-qa-fix/parse-response.json、schema-validation.json、stage-response.json、stage-file-readback.json | 真实抖音分享链接 POST /parse，取响应 task_id 直接 /stage，GET /stage/file 读回 | collected |
+
+说明：历史 run（run-20261109-0027/0030/0034/0036-all）的 /parse body 早于 task_id 变更，其 parse_schema 结论属于旧 schema，不能作为 AC-016 证据；AC-016 的 schema 结论以 run-20261110-qa-fix 为准。
 
 ## 实测回执
 
@@ -49,6 +52,14 @@
 - 本地全量复跑：run-20261109-0036-all，10 个 local 用例全部 PASS（TC-001/002/003/007/008/009/010/011/012/014）。
 - 构造类用例 TC-004/005/006/013 的完整证据仍在 run-20261109-0030；其中超限、TTL 过期、未配置存储另由 pytest 覆盖。
 - pytest 补充用例：tests 目录下的 stage 用例，9 passed / 0 failed，覆盖成功、过期、超限、未配置存储、幂等、临时文件清理、cookie 拒绝与非法 index；结果与同轮 smoke 证据放在一起。
+
+### AC-016 复采（run-20261110-qa-fix，HEAD ebbb70c）
+
+- 真实抖音分享链接 `https://v.douyin.com/Y7MgY9YnYAg/` → `POST /parse` HTTP 200，`task_id=st_79d23ecb056057db7cbffd8b`，匹配 `^st_[0-9a-f]{24}$`。
+- `contract/parse_response.schema.json`（Draft 2020-12）校验：`valid=true`，无 errors。
+- 直接用该 task_id 调 `POST /stage`（index=0）：HTTP 200，`fileID=cloud://local/l3/7705367833957403946/0.mp4`，`kind=video`，`ext=mp4`，`bytes=162700599`。
+- `GET /stage/file?file_id=...`：HTTP 200，读回 162700599 字节，与响应 bytes 一致；sha256 `cf0e2fbe65a241b431e22ec678cdc1126a9a5a3a89666e752fcd71f6e3c616be`。
+- store 模式：`STAGE_STORE=local`（`STAGE_LOCAL_DIR=/tmp/renlink-stage-store-fix`）；原始响应与校验输出见 run-20261110-qa-fix/。
 
 ## 已知限制
 

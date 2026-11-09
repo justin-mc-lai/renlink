@@ -1,0 +1,12 @@
+{
+  "task_id": "st_79d23ecb056057db7cbffd8b",
+  "index": 0,
+  "file_id": "cloud://local/l3/7705367833957403946/0.mp4",
+  "http_status": 200,
+  "readback_bytes": 162700599,
+  "response_bytes": 162700599,
+  "bytes_match": true,
+  "sha256": "cf0e2fbe65a241b431e22ec678cdc1126a9a5a3a89666e752fcd71f6e3c616be",
+  "first_bytes_hex": "000000206674797069736f6d00000200",
+  "url": "http://127.0.0.1:18116/stage/file?file_id=cloud%3A%2F%2Flocal%2Fl3%2F7705367833957403946%2F0.mp4"
+}
