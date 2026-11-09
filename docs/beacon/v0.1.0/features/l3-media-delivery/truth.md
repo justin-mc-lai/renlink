@@ -41,7 +41,7 @@ source: user_intent
 utterance: "l3：POST /stage 按 index 取一项 → 下载 → webp 转 jpg → 上传对象存储 → 返回 cloudID，不落持久盘"
 goal: "容器提供 POST /stage，输入 {task_id,index}，单请求 60s 内完成下载、必要的 webp→jpg 转码、COS 转存，返回 {ok,fileID,kind,ext,bytes}，fileID 可被 wx.cloud.downloadFile 读取"
 non_goals: "zip 打包（l6）；解析（l1）；小程序页面与相册保存（l5）；视频转码/压缩；接收用户 cookie；持久盘缓存；多文件合并；断点续传"
-constraints: "单请求 ≤60s；视频 ≤200MB；task_id 10 分钟有效；COS 用云托管容器开放接口取临时密钥；图片 webp 必须 Pillow 转 jpg；同一 (aweme_id,index) 幂等；无 COS 凭证返回 STAGE_NOT_READY，不得伪造成功；callContainer 返回包 ≤1000KB 且只回 cloudID；容器无持久盘，临时文件在 /tmp 且请求结束即删"
+constraints: "单请求 ≤60s；视频 ≤200MB；task_id 10 分钟有效；COS 用云托管容器开放接口取临时密钥；图片 webp 必须 Pillow 转 jpg；同一 (aweme_id,index) 幂等；无 COS 凭证返回 STAGE_NOT_READY，不得伪造成功；callContainer 返回包 ≤1000KB 且只回 cloudID；容器无持久盘，临时文件在 /tmp 且请求结束即删；新增 GET /stage/file?file_id=cloud://... 流式返回已转存对象，仅接受 cloud:// id，供 H5/PC 直接下载"
 scope_mode: lake
 ```
 
@@ -90,9 +90,9 @@ Use beacon truth ask / beacon truth answer to drive this ledger.
 | Q ID | Question | Recommendation | Status | Answer | Source |
 |------|----------|----------------|--------|--------|--------|
 | Q1 | 谁、什么问题、什么算完成？ | 用户点一项就能拿到可下载的 cloudID，失败有固定错误码 | answered | 运营方/用户把 /parse 清单里的一项换成 cloudID；单请求 60s 内返回可读 fileID 即完成 | MausBot |
-| Q2 | task_id 从哪来？l1 响应 schema 是 additionalProperties:false，不能再加字段 | 用 /parse 响应的确定性哈希，客户端与容器按同一算法计算 | answered | task_id 等于 st_ 前缀加 sha256 十六进制前 24 位；输入是 v1、platform、content_type、resolved_url 与每项 index:type:ext:remoteUrl 的换行拼接；容器在 /parse 成功时按同一 task_id 写 TTL 缓存，/parse 响应字段与 schema 完全不变 | MausBot |
+| Q2 | task_id 从哪来？ | 由 /parse 响应直接返回，客户端不再自行计算 | answered | task_id 仍是 st_ 前缀加 sha256 十六进制前 24 位（输入 v1、platform、content_type、resolved_url 与每项 index:type:ext:remoteUrl）；自 chg_3c2cde3327ff 起 /parse 成功响应新增 task_id 字段（schema 同步），客户端直接使用该值调用 /stage | apple |
 | Q3 | 本地验收用真实 COS 还是 mock？ | 本地默认 mock，生产走 COS；两条路径同一接口 | answered | STAGE_STORE=local 时写 STAGE_LOCAL_DIR，fileID 形如 cloud://local/key；STAGE_STORE=cos 时走 COS。本地验收用 local，evidence 写明模式 | MausBot |
-| Q4 | task_id 从哪来？l1 响应 schema 是 additionalProperties:false，不能再加字段 | 用 /parse 响应的确定性哈希，客户端与容器按同一算法计算 | answered | 同 Q2：task_id 用确定性哈希，容器在 /parse 成功时写 TTL 缓存，响应字段与 schema 不变 | MausBot |
+| Q4 | task_id 从哪来？ | 同 Q2，/parse 直接返回 | answered | 同 Q2：/parse 响应新增 task_id 字段，客户端不再复算；容器在 /parse 成功时写 TTL 缓存 | apple |
 | Q5 | 本地验收用真实 COS 还是 mock？ | 本地默认 mock，生产走 COS；两条路径同一接口 | answered | 同 Q3：本地用 STAGE_STORE=local 的 mock，生产用 cos | MausBot |
 
 ## Intent Coverage
@@ -113,6 +113,8 @@ Use beacon truth ask / beacon truth answer to drive this ledger.
 | AC-012 | 约束 C10：禁止收用户 cookie | tests.md TC-012 |
 | AC-013 | 约束 C1：60s 硬超时 | tests.md TC-013 |
 | AC-014 | lake-proposal 指标：真实清单取 1 视频 + 1 图，fileID 可读 | tests.md TC-014 |
+| AC-015 | 契约补登：GET /stage/file 流式下载已转存对象 | tests.md TC-015 |
+| AC-016 | 契约补登：/parse 响应返回 task_id 且 schema 校验通过 | tests.md TC-016 |
 
 ## Acceptance Criteria
 
@@ -132,6 +134,8 @@ Use beacon truth ask / beacon truth answer to drive this ledger.
 | AC-012 | /stage 请求体出现 cookie 字段时返回 HTTP 400、ok=false、error.code=INVALID_REQUEST，且不触发下载 |
 | AC-013 | 上游下载、转码、上传任一步骤使单请求超过 60s 时返回 HTTP 504、ok=false、error.code=TIMEOUT，且临时文件被清理 |
 | AC-014 | 真实 /parse 清单连续调用 /stage 取 1 个视频 + 1 张图，两次都返回可读 fileID，读回字节与响应 bytes 一致；evidence 写明 STAGE_STORE 模式 |
+| AC-015 | GET /stage/file?file_id=cloud://... 返回 200，Content-Length 等于对象字节数、Content-Type 与 ext 匹配；file_id 不是 cloud:// 时返回 HTTP 400、error.code=INVALID_REQUEST；对象不存在时返回 502 STAGE_FAILED |
+| AC-016 | POST /parse 成功响应包含 task_id，匹配 ^st_[0-9a-f]{24}$，且 contract/parse_response.schema.json 校验通过；同一 task_id 可直接用于 /stage |
 
 ## 接口契约
 

@@ -50,6 +50,8 @@ export STAGE_FAKE_DELAY_MS=61000             # 超时注入
 | AC-012 | TC-012 | negative | `python3 ops/stage_smoke.py --case user-cookie` | 400 且 error.code=INVALID_REQUEST |
 | AC-013 | TC-013 | negative | `python3 ops/stage_smoke.py --case timeout` | 504 且 error.code=TIMEOUT 且临时文件已清 |
 | AC-014 | TC-014 | e2e | `python3 ops/stage_smoke.py --case real-video-and-image` | 1 视频 + 1 图均返回可读 fileID，bytes 一致 |
+| AC-015 | TC-015 | contract | `pytest tests/test_stage.py -q -k stage_file` | 200 且字节数一致；非 cloud:// 返回 400 |
+| AC-016 | TC-016 | contract | `pytest tests/test_parse.py -q` | task_id 匹配 ^st_[0-9a-f]{24}$ 且 schema 通过 |
 
 ## 用例明细
 
@@ -122,3 +124,15 @@ export STAGE_FAKE_DELAY_MS=61000             # 超时注入
 
 - 输入：真实 DY_VIDEO_1 与 XHS_NOTE_1 各跑一遍 /parse，再各取 1 项 /stage。
 - 通过判据：两次都返回可读 fileID；读回字节等于 bytes；evidence 写明 STAGE_STORE=local 还是 cos。
+
+
+### TC-015 /stage/file 流式下载
+
+- 输入：先对一个有效清单调用 /stage 拿到 fileID，再请求 GET /stage/file 并带上 file_id 参数。
+- 期望：HTTP 200，Content-Type 与 ext 匹配，响应字节数等于 /stage 返回的 bytes。
+- 负向：file_id=/etc/passwd → HTTP 400，error.code=INVALID_REQUEST。
+
+### TC-016 /parse 返回 task_id
+
+- 输入：POST /parse 一条真实链接。
+- 期望：响应包含 task_id，匹配 `^st_[0-9a-f]{24}$`，且通过 contract/parse_response.schema.json 校验；该 task_id 可直接用于 /stage。
