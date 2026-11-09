@@ -1,0 +1,20 @@
+=== PROBE 02: xsec_token 3-LAYER RESOLUTION & 422 ERROR (ROUND 2) ===
+
+[Layer 1: URL Query Param Priority]
+parse_note token: token_q_1
+Layer 1 query token retained: PASS
+
+[Layer 2: noteDetailMap xsecToken Priority over Top-Level]
+parse_note token: token_from_note_layer2
+Layer 2 note token resolved: PASS
+
+[Layer 3: Top-level state xsecToken Fallback]
+parse_note token: token_from_top_layer3
+Layer 3 top-level token resolved: PASS
+
+[Layer Missing: 422 NEED_XSEC_TOKEN via HTTP POST /parse]
+Status: 422
+Body: {"elapsed_ms": 0, "error": {"code": "NEED_XSEC_TOKEN", "message": "缺少 xsec_token，无法读取小红书图文", "retryable": true}, "items": [], "ok": false, "resolved_url": ""}
+422 NEED_XSEC_TOKEN returned correctly without stack trace: PASS
+
+VERDICT: PASS

@@ -1,7 +1,7 @@
 ---
 slug: l5-miniprogram-pages
 version: v0.1.0
-materials_status: stale
+materials_status: current
 test_source: acceptance_criteria
 env: wechat-miniprogram-real-device
 ---
@@ -33,7 +33,7 @@ export TEST_EXPIRED_LINK="https://v.douyin.com/invalid_or_expired/"
 | AC-003 | TC-001 | e2e | `python3 ops/smoke_l5.py --case ios-video-album` | 视频封面与标题正确渲染；点击保存视频，系统相册新增该无水印视频文件 |
 | AC-004 | TC-002 | e2e | `python3 ops/smoke_l5.py --case android-note-step` | 九宫格展示 N 张图；保存时逐项触发 /stage，步进进度 (i/N) 连续，相册存满 N 张 jpg |
 | AC-005 | TC-005 | negative | `python3 ops/smoke_l5.py --case item-save-retry` | 模拟第 2 张请求超时，其余张保存成功；第 2 张角标标红，点击独立重试后保存成功 |
-| AC-006 | TC-002 | e2e | `python3 ops/smoke_l5.py --case zip-share` | 点击打包 ZIP，调用 wx.shareFileMessage 成功拉起微信聊天选择面板 |
+| AC-006 | TC-002 | e2e | `python3 ops/smoke_l5.py --case zip-share` | 点击打包 ZIP，请求体含 task_id 且无 cloudIDs/zipName，响应读 fileID/bytes/count，下载入参为 fileID，调用 wx.shareFileMessage 成功拉起微信聊天选择面板 |
 | AC-007 | TC-004 | negative | `python3 ops/smoke_l5.py --case error-envelopes` | 响应 COOKIE_EXPIRED、SHORTLINK_FAIL、TIMEOUT 时，UI 呈现对应人话错误文案 |
 | AC-008 | TC-006 | security | `python3 ops/smoke_l5.py --case photos-auth-flow` | 首次拒绝相册权限后再次点击保存，弹出解释模态框，点击去设置打开 wx.openSetting |
 | AC-009 | TC-007 | contract | `python3 ops/smoke_l5.py --case history-openid-query` | 个人中心直查云开发数据库，无记录时展示空态插画，有记录时分页展示且仅含当前用户 openid |
@@ -53,6 +53,10 @@ export TEST_EXPIRED_LINK="https://v.douyin.com/invalid_or_expired/"
 - 设备：Xiaomi 13 真机微信客户端。
 - 步骤：复制小红书多图链接，手动粘贴后解析；渲染九宫格，大图预览正常；点击一键保存全部，观察逐项步进进度 (i/N)，相册完整保存所有 jpg 图片；点击导出 ZIP，成功唤起微信聊天选择面板转发好友。
 - 判据：全部图片存入原生相册，wx.shareFileMessage 调起成功，历史记录落库。
+- 断言：
+  - 请求体断言：POST /zip 请求体严格包含 `task_id`（格式 `st_<24位小写十六进制>`）与可选 `indexes`，绝对不包含 `cloudIDs` 与 `zipName` 字段。
+  - 响应字段断言：成功响应严格解析 `ok`、`fileID`、`bytes`、`count` 四字段，其中 `fileID` 必须以 `cloud://` 为前缀并作为 `wx.cloud.downloadFile({ fileID })` 入参。
+  - 失败文案断言：503 `ZIP_NOT_READY` 映射为人话提示「服务尚未准备好请稍后重试」，502 `ZIP_FAILED` 映射为人话提示「打包失败请重试」。
 
 ### TC-003 剪贴板异常与降级
 - 步骤：剪贴板无链接时静默不打扰；系统权限拒绝时不红屏崩溃，平滑降级为手动粘贴。

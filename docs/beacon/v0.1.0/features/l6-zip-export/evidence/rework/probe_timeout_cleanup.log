@@ -1,0 +1,18 @@
+2026-11-09 06:52:52,914 INFO httpx HTTP Request: POST http://probe/zip "HTTP/1.1 504 Gateway Timeout"
+2026-11-09 06:52:56,178 INFO renlink.zip zip ok count=2 bytes=222 key=l6/st_7cbad5679d2c296b96d74431/83b97b859aa5f81b.zip
+2026-11-09 06:52:56,179 INFO httpx HTTP Request: POST http://probe/zip "HTTP/1.1 200 OK"
+tmp residue before: []
+tmp residue mid-pack (t=500ms): ['/tmp/renlink-zip-8la1h794.zip']
+http_status: 504
+body: {"error": {"code": "TIMEOUT", "message": "单请求超过 1 秒", "retryable": true}, "ok": false}
+elapsed_ms_at_response: 1014
+worker_started: True
+worker_finished_at_504: False
+tmp residue at 504: []
+worker_finished_after_wait: True
+tmp residue after worker finished: []
+retry_status: 200
+retry_body: {"bytes": 222, "count": 2, "fileID": "cloud://local/l6/st_7cbad5679d2c296b96d74431/83b97b859aa5f81b.zip", "ok": true}
+tmp residue after retry: []
+uploaded_objects: ['83b97b859aa5f81b.zip']
+PROBE_OK

@@ -45,11 +45,16 @@
 
 实现者：任链接 后端。本轮只写代码与单测：未 commit、未 push、未改 truth 正文、未跑 gate integrity。
 
-- 改动面：新增 `container/app/routes_zip.py`、`container/app/zipkit.py`；`container/app/stage_store.py` 增补 `fetch_sync`（local 直读、COS download_file）；`main.py` 注册 zip_router；`errors.py` 追加 ZIP_NOT_READY、ZIP_FAILED、STAGE_EXPIRED、TOO_LARGE。
+- 改动面：新增 <container/app/routes_zip.py>、<container/app/zipkit.py>；<container/app/stage_store.py> 增补 fetch_sync（local 直读、COS download_file）；<main.py> 注册 zip_router；<errors.py> 追加 ZIP_NOT_READY、ZIP_FAILED、STAGE_EXPIRED、TOO_LARGE。
 - 文件名差异：tasks.md TASK-001 写的是 `zip_export.py`，本轮按派单改用 `zipkit.py`，truth/tasks 正文未动。
 - `python3 -m compileall -q container/app tests`：exit 0。
-- `python3 -m pytest tests/test_zip.py -q`：15 passed。
+- python3 -m pytest <tests/test_zip.py> -q：15 passed。
 - 覆盖路径：成功打包（四字段、条目名、1980-01-01、ZIP_STORED、bytes 一致）、子集去重排序、STAGE_EXPIRED（未知 task 与 TTL 过期）、TOO_LARGE（张数与源体积）、ZIP_NOT_READY（COS 无 bucket、local 目录不可写）、幂等同键、关闭缓存两次 sha256 一致、并发同键只打包一次、只打已转存、read/write/upload 故障 502 ZIP_FAILED 且无临时残留、TIMEOUT 504、九类非法输入 400。
-- 端到端（TestClient，local 存储）：/parse（构造 stub）→ /stage ×3 → /zip 返回 `cloud://local/l6/<task>/<hash>.zip`，bytes=2229、count=3；`unzip -l` 条目 000.jpg/001.jpg/002.jpg，时间 1980-01-01 00:00；二次调用同一 fileID；/tmp/renlink-zip-* 为 0。
-- 未验证：真实 COS 上传与读回、51 张与 200MB 样本、ops/zip_smoke.py 的 16 case curl 复跑（TASK-011/TASK-016）、真机分享。
+- 端到端（TestClient，local 存储）：/parse（构造 stub）→ /stage ×3 → /zip 返回 `cloud://local/l6/<task>/<hash>.zip`，bytes=2229、count=3；`unzip -l` 条目 000.jpg、001.jpg、002.jpg，时间 1980-01-01 00:00；二次调用同一 fileID；/tmp/renlink-zip-* 为 0。
+- 未验证：真实 COS 上传与读回、51 张与 200MB 样本、<ops/zip_smoke.py> 的 16 case curl 复跑（TASK-011、TASK-016）、真机分享。
 
+## 冻结时序治理记录（2026-11-09）
+
+变更 chg_a17d6ce4e5d6 登记事实：实现提交 8ed9b2e 时本包 truth 仍为 status=draft、AC 表为占位符；完整 AC 与 status=frozen 直到其后 65c3112 才写入。
+本记录只登记该时序事实，不修改任何 AC、约束或既有结论正文。
+truth_freeze 门以本次 refreeze 关闭该治理变更。

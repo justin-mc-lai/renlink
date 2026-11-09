@@ -78,6 +78,117 @@ def _fault(name: str) -> bool:
     return os.getenv("ZIP_FAULT_INJECT", "").strip().lower() == name
 
 
+def _fake_pack_delay_ms() -> int:
+    """Test-only: stall inside the packing worker, not in the event loop."""
+    if (os.getenv("STAGE_STORE", "local").strip().lower() or "local") != "local":
+        return 0
+    return _env_int("ZIP_FAKE_PACK_DELAY_MS", 0)
+
+
+class _PackingCancelled(Exception):
+    """The request was cancelled while the packing worker was still running."""
+
+
+class _PackScope:
+    """Hands the worker thread its temp paths and, on cancellation, the lock.
+
+    `asyncio.wait_for` cancels the coroutine, but the thread running
+    `_pack_sync` keeps going.  The scope lets the coroutine unlink every temp
+    file it already created, and keeps the per-key lock owned by the worker
+    until packing actually stops so a retry cannot pack the same key twice.
+    """
+
+    def __init__(self, key_lock: threading.Lock) -> None:
+        self._mu = threading.Lock()
+        self._key_lock = key_lock
+        self._paths: set = set()
+        self._cancelled = False
+        self._finished = False
+        self._release_pending = False
+        self._released = False
+
+    def _take_release(self) -> bool:
+        """Caller holds `_mu`; true exactly once when a release is owed."""
+        if self._release_pending and not self._released:
+            self._released = True
+            self._release_pending = False
+            return True
+        return False
+
+    @staticmethod
+    def _release(lock: threading.Lock) -> None:
+        try:
+            lock.release()
+        except RuntimeError:
+            pass
+
+    def start(self) -> bool:
+        with self._mu:
+            return not self._cancelled
+
+    def track(self, path: Path) -> bool:
+        with self._mu:
+            if self._cancelled:
+                return False
+            self._paths.add(path)
+            return True
+
+    def is_cancelled(self) -> bool:
+        with self._mu:
+            return self._cancelled
+
+    def handover(self, zip_path: Path) -> bool:
+        """Worker success.  False means the request was cancelled meanwhile."""
+        with self._mu:
+            self._finished = True
+            cancelled = self._cancelled
+            leftovers = [path for path in self._paths if path != zip_path]
+            if cancelled:
+                leftovers.append(zip_path)
+                self._paths.clear()
+            else:
+                # Keep the finished zip tracked until the coroutine claims it,
+                # so a cancellation that arrives in that window still unlinks it.
+                self._paths = {zip_path}
+            release = self._take_release() if cancelled else False
+        for path in leftovers:
+            _unlink(path)
+        if release:
+            self._release(self._key_lock)
+        return not cancelled
+
+    def claim(self) -> None:
+        """Coroutine took ownership of the returned zip path."""
+        with self._mu:
+            self._paths.clear()
+
+    def cancel(self) -> bool:
+        """Request cancelled.  True means the coroutine must release the lock."""
+        with self._mu:
+            self._cancelled = True
+            paths = list(self._paths)
+            if self._finished:
+                caller_releases = not self._released
+                self._released = True
+                return caller_releases
+            self._release_pending = True
+        for path in paths:
+            _unlink(path)
+        return False
+
+    def finish(self) -> None:
+        """Worker thread ended, normally or by cancellation."""
+        with self._mu:
+            self._finished = True
+            leftovers = list(self._paths)
+            self._paths.clear()
+            release = self._take_release()
+        for path in leftovers:
+            _unlink(path)
+        if release:
+            self._release(self._key_lock)
+
+
 _cache_lock = threading.Lock()
 _cache: Dict[str, Dict[str, Any]] = {}
 _key_locks: Dict[str, threading.Lock] = {}
@@ -255,23 +366,43 @@ async def ready_store() -> StageStore:
     return store
 
 
-def _pack_sync(entries: List[Dict[str, Any]], store: StageStore) -> Path:
+def _pack_sync(
+    entries: List[Dict[str, Any]], store: StageStore, scope: _PackScope
+) -> Path:
     """Read every stored object and write a deterministic zip (worker thread)."""
+    if not scope.start():
+        scope.finish()
+        raise _PackingCancelled()
     prefix = tmp_prefix()
     fd, name = tempfile.mkstemp(prefix=prefix, dir="/tmp", suffix=".zip")
     os.close(fd)
     zip_path = Path(name)
+    if not scope.track(zip_path):
+        _unlink(zip_path)
+        scope.finish()
+        raise _PackingCancelled()
     raws: List[Path] = []
+    handed_over = False
     try:
         if _fault("write"):
             raise ZipError("ZIP_FAILED", "打包写入失败")
+        delay_ms = _fake_pack_delay_ms()
+        if delay_ms > 0:
+            time.sleep(delay_ms / 1000.0)
+        if scope.is_cancelled():
+            raise _PackingCancelled()
         with zipfile.ZipFile(
             zip_path, "w", zipfile.ZIP_STORED, allowZip64=True
         ) as archive:
             for entry in entries:
+                if scope.is_cancelled():
+                    raise _PackingCancelled()
                 fd, raw_name = tempfile.mkstemp(prefix=prefix, dir="/tmp")
                 os.close(fd)
                 raw = Path(raw_name)
+                if not scope.track(raw):
+                    _unlink(raw)
+                    raise _PackingCancelled()
                 raws.append(raw)
                 if _fault("read"):
                     raise ZipError("ZIP_FAILED", "读取已转存图片失败")
@@ -287,7 +418,13 @@ def _pack_sync(entries: List[Dict[str, Any]], store: StageStore) -> Path:
                 info.external_attr = 0o644 << 16
                 with raw.open("rb") as handle:
                     archive.writestr(info, handle.read())
+        if not scope.handover(zip_path):
+            raise _PackingCancelled()
+        handed_over = True
         return zip_path
+    except _PackingCancelled:
+        _unlink(zip_path)
+        raise
     except ZipError:
         _unlink(zip_path)
         raise
@@ -297,6 +434,8 @@ def _pack_sync(entries: List[Dict[str, Any]], store: StageStore) -> Path:
     finally:
         for raw in raws:
             _unlink(raw)
+        if not handed_over:
+            scope.finish()
 
 
 async def _build_cached(
@@ -307,6 +446,7 @@ async def _build_cached(
 ) -> Dict[str, Any]:
     lock = _key_lock(memo)
     await _acquire(lock)
+    lock_handed_off = False
     try:
         ttl = cache_ttl_s()
         if ttl > 0:
@@ -329,7 +469,15 @@ async def _build_cached(
         if delay_ms > 0:
             await asyncio.sleep(delay_ms / 1000.0)
 
-        zip_path = await asyncio.to_thread(_pack_sync, entries, store)
+        scope = _PackScope(lock)
+        try:
+            zip_path = await asyncio.to_thread(_pack_sync, entries, store, scope)
+        except asyncio.CancelledError:
+            lock_handed_off = True
+            if scope.cancel():
+                lock.release()
+            raise
+        scope.claim()
         try:
             size = zip_path.stat().st_size
             if size > max_bytes():
@@ -353,7 +501,8 @@ async def _build_cached(
         logger.info("zip ok count=%s bytes=%s key=%s", result["count"], size, key)
         return result
     finally:
-        lock.release()
+        if not lock_handed_off:
+            lock.release()
 
 
 async def export_zip(task_id: str, indexes: Any) -> Dict[str, Any]:

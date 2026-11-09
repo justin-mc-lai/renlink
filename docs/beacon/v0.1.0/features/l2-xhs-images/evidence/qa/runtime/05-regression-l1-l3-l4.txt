@@ -1,0 +1,22 @@
+=== REGRESSION PROBE: L1 /parse, L3 /stage, L4 cookie/egress ===
+
+[1. L1 /parse Regression]
+Status: 200
+Response: {"ok": true, "platform": "xhs", "content_type": "note", "source_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626?xsec_token=test_token", "resolved_url": "https://www.xiaohongshu.com/explore/6af04386000000001500d626?xsec_token=test_token", "title": "回归测试", "item_count": 1, "elapsed_ms": 1, "items": [{"index": 0, "type": "image", "remoteUrl": "http://127.0.0.1:58629/tiny.webp", "ext": "webp", "cover": "", "width": null, "height": null, "needs_transcode": true}]}
+L1 Keys: ['content_type', 'elapsed_ms', 'item_count', 'items', 'ok', 'platform', 'resolved_url', 'source_url', 'title']
+L1 /parse schema & contract intact: PASS
+
+[2. L3 /stage Regression]
+Status: 200
+Response: {"ok": true, "fileID": "cloud://local/l3/6af04386000000001500d626/0.jpg", "kind": "image", "ext": "jpg", "bytes": 634}
+L3 Keys: ['bytes', 'ext', 'fileID', 'kind', 'ok']
+L3 /stage schema & contract intact: PASS
+
+[3. L4 cookie rejection & egress]
+Cookie in body status: 400
+Body: {'ok': False, 'error': {'code': 'INVALID_REQUEST', 'message': '请求体不得包含 cookie 字段', 'retryable': False}, 'items': [], 'resolved_url': '', 'elapsed_ms': 0}
+Egress direct mode verified.
+Egress proxy injection mode verified.
+L4 cookie rejection and egress configuration intact: PASS
+
+VERDICT: PASS

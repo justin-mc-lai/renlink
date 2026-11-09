@@ -1,7 +1,7 @@
 ---
 slug: l5-miniprogram-pages
 version: v0.1.0
-materials_status: stale
+materials_status: current
 task_source: acceptance_criteria
 depends_on: l1-parser-core, l3-media-delivery
 ---
@@ -22,7 +22,7 @@ depends_on: l1-parser-core, l3-media-delivery
 - [ ] TASK-010 相册保存与步进进度控制：封装 src/utils/album.js，集成 wx.saveImageToPhotosAlbum 与 wx.saveVideoToPhotosAlbum，实现「正在转存并保存第 (i/N) 张图片...」实时进度条，H5 端平滑降级 · ac=AC-004
 - [ ] TASK-011 保存单项容错与独立重试：逐项保存失败不中断队列，收集失败项 index，渲染红色失败角标与独立「重试」点击按钮 · ac=AC-005
 - [ ] TASK-012 系统相册权限防护体系：保存前检测 scope.writePhotosAlbum 授权状态，被拒时弹出模态确认弹窗并引导调用 uni.openSetting 开启权限 · ac=AC-008
-- [ ] TASK-013 多图 ZIP 导出与微信会话转发：承接 l6 契约 stub（待 l6 truth 冻结后复核），点击调用 POST /zip 拿到 cloudID，端侧下载后通过 wx.shareFileMessage 唤起转发会话（PC 降级 saveFileToDisk） · ac=AC-006
+- [ ] TASK-013 多图 ZIP 导出与微信会话转发：按 l6 冻结契约调用 POST /zip（传 `task_id`，可选 `indexes`），读取 `{ok,fileID,bytes,count}`，端侧下载后通过 `wx.shareFileMessage` 唤起转发会话（PC 降级 `saveFileToDisk`） · ac=AC-006
 - [ ] TASK-014 历史记录数据库直写服务：封装 src/api/history.js，主页解析成功后在 MP-WEIXIN 下调用 wx.cloud.database() 直写 parse_history 集合，非微信端降级 localStorage · ac=AC-010
 - [ ] TASK-015 个人中心页面布局与 openid 直读：实现 src/pages/mine/mine.vue，调用历史直读接口查询当前用户历史 · ac=AC-009
 - [ ] TASK-016 历史记录空态、分页加载与再次解析：实现历史空态引导插画、上拉触底分页加载、点击复制原链接、点击「再次解析」自动回填主页解析 · ac=AC-009
@@ -67,7 +67,7 @@ depends_on: l1-parser-core, l3-media-delivery
 1. **阶段 1：脚手架与基础构建**：完成 `frontend/` 工程搭建，验证 `npm run build:mp-weixin` 产出合规 `dist/build/mp-weixin` 与双页配置。
 2. **阶段 2：容器解析联调（对接 l1）**：连接云托管测试环境，用真实抖音短链与小红书链接测试 `POST /parse`，验证数据清洗与请求体积约束。
 3. **阶段 3：媒体转存联调（对接 l3 stub，待 l3 truth 冻结后复核）**：联调 `POST /stage`，验证单文件串行调用、15s 超时控制、云存储 cloudID 回传与 `wx.cloud.downloadFile` 下载。
-4. **阶段 4：端侧系统能力联调（对接 l6 stub，待 l6 truth 冻结后复核）**：在手机上测试相册授权、`wx.saveImageToPhotosAlbum` 保存、`wx.shareFileMessage` 转发 ZIP 文件。
+4. **阶段 4：端侧系统能力联调（按 l6 冻结契约联调 /zip）**：按 l6 冻结契约联调 `/zip`，重点验 `STAGE_EXPIRED`/`ZIP_NOT_READY` 文案；在手机上测试相册授权、`wx.saveImageToPhotosAlbum` 保存、`wx.shareFileMessage` 转发 ZIP 文件。
 5. **阶段 5：云开发数据库联调**：验证小程序端直写 `parse_history`、按 openid 自动隔离、列表分页与空态展示。
 6. **阶段 6：双真机综合验收**：在真实 iPhone 和 Android 手机上完整录制验收视频，提交验收员独立检验。
 

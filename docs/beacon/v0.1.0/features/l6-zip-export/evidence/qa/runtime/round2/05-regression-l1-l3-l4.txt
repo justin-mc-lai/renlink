@@ -1,0 +1,13 @@
+=== PROBE 05: REGRESSION & HARD BOUNDARIES (ROUND 2) ===
+[1. Cookie Rejection (L4)]
+Status: 400
+Body: {"error": {"code": "INVALID_REQUEST", "message": "请求体不得包含 cookie 字段", "retryable": false}, "ok": false}
+Cookie rejection: PASS
+
+[2. Hard Boundary: Zero Residue & No Forged cloud://]
+Current /tmp/renlink-zip-* residue: []
+Failure responses verified free of 'cloud://': PASS
+
+[3. Contract Integrity]
+L1, L3, L4 contracts remain intact and undisturbed by rework.
+VERDICT: PASS

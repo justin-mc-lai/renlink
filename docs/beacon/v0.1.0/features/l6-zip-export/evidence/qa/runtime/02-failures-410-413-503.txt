@@ -1,0 +1,18 @@
+=== PROBE 02: FAILURE PATHS (STAGE_EXPIRED, TOO_LARGE, ZIP_NOT_READY) ===
+
+[Case 1: STAGE_EXPIRED]
+Status: 410
+Body: {"ok": false, "error": {"code": "STAGE_EXPIRED", "message": "清单缓存已过期，请重新解析", "retryable": false}}
+STAGE_EXPIRED: PASS
+
+[Case 2: TOO_LARGE (count > max_images)]
+Status: 413
+Body: {"ok": false, "error": {"code": "TOO_LARGE", "message": "已转存图片数量超过上限", "retryable": false}}
+TOO_LARGE: PASS
+
+[Case 3: ZIP_NOT_READY (unconfigured COS credentials)]
+Status: 503
+Body: {"ok": false, "error": {"code": "ZIP_NOT_READY", "message": "打包服务未配置对象存储: COS 临时密钥获取失败", "retryable": true}}
+ZIP_NOT_READY: PASS
+
+VERDICT: PASS

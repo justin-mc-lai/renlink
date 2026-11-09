@@ -1,0 +1,51 @@
+=== PROBE 01: __INITIAL_STATE__ -> imageList ORIGINAL URL RESOLUTION (ROUND 2) ===
+HTTP Status: 200
+Response: {
+  "ok": true,
+  "platform": "xhs",
+  "content_type": "note",
+  "source_url": "https://www.xiaohongshu.com/explore/6a0000000000000000000001?xsec_token=token_q_1",
+  "resolved_url": "https://www.xiaohongshu.com/explore/6a0000000000000000000001?xsec_token=token_q_1",
+  "title": "l2-round2-note-1",
+  "item_count": 3,
+  "elapsed_ms": 1,
+  "items": [
+    {
+      "index": 0,
+      "type": "image",
+      "remoteUrl": "https://sns-img-qc.xhscdn.com/default-0.jpg",
+      "ext": "jpeg",
+      "cover": "",
+      "width": 1080,
+      "height": 1440,
+      "needs_transcode": true
+    },
+    {
+      "index": 1,
+      "type": "image",
+      "remoteUrl": "https://sns-img-qc.xhscdn.com/wbdft-1.jpg",
+      "ext": "jpeg",
+      "cover": "",
+      "width": 720,
+      "height": 960,
+      "needs_transcode": true
+    },
+    {
+      "index": 2,
+      "type": "image",
+      "remoteUrl": "https://sns-img-qc.xhscdn.com/crd-2.webp",
+      "ext": "webp",
+      "cover": "",
+      "width": 800,
+      "height": 800,
+      "needs_transcode": true
+    }
+  ]
+}
+Item 0 remoteUrl: https://sns-img-qc.xhscdn.com/default-0.jpg (expected default-0.jpg)
+Item 1 remoteUrl: https://sns-img-qc.xhscdn.com/wbdft-1.jpg (expected wbdft-1.jpg)
+Item 2 remoteUrl: https://sns-img-qc.xhscdn.com/crd-2.webp (expected crd-2.webp)
+Item 0: verified thumbnail 'urlPre' not in remoteUrl/cover
+Item 1: verified thumbnail 'urlPre' not in remoteUrl/cover
+Item 2: verified thumbnail 'urlPre' not in remoteUrl/cover
+VERDICT: PASS

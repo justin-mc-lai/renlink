@@ -1,0 +1,9 @@
+=== PROBE 03: IDEMPOTENCY & CACHE READBACK (ROUND 2) ===
+Call 1 Status: 200, Body: {"bytes": 379, "count": 3, "fileID": "cloud://local/l6/st_876e525b35db1401b04b29d6/c0be322c1ad6af50.zip", "ok": true}
+Call 1 Store Operations: fetch_sync=0, put=0
+Call 2 Status: 200, Body: {"bytes": 379, "count": 3, "fileID": "cloud://local/l6/st_876e525b35db1401b04b29d6/c0be322c1ad6af50.zip", "ok": true}
+Call 2 Store Operations: fetch_sync=0, put=0
+Idempotent Match: True
+Delta fetch_sync: 0 (0 expected)
+Delta put: 0 (0 expected)
+VERDICT: PASS

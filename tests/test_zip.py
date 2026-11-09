@@ -36,6 +36,7 @@ ENV_NAMES = (
     "ZIP_CACHE_TTL_S",
     "ZIP_TMP_PREFIX",
     "ZIP_FAKE_DELAY_MS",
+    "ZIP_FAKE_PACK_DELAY_MS",
     "ZIP_FAULT_INJECT",
 )
 
@@ -303,10 +304,10 @@ def test_zip_concurrent_same_key_packs_once(
     calls = []
     real_pack = zipkit._pack_sync
 
-    def counting_pack(entries, store):
+    def counting_pack(entries, store, scope):
         calls.append(1)
         time.sleep(0.05)
-        return real_pack(entries, store)
+        return real_pack(entries, store, scope)
 
     monkeypatch.setattr(zipkit, "_pack_sync", counting_pack)
 
@@ -376,6 +377,43 @@ def test_zip_timeout(
     assert body["error"]["retryable"] is True
     assert "fileID" not in body
     assert zip_residue() == before
+
+
+def test_zip_timeout_during_pack_cleans_temp_files(
+    client: TestClient, zip_env: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Timeout while the worker thread is inside the zip archive body."""
+    root = zip_env / "store"
+    stage_image(root, 0, "jpg", b"img-zero")
+    stage_image(root, 1, "jpg", b"img-one")
+    task_id = remember([item(0), item(1)])
+    before = zip_residue()
+    monkeypatch.setenv("ZIP_FAKE_PACK_DELAY_MS", "1200")
+    monkeypatch.setenv("ZIP_TIMEOUT_S", "1")
+
+    response = client.post("/zip", json={"task_id": task_id})
+
+    body = response.json()
+    assert response.status_code == 504
+    assert body["error"]["code"] == "TIMEOUT"
+    assert body["error"]["retryable"] is True
+    assert "fileID" not in body
+    # Right when the 504 is returned every temp zip of this task is gone.
+    assert zip_residue() == before
+
+    # The worker thread is still running; it must not leave a file behind.
+    deadline = time.monotonic() + 8
+    while time.monotonic() < deadline and zip_residue() != before:
+        time.sleep(0.05)
+    time.sleep(0.3)
+    assert zip_residue() == before
+
+    # The release of the key lock follows the worker, so a retry is serialized
+    # and still succeeds on its own (no duplicate in-flight packing).
+    monkeypatch.delenv("ZIP_FAKE_PACK_DELAY_MS")
+    retry = client.post("/zip", json={"task_id": task_id})
+    assert retry.status_code == 200
+    assert retry.json()["count"] == 2
 
 
 def test_zip_invalid_requests(client: TestClient, zip_env: Path) -> None:

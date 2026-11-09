@@ -1,0 +1,32 @@
+=== PROBE 04: CACHE & METRICS RUNTIME INVESTIGATION (L2-1 & L2-2) (ROUND 2) ===
+
+[AC-009 TTL Parsing Cache (L2-1)]
+Request 1 Status: 200, _fetch_note calls: 1
+Request 2 Status: 200, _fetch_note calls: 1 (hit cache, upstream not called)
+Result items identical: True
+TTL=0 requests: 2 calls produced 2 upstream fetches (cache disabled mode)
+AC-009 Parsing Cache Status: PASS (L2-1 verified resolved)
+
+[AC-010 Counters & Structured Logging (L2-2)]
+Process-local Counters: {
+  "xhs_note_cache_hit_total": 1,
+  "xhs_note_cache_miss_total": 1,
+  "xhs_note_images_total": 12,
+  "xhs_note_parse_total{result=failed}": 0,
+  "xhs_note_parse_total{result=need_xsec}": 0,
+  "xhs_note_parse_total{result=ok}": 4
+}
+Sample Structured Log Lines:
+event=xhs_note_parse note_id=6a0000000000000000000001 image_count=3 xsec_token=present cache=miss cache_state=enabled elapsed_ms=0 code=ok
+event=xhs_note_parse note_id=6a0000000000000000000001 image_count=3 xsec_token=present cache=hit cache_state=enabled elapsed_ms=0 code=ok
+event=xhs_note_parse note_id=6a0000000000000000000001 image_count=3 xsec_token=present cache=miss cache_state=disabled elapsed_ms=0 code=ok
+event=xhs_note_parse note_id=6a0000000000000000000001 image_count=3 xsec_token=present cache=miss cache_state=disabled elapsed_ms=0 code=ok
+
+Log field validation:
+- 'event=xhs_note_parse' present: True
+- 'cache=hit' / 'cache=miss' real values: True
+- raw token string ('token_q_1') excluded from logs: True
+- 'token_state=present|missing' valid: True
+AC-010 Counters and Logging Status: PASS (L2-2 verified resolved)
+
+VERDICT: PASS

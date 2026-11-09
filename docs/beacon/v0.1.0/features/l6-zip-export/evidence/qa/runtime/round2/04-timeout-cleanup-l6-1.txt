@@ -1,0 +1,31 @@
+=== PROBE 04: L6-1 TIMEOUT CLEANUP & L6-4 CONCURRENCY (ROUND 2) ===
+[Initial State]
+Pre-existing /tmp/renlink-zip-* residue: []
+
+[Phase 1: Packing Mid-Worker at t=500ms]
+Mid-pack /tmp residue: ['/tmp/renlink-zip-9dwhqwjs.zip']
+File created during packaging: True
+
+[Phase 2: Timeout 504 Triggered]
+HTTP Status: 504
+Response Body: {"error": {"code": "TIMEOUT", "message": "单请求超过 1 秒", "retryable": true}, "ok": false}
+Elapsed at 504: 1001 ms
+Residue in /tmp at 504 return: [] (count: 0)
+Immediate cleanup at 504 verified: PASS (zero leaked zip files)
+
+[Phase 3: Immediate Second Call Concurrency Check (L6-4)]
+Second Request Status: 504
+Per-key lock held by worker during pack: verified (no concurrent second packing worker)
+
+[Phase 4: Worker Completed at ~3.5s]
+Residue in /tmp after worker finish: [] (count: 0)
+Worker teardown cleanup verified: PASS (zero leaked zip files)
+
+[Phase 5: Post-Worker Retry Call]
+Retry HTTP Status: 200
+Retry Body: {"bytes": 379, "count": 3, "fileID": "cloud://local/l6/st_876e525b35db1401b04b29d6/c0be322c1ad6af50.zip", "ok": true}
+Uploaded ZIP objects in store: ['c0be322c1ad6af50.zip'] (count: 1)
+Residue in /tmp after retry: []
+Only 1 uploaded object created: PASS
+
+VERDICT: PASS (L6-1 defect fully verified resolved)

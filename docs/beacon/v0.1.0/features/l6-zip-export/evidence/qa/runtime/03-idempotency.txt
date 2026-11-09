@@ -1,0 +1,10 @@
+=== PROBE 03: IDEMPOTENCY & CACHE HIT ===
+Call 1: status=200, body={'ok': True, 'fileID': 'cloud://local/l6/st_d81dee46b6b060566854b999/83b97b859aa5f81b.zip', 'bytes': 238, 'count': 2}
+Call 1 store ops: fetch_sync=2, put=1
+Call 2: status=200, body={'ok': True, 'fileID': 'cloud://local/l6/st_d81dee46b6b060566854b999/83b97b859aa5f81b.zip', 'bytes': 238, 'count': 2}
+Call 2 store ops: fetch_sync=2, put=1
+fileID: cloud://local/l6/st_d81dee46b6b060566854b999/83b97b859aa5f81b.zip
+bytes: 238
+count: 2
+Second call returned identical response with 0 extra reads and 0 extra uploads.
+VERDICT: PASS

@@ -1,0 +1,15 @@
+=== PROBE 04: CACHE & METRICS RUNTIME INVESTIGATION (AC-009 & AC-010) ===
+
+[AC-009 Cache Investigation]
+Request 1 status: 200, _fetch_note calls after req 1: 1
+Request 2 status: 200, _fetch_note calls after req 2: 2
+DEFECT CONFIRMED (L2-1): Upstream fetch called 2 times for 2 identical requests.
+AC-009 parsing cache is not implemented (XHS_NOTE_CACHE_TTL_S not read).
+
+[AC-010 Counters & Structured Logging Investigation]
+XHS_NOTE_CACHE_TTL_S in codebase: False
+event=xhs_note_parse in codebase: False
+Prometheus counters in codebase: False
+DEFECT CONFIRMED (L2-2): 4 Prometheus/custom counters and event=xhs_note_parse log fields are missing.
+
+VERDICT: FAIL (due to L2-1 and L2-2 unfulfilled AC-009 and AC-010)
