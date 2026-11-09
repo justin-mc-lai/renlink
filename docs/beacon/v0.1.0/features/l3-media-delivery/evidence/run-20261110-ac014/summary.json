@@ -1,0 +1,66 @@
+{
+  "run": "run-20261110-ac014",
+  "collected_at": "2026-11-10T01:45+08:00",
+  "stage_store": "local (STAGE_LOCAL_DIR=/tmp/ac014-store)",
+  "service": "uvicorn app.main:app --port 18114 on worktree /tmp/l3-ac014-20261110 @ 13e186bf",
+  "xhs_link_source": "xiaohongshu.com public explore feed opened in a real Chrome; note id + xsec_token copied from the note card; tokens masked in evidence",
+  "samples": {
+    "video_link": "https://v.douyin.com/Y7MgY9YnYAg/",
+    "xhs_image_link_head": "https://www.xiaohongshu.com/explore/6ac9b7cc…",
+    "xhs_image_note_id": "6ac9b7cc0000000015008d58"
+  },
+  "video_half": {
+    "parse": {
+      "http": 200,
+      "content_type": "video",
+      "task_id": "st_e8f79c64ed76853319c6ba7c",
+      "item_type": "video",
+      "ext": "mp4"
+    },
+    "stage": {
+      "http": 200,
+      "kind": "video",
+      "ext": "mp4",
+      "bytes": 162700599,
+      "fileID": "cloud://local/l3/7705367833957403946/0.mp4"
+    },
+    "readback": {
+      "http": 200,
+      "bytes": 162700599,
+      "match": true,
+      "content_type": "video/mp4"
+    }
+  },
+  "xhs_image_half": {
+    "result": "BLOCKED",
+    "parse_attempts": [
+      {
+        "note": "6ac9b7cc0000000015008d58",
+        "http": 502,
+        "code": "PARSE_FAILED",
+        "message": "没有落到笔记规范页"
+      },
+      {
+        "note": "6acb3b6c000000001c02e067",
+        "http": 502,
+        "code": "PARSE_FAILED",
+        "message": "没有落到笔记规范页"
+      }
+    ],
+    "root_causes": [
+      "mobile H5 fetch of an image note 302-redirects to /404/sec_* (xhs risk gate); desktop UA fetch redirects to /login. Verified for 6 fresh tokens in one session.",
+      "even when a note page is fetched, current l2 expects state['note']['noteDetailMap']; today's xhs H5 page carries state['noteData']['data']['noteData'] instead, so _note_from_state raises PARSE_FAILED 页面缺少 noteDetailMap (proved on a real fetched page)."
+    ],
+    "fix_outside_l3": [
+      "refresh the operator XHS cookie from a logged-in desktop account (human QR)",
+      "or change container/app/parsers/xhs.py to read the mobile noteData shape (container change is out of scope for this evidence task)"
+    ]
+  },
+  "commands": [
+    "curl -s -X POST http://127.0.0.1:18114/parse -H 'Content-Type: application/json' -d '{\"url\":\"https://v.douyin.com/Y7MgY9YnYAg/\"}'",
+    "curl -s -X POST http://127.0.0.1:18114/stage -H 'Content-Type: application/json' -d '{\"task_id\":\"st_e8f79c64ed76853319c6ba7c\",\"index\":0}'",
+    "curl -s 'http://127.0.0.1:18114/stage/file?file_id=cloud://local/l3/7705367833957403946/0.mp4' -o readback-video.bin",
+    "curl -s -X POST http://127.0.0.1:18114/parse -H 'Content-Type: application/json' -d '{\"url\":\"<xhs note link>\"}'"
+  ],
+  "notes": "xsec_token values are masked; the operator cookie was passed only through the process environment and never written into evidence."
+}

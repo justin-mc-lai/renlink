@@ -1,0 +1,9 @@
+{
+  "endpoint": "GET /stage/file?file_id=cloud://local/l3/7705367833957403946/0.mp4",
+  "http_status": 200,
+  "sha256": "cf0e2fbe65a241b431e22ec678cdc1126a9a5a3a89666e752fcd71f6e3c616be",
+  "readback_bytes": 162700599,
+  "response_bytes": 162700599,
+  "match": true,
+  "content_type": "video/mp4"
+}

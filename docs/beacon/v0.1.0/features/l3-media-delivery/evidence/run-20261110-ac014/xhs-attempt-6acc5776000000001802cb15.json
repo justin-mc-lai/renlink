@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "platform": "xhs",
+  "content_type": "video",
+  "source_url": "https://www.xiaohongshu.com/explore/6acc5776000000001802cb15?xsec_token=***&xsec_source=pc_feed",
+  "resolved_url": "https://www.xiaohongshu.com/explore/6acc5776000000001802cb15?xsec_token=***&xsec_source=pc_feed",
+  "title": "给大家介绍一下我的宝宝哥哥还有谁谁谁",
+  "item_count": 1,
+  "elapsed_ms": 622,
+  "task_id": "st_37a8b7ae2aacf638e333f372",
+  "items": [
+    {
+      "index": 0,
+      "type": "video",
+      "remoteUrl": "http://sns-bak-v6.xhscdn.com/stream/1/110/332/01eacc5763053be001037001a12f468202_332.mp4",
+      "ext": "mp4",
+      "cover": "http://sns-webpic-qc.xhscdn.com/202611100144/f2a3c089c1911efaf418aa83ac43d89b/1040g2sg32677r95c4c6g5n6jneo5tmj6l82tk8g!nd_prv_wlteh_jpg_3",
+      "width": 1080,
+      "height": 1884,
+      "needs_transcode": false
+    }
+  ]
+}
