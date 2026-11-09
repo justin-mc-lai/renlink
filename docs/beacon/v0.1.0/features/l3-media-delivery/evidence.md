@@ -62,6 +62,6 @@ evidence.md 是索引与实测回执，不是 QA gate 判定，也不声明 rele
 
 ## 契约补登 chg_3c2cde3327ff（2026-11-09）
 
-- `/parse` 成功响应新增 `task_id`（`st_` + sha256 前 24 位），`contract/parse_response.schema.json` 同步；客户端不再自行复算。
+- `/parse` 成功响应新增 `task_id`（`st_` 前缀 + sha256 前 24 位）；客户端不再自行复算，契约同步 `contract/parse_response.schema.json`。
 - 新增 `GET /stage/file`：仅接受 `cloud://` id，流式返回已转存对象，供 H5/PC 直接下载。
 - 验证：`pytest tests/test_parse.py tests/test_stage.py -q` → 12 passed；本地 E2E 抖音视频 162,700,599B，`/stage/file` 返回 200 video/mp4 且字节一致。
