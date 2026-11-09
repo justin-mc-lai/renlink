@@ -134,7 +134,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
-import { extractValidUrl, parseUrl, stageMedia, createZip } from '../../api/parse'
+import { extractValidUrl, parseUrl, stageMedia, createZip, stageFileUrl } from '../../api/parse'
 import { addHistoryRecord } from '../../api/history'
 import { ensureAlbumPermission, saveVideoToAlbum, saveImageToAlbum } from '../../utils/album'
 import { getErrorMessage } from '../../utils/errors'
@@ -277,13 +277,13 @@ async function saveSingleVideo() {
   saveProgressText.value = '正在转存视频...'
   try {
     const videoItem = parseResult.value.items[0]
-    const staged = await stageMedia(videoItem)
+    const staged = await stageMedia(videoItem, parseResult.value.task_id)
 
     // #ifdef MP-WEIXIN
-    if (staged.cloudID.startsWith('cloud://')) {
+    if (staged.fileID && staged.fileID.startsWith('cloud://')) {
       const downloadRes = await new Promise((resolve, reject) => {
         wx.cloud.downloadFile({
-          fileID: staged.cloudID,
+          fileID: staged.fileID,
           success: resolve,
           fail: reject
         })
@@ -294,7 +294,13 @@ async function saveSingleVideo() {
     }
     // #endif
 
-    await saveVideoToAlbum(staged.cloudID)
+    // #ifndef MP-WEIXIN
+    downloadToDisk(staged.fileID)
+    uni.showToast({ title: '已开始下载视频', icon: 'success' })
+    return
+    // #endif
+
+    await saveVideoToAlbum(staged.fileID)
     uni.showToast({ title: '视频已保存到相册', icon: 'success' })
   } catch (err) {
     const msg = err?.message || '保存视频失败，请重试'
@@ -311,6 +317,17 @@ function previewImageItem(index) {
     current: urls[index],
     urls
   })
+}
+
+function downloadToDisk(fileID) {
+  // #ifndef MP-WEIXIN
+  const link = document.createElement('a')
+  link.href = stageFileUrl(fileID)
+  link.rel = 'noopener'
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  // #endif
 }
 
 async function saveAllImages() {
@@ -366,12 +383,12 @@ async function retrySingleItem(index) {
 }
 
 async function saveSingleImageItem(item) {
-  const staged = await stageMedia(item)
+  const staged = await stageMedia(item, parseResult.value.task_id)
   // #ifdef MP-WEIXIN
-  if (staged.cloudID.startsWith('cloud://')) {
+  if (staged.fileID && staged.fileID.startsWith('cloud://')) {
     return new Promise((resolve, reject) => {
       wx.cloud.downloadFile({
-        fileID: staged.cloudID,
+        fileID: staged.fileID,
         success: async (res) => {
           try {
             await saveImageToAlbum(res.tempFilePath)
@@ -385,21 +402,26 @@ async function saveSingleImageItem(item) {
     })
   }
   // #endif
-  return saveImageToAlbum(staged.cloudID)
+
+  // #ifndef MP-WEIXIN
+  downloadToDisk(staged.fileID)
+  return
+  // #endif
+
+  return saveImageToAlbum(staged.fileID)
 }
 
 async function handleExportZip() {
   if (!parseResult.value || !parseResult.value.items) return
   isZipping.value = true
   try {
-    const cloudIDs = parseResult.value.items.map(it => it.remoteUrl)
     const zipName = `renlink_${parseResult.value.platform}_${Date.now()}.zip`
-    const res = await createZip({ cloudIDs, zipName })
+    const res = await createZip(parseResult.value.task_id)
 
     // #ifdef MP-WEIXIN
-    if (res.cloudID && res.cloudID.startsWith('cloud://')) {
+    if (res.fileID && res.fileID.startsWith('cloud://')) {
       wx.cloud.downloadFile({
-        fileID: res.cloudID,
+        fileID: res.fileID,
         success(downloadRes) {
           wx.shareFileMessage({
             filePath: downloadRes.tempFilePath,
@@ -422,7 +444,8 @@ async function handleExportZip() {
     // #endif
 
     // #ifndef MP-WEIXIN
-    uni.showToast({ title: '非小程序环境暂不支持', icon: 'none' })
+    downloadToDisk(res.fileID)
+    uni.showToast({ title: '已开始下载 ZIP', icon: 'success' })
     // #endif
   } catch (err) {
     const msg = err?.message || '导出 ZIP 失败'

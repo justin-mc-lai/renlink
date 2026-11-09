@@ -156,9 +156,11 @@ async def _parse_pipeline(source_url: str, started: float) -> Response:
     if truncated:
         payload["truncated"] = True
         payload["item_count"] = len(payload["items"])
-        from .contract import encode_payload
+    task_id = stage_cache.remember(payload)
+    payload["task_id"] = task_id
+    from .contract import encode_payload
 
-        data = encode_payload(payload)
+    data = encode_payload(payload)
     logger.info(
         "parse ok platform=%s content_type=%s items=%s elapsed_ms=%s host=%s",
         platform,
@@ -167,7 +169,6 @@ async def _parse_pipeline(source_url: str, started: float) -> Response:
         elapsed_ms,
         host,
     )
-    stage_cache.remember(payload)
     return Response(content=data, media_type="application/json")
 
 

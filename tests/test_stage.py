@@ -239,3 +239,23 @@ def test_bad_index_is_not_retryable(client: TestClient, media_server: str) -> No
     assert response.status_code == 400
     assert body["error"]["code"] == "STAGE_FAILED"
     assert body["error"]["retryable"] is False
+
+
+def test_stage_file_streams_stored_object(
+    client: TestClient, media_server: str, stage_env: Path
+) -> None:
+    task_id = remember([image_item(0, media_server + "/tiny.jpg", "jpg", False)])
+    staged = client.post("/stage", json={"task_id": task_id, "index": 0}).json()
+
+    response = client.get("/stage/file", params={"file_id": staged["fileID"]})
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("image/jpeg")
+    assert len(response.content) == staged["bytes"]
+
+
+def test_stage_file_rejects_non_cloud_id(client: TestClient) -> None:
+    response = client.get("/stage/file", params={"file_id": "/etc/passwd"})
+
+    assert response.status_code == 400
+    assert response.json()["error"]["code"] == "INVALID_REQUEST"

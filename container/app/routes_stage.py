@@ -13,8 +13,9 @@ from typing import Any, Dict, Optional
 from urllib.parse import urlparse
 
 import httpx
-from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Query, Request
+from fastapi.responses import FileResponse, JSONResponse
+from starlette.background import BackgroundTask
 
 from . import stage_cache
 from .stage_store import StageStore, StoreFailed, StoreNotReady, build_store, store_mode
@@ -305,6 +306,36 @@ async def stage_item(request: Request) -> JSONResponse:
         logger.exception("stage unexpected failure")
         return _failure(_error("STAGE_FAILED", "转存失败", 502, True))
 
+
+
+@router.get("/stage/file")
+async def stage_file(file_id: str = Query(..., alias="file_id")) -> Any:
+    """Stream a previously staged object so H5/PC can download it directly."""
+    if not file_id.startswith("cloud://"):
+        return _failure(_error("INVALID_REQUEST", "file_id 必须是 cloud:// 对象", 400, False))
+    store = build_store()
+    try:
+        await store.ready()
+    except StoreNotReady as exc:
+        return _failure(_error("STAGE_NOT_READY", str(exc), 503, True))
+    fd, tmp_name = tempfile.mkstemp(prefix="renlink-serve-")
+    os.close(fd)
+    dest = Path(tmp_name)
+    try:
+        await asyncio.to_thread(store.fetch_sync, file_id, dest)
+    except StoreFailed as exc:
+        dest.unlink(missing_ok=True)
+        return _failure(_error("STAGE_FAILED", str(exc), 502, True))
+    ext = file_id.rsplit(".", 1)[-1].lower()
+    media = {
+        "mp4": "video/mp4",
+        "m4a": "audio/mp4",
+        "jpg": "image/jpeg",
+        "jpeg": "image/jpeg",
+        "png": "image/png",
+        "webp": "image/webp",
+    }.get(ext, "application/octet-stream")
+    return FileResponse(dest, media_type=media, filename=f"renlink.{ext}", background=BackgroundTask(dest.unlink))
 
 @router.get("/stage/mode")
 async def stage_mode() -> JSONResponse:

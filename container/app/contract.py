@@ -56,6 +56,7 @@ class ParseResult(BaseModel):
     title: str = ""
     item_count: int
     elapsed_ms: int
+    task_id: str = ""
     items: List[ParseItem]
 
 

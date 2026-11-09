@@ -52,6 +52,27 @@ def _install_log_redaction() -> None:
 _install_log_redaction()
 
 app = FastAPI(title="Renlink l1 parser core", version=__version__)
+
+# H5 / PWA callers are cross-origin in dev and on separate hosts in prod.
+# Default to the local dev ports; override with CORS_ALLOW_ORIGINS (comma separated).
+_cors_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ALLOW_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174",
+    ).split(",")
+    if origin.strip()
+]
+if _cors_origins:
+    from fastapi.middleware.cors import CORSMiddleware
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_cors_origins,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["content-type", "x-request-id"],
+    )
+
 app.include_router(parse_router)
 app.include_router(stage_router)
 app.include_router(zip_router)

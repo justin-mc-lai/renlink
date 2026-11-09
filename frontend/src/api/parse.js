@@ -148,18 +148,27 @@ export async function parseUrl(url) {
   // #endif
 }
 
+const API_BASE = import.meta.env?.VITE_API_BASE || ''
+
+/** URL of the staged object, streamed by GET /stage/file. H5/PC download path. */
+export function stageFileUrl(fileID) {
+  return `${API_BASE}/stage/file?file_id=${encodeURIComponent(fileID)}`
+}
+
 /**
- * 单文件转存 stub (对接 l3-media-delivery)
- * // TODO(l3 truth 未冻结): 待 l3 truth 冻结后核对对齐
- * 一文件一请求，耗时 <= 15s，返回 cloudID
- * 约束：l3 未冻结，转存服务不可用时显式失败（STAGE_NOT_READY），严禁伪造成功
- * @param {{ remoteUrl: string, type: string, ext: string, needs_transcode?: boolean }} item
- * @returns {Promise<{ ok: boolean, cloudID: string }>}
+ * 单文件转存：POST /stage {task_id, index} -> {ok, fileID, kind, ext, bytes}
+ * 一文件一请求；失败按错误码显式抛出，不伪造成功。
  */
-export async function stageMedia(item) {
+export async function stageMedia(item, taskId) {
+  if (!taskId) {
+    const err = new Error(getErrorMessage('STAGE_EXPIRED'))
+    err.code = 'STAGE_EXPIRED'
+    throw err
+  }
+  const payload = { task_id: taskId, index: item.index }
+
   // #ifdef MP-WEIXIN
   return new Promise((resolve, reject) => {
-    // 待 l3 容器就绪，调用 POST /stage
     wx.cloud.callContainer({
       path: '/stage',
       method: 'POST',
@@ -167,50 +176,94 @@ export async function stageMedia(item) {
         'X-WX-SERVICE': 'renlink-container',
         'content-type': 'application/json'
       },
-      data: {
-        remoteUrl: item.remoteUrl,
-        type: item.type,
-        ext: item.ext,
-        needs_transcode: Boolean(item.needs_transcode)
-      },
+      data: payload,
       timeout: 15000,
       success(res) {
         if (res.statusCode === 200 && res.data?.ok) {
           resolve(res.data)
         } else {
-          const err = new Error(getErrorMessage('STAGE_NOT_READY', res.data?.error?.message))
-          err.code = 'STAGE_NOT_READY'
+          const code = res.data?.error?.code || 'STAGE_FAILED'
+          const err = new Error(getErrorMessage(code, res.data?.error?.message))
+          err.code = code
           reject(err)
         }
       },
-      fail(err) {
-        // // TODO(l3 truth 未冻结): 转存服务未就绪，显式拒绝，严禁伪造成功
-        const stageErr = new Error(getErrorMessage('STAGE_NOT_READY'))
-        stageErr.code = 'STAGE_NOT_READY'
-        reject(stageErr)
+      fail() {
+        const err = new Error(getErrorMessage('STAGE_FAILED'))
+        err.code = 'STAGE_FAILED'
+        reject(err)
       }
     })
   })
   // #endif
 
   // #ifndef MP-WEIXIN
-  // // TODO(l3 truth 未冻结): 跨端转存服务未就绪，显式拒绝
-  const err = new Error(getErrorMessage('STAGE_NOT_READY'))
-  err.code = 'STAGE_NOT_READY'
+  const res = await fetch(`${API_BASE}/stage`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  const data = await res.json()
+  if (data?.ok) return data
+  const code = data?.error?.code || 'STAGE_FAILED'
+  const err = new Error(getErrorMessage(code, data?.error?.message))
+  err.code = code
   throw err
   // #endif
 }
 
 /**
- * 多图打包 ZIP stub (对接 l6-zip-export)
- * // TODO(l6 truth 未冻结): 待 l6 truth 冻结后核对对齐
- * 约束：l6 未冻结，直接显式拒绝（ZIP_NOT_READY），不打不存在的端点
- * @param {{ cloudIDs: string[], zipName: string }} params
- * @returns {Promise<{ ok: boolean, cloudID: string }>}
+ * 多图打包：POST /zip {task_id, indexes?} -> {ok, fileID, bytes, count}
  */
-export async function createZip(params) {
-  // // TODO(l6 truth 未冻结): 打包导出服务未上线，直接显式拒绝
-  const err = new Error(getErrorMessage('ZIP_NOT_READY'))
-  err.code = 'ZIP_NOT_READY'
+export async function createZip(taskId, indexes) {
+  if (!taskId) {
+    const err = new Error(getErrorMessage('STAGE_EXPIRED'))
+    err.code = 'STAGE_EXPIRED'
+    throw err
+  }
+  const payload = indexes ? { task_id: taskId, indexes } : { task_id: taskId }
+
+  // #ifdef MP-WEIXIN
+  return new Promise((resolve, reject) => {
+    wx.cloud.callContainer({
+      path: '/zip',
+      method: 'POST',
+      header: {
+        'X-WX-SERVICE': 'renlink-container',
+        'content-type': 'application/json'
+      },
+      data: payload,
+      timeout: 15000,
+      success(res) {
+        if (res.statusCode === 200 && res.data?.ok) {
+          resolve(res.data)
+        } else {
+          const code = res.data?.error?.code || 'ZIP_FAILED'
+          const err = new Error(getErrorMessage(code, res.data?.error?.message))
+          err.code = code
+          reject(err)
+        }
+      },
+      fail() {
+        const err = new Error(getErrorMessage('ZIP_FAILED'))
+        err.code = 'ZIP_FAILED'
+        reject(err)
+      }
+    })
+  })
+  // #endif
+
+  // #ifndef MP-WEIXIN
+  const res = await fetch(`${API_BASE}/zip`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  const data = await res.json()
+  if (data?.ok) return data
+  const code = data?.error?.code || 'ZIP_FAILED'
+  const err = new Error(getErrorMessage(code, data?.error?.message))
+  err.code = code
   throw err
+  // #endif
 }
