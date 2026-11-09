@@ -41,7 +41,7 @@ source: user_intent
 utterance: "任链接：微信小程序两页前端（主页粘贴/解析/逐项存相册 + 个人中心 openid 历史）"
 goal: "交付微信小程序主页与个人中心两页完整 UI 规格、交互逻辑与真机验收标准：主页支持剪贴板识别、链接粘贴、调用 l1 /parse 解析展示结果、串行调用 l3 /stage 逐项转存至 COS 并保存到手机相册；个人中心通过云开发数据库端侧 SDK 直读直写当前用户 openid 隔离的历史记录"
 non_goals: "小程序正式提审（个人主体审核风险高，本期以开发预览版与体验版交付）；用户 cookie 上传（严禁收用户 cookie，cookie 仅由运营方服务端维护）；付费、会员、广告、打赏体系；B站、微博、YouTube、X 等额外平台；服务端自动识别验证码与滑块；zip 打包后端算法（归 l6，l5 仅做触发与 wx.shareFileMessage 转发）；自建 MySQL/Redis 历史服务（统一使用微信云开发内置数据库客户端直写直查）"
-constraints: "callContainer 上限 15s 且一文件一请求；返回包上限 1000KB 且只回 cloudID，/stage 只回 fileID（l3 口径），/zip 只回 ok/fileID/bytes/count 四字段，/parse 只回 remoteUrl；容器无持久盘，文件进 COS；手机端 openDocument 不支持 zip，zip 用 wx.shareFileMessage 转发好友/文件传输助手；小红书 webp 必须后端转 jpg，前端保存转码后图片；cookie 只做运营方池，前端绝不收集 cookie；历史表按 openid 隔离，小程序端直写直查"
+constraints: "callContainer 上限 15s 且一文件一请求；返回包上限 1000KB，/stage 只回 ok/fileID/kind/ext/bytes（l3 口径），/zip 只回 ok/fileID/bytes/count 四字段，/parse 只回 remoteUrl；容器无持久盘，文件进 COS；手机端 openDocument 不支持 zip，zip 用 wx.shareFileMessage 转发好友/文件传输助手；小红书 webp 必须后端转 jpg，前端保存转码后图片；cookie 只做运营方池，前端绝不收集 cookie；历史表按 openid 隔离，小程序端直写直查"
 scope_mode: lake
 ```
 
@@ -65,8 +65,8 @@ scope_mode: lake
 | # | 约束原文 | 在本湖的落地方式 | 验证 |
 |---|----------|------------------|------|
 | C1 | callContainer ≤15s，一文件一请求 | 前端严禁发起合并保存请求；多图保存采用前端调度队列，串行循环执行 POST /stage，每次仅传 1 个条目 URL，耗时严格控制在 15s 内 | AC-004、AC-005 |
-| C2 | 返回包 ≤1000KB，只回 cloudID | /parse 仅接收轻量 items 数组；/stage 仅接收单一 cloudID 字符串；端侧使用 wx.cloud.downloadFile 下载临时文件，不传 Base64 或二进制流 | AC-003、AC-004 |
-| C3 | 容器无持久盘，文件必须进 COS | 端侧仅消费 cloudID（格式 cloud://...）并在小程序端安全临时下载，绝不依赖容器本地路径 | AC-003、AC-004 |
+| C2 | 返回包 ≤1000KB，只回 fileID | /parse 仅接收轻量 items 数组；/stage 成功响应仅含 ok/fileID/kind/ext/bytes 五个字段，前端只读 fileID；端侧使用 wx.cloud.downloadFile 下载临时文件，不传 Base64 或二进制流 | AC-003、AC-004 |
+| C3 | 容器无持久盘，文件必须进 COS | 端侧仅消费 fileID（格式 cloud://...）并在小程序端安全临时下载，绝不依赖容器本地路径 | AC-003、AC-004 |
 | C4 | 手机端 openDocument 不支持 zip，zip 用 wx.shareFileMessage | 手机端针对 ZIP 资源，使用返回的 fileID 调用 wx.cloud.downloadFile 获得本地临时路径后，直接调用 wx.shareFileMessage 唤起转发面板分享给微信好友或文件传输助手，PC 端降级支持 wx.saveFileToDisk | AC-006 |
 | C5 | 小红书 webp 必须后端转 jpg | 前端不做 Canvas 转码，直接将后端 /stage 转码完成返回的 jpg 临时文件保存入相册，确保 iOS/Android 均能写入系统相册 | AC-004 |
 | C6 | cookie 只做运营方池，禁止收用户 cookie | 前端页面无任何 cookie 输入框或上传配置，所有 callContainer 请求体均不带 cookie 字段；遇到 COOKIE_EXPIRED 仅提示系统维护中 | AC-007、AC-011 |
@@ -135,7 +135,7 @@ scope_mode: lake
 | Q3 | 手机端无法打开 ZIP，如何引导用户？ | 下载 ZIP 本地临时文件后调用 wx.shareFileMessage 唤起微信文件转发面板 | answered | 作者固化：前端提示 ZIP 文件已生成，请转发至文件传输助手或微信好友，直接调起官方会话选择器 |
 | Q4 | 历史记录按 openid 隔离由谁保证？ | 微信云开发数据库客户端 SDK 自动在 insert 时注入 _openid，并在查询时自带该环境用户鉴权 | answered | 作者固化：无需自建鉴权服务，集合规则配置为仅创建者可读写，小程序端直接 db.collection 查询 |
 | Q5 | 用户拒绝相册授权后再次点击保存如何处理？ | 拦截授权失败回调，弹窗提示必须授权相册才能保存，点击去设置调用 wx.openSetting | answered | 作者固化：遵循微信规范，通过 wx.getSetting 检查权限，若已拒绝则弹窗引导打开设置页 |
-| Q6 | /stage 契约字段是否已最终冻结？ | 假定契约：当前 l3-media-delivery truth 尚未冻结，本湖按入参 remoteUrl/type/ext/needs_transcode 与返回 cloudID 先行定义联调，待 l3 truth 冻结后复核对齐，差异走变更流程 | answered | 作者固化：先行定义联调假定契约，待 l3 冻结后复核 |
+| Q6 | /stage 契约字段是否已最终冻结？ | 已按 l3 冻结确认：{task_id,index} → {ok,fileID,kind,ext,bytes} | closed | 已按 l3 冻结确认：{task_id,index} → {ok,fileID,kind,ext,bytes}，见 changes/chg_1c6f5fa13031 |
 | Q7 | /zip 契约字段是否已最终冻结？ | 已按 l6 冻结确认：{task_id,indexes?} → {ok,fileID,bytes,count} | closed | 已按 l6 冻结确认：{task_id,indexes?} → {ok,fileID,bytes,count}，见 changes/chg_1c6f5fa13031 |
 
 ## Intent Coverage
@@ -161,7 +161,7 @@ scope_mode: lake
 |-------|-----------|
 | AC-001 | 主页在 onShow 时读取剪贴板，命中合规社媒链接且未重复填入时展示浮动提示框「检测到分享链接，是否填入？」；用户点击「立即填入」后将纯净链接填入输入框并清空剪贴板；剪贴板无匹配链接与无权限场景静默降级为手动粘贴 |
 | AC-002 | 点击「一键解析提取」按钮时，按钮进入 loading + disabled 状态；前端向云托管发起 POST /parse，请求体包含 `{ "url": "..." }` 且绝对不包含任何 cookie 键；成功后渲染结果卡片并恢复按钮状态 |
-| AC-003 | 当 /parse 返回 content_type=video 时，结果卡片展示视频封面、标题截断、平台徽标与「保存视频到相册」按钮；点击后发起 POST /stage 请求单文件转存，获取 cloudID 后端侧下载并通过 wx.saveVideoToPhotosAlbum 写入手机系统相册，Toast 提示「视频已保存到相册」 |
+| AC-003 | 当 /parse 返回 content_type=video 时，结果卡片展示视频封面、标题截断、平台徽标与「保存视频到相册」按钮；点击后携带 `task_id` 与 `index` 发起 POST /stage 请求单文件转存，按 `{ok,fileID,kind,ext,bytes}` 读取并用 fileID 调 `wx.cloud.downloadFile` 下载，通过 wx.saveVideoToPhotosAlbum 写入手机系统相册，Toast 提示「视频已保存到相册」 |
 | AC-004 | 当 /parse 返回 content_type=note 时，结果卡片以九宫格展示图片列表并标注总张数；点击「一键保存全部图片」后，前端按队列顺序逐项发起 POST /stage（一文件一请求，每次耗时 ≤15s），展示实时步进进度文案 `正在转存并保存第 (i/N) 张图片...`；每张图下载后通过 wx.saveImageToPhotosAlbum 保存入相册；全部完成后 Toast 提示「全部图片已保存到相册」 |
 | AC-005 | 在图文逐项保存过程中，若某一项请求发生网络超时异常，不终止剩余未保存项；保存队列结束后，将失败项角标置为红叉并在下方展示独立重试按钮，点击仅对失败单项重新触发 /stage 与相册写入，重试成功后恢复正常态 |
 | AC-006 | 在图文模式下展示「打包导出 ZIP」副操作按钮；点击后携带当前解析任务的 `task_id` 与可选 `indexes` 向云托管发起 POST /zip，按 `{ok,fileID,bytes,count}` 读取结果，用返回的 `fileID` 调用 `wx.cloud.downloadFile` 下载到本地临时文件，再调用 `wx.shareFileMessage` 唤起微信聊天选择面板，展示提示「ZIP 已生成，请选择微信好友与文件传输助手进行保存」 |
@@ -267,26 +267,27 @@ scope_mode: lake
 ```
 
 ### 2. 依赖 l3-media-delivery 契约（POST /stage）
-假定契约：l3 truth 尚未冻结，本湖按此字段先行定义联调，冻结后以其 truth 为准，差异走变更流程。
-- 请求方式：wx.cloud.callContainer，路径 /stage，超时 15000ms。
-- 调用原则：一文件一请求，前端负责循环调度，单次请求只发 1 个条目。
+按 l3-media-delivery 冻结正文（docs/beacon/v0.1.0/features/l3-media-delivery/truth.md）契约：
+- 请求方式：wx.cloud.callContainer，路径 /stage；l3 单请求预算 ≤60s，端侧按 C1 的 callContainer 上限串行调度，每次只发 1 个条目。
 - 请求体：
 ```json
 {
-  "remoteUrl": "https://...",
-  "type": "image",
-  "ext": "jpg",
-  "needs_transcode": true
+  "task_id": "st_1234567890abcdef12345678",
+  "index": 0
 }
 ```
 - 成功响应契约（HTTP 200）：
 ```json
 {
   "ok": true,
-  "cloudID": "cloud://env-id.xxx/media/20261108/abc123.jpg"
+  "fileID": "cloud://env-id.xxx/media/20261108/abc123.jpg",
+  "kind": "image",
+  "ext": "jpg",
+  "bytes": 284736
 }
 ```
-- 前端后续处理：端侧调用 wx.cloud.downloadFile({ fileID: res.data.cloudID }) 得到 tempFilePath，随后调用 wx.saveImageToPhotosAlbum 或 wx.saveVideoToPhotosAlbum。
+- 前端后续处理：端侧调用 wx.cloud.downloadFile({ fileID }) 得到 tempFilePath，随后调用 wx.saveImageToPhotosAlbum 或 wx.saveVideoToPhotosAlbum。
+- 失败响应：一律 ok=false 且不含 fileID；错误码按 l3 固定表：400 INVALID_REQUEST（索引越界或清单缺项为 400 STAGE_FAILED）、410 STAGE_EXPIRED、413 TOO_LARGE、502 STAGE_FAILED、503 STAGE_NOT_READY、504 TIMEOUT；前端分别映射人话文案。
 
 ### 3. 依赖 l6-zip-export 契约（POST /zip）
 按 l6-zip-export 冻结正文（docs/beacon/v0.1.0/features/l6-zip-export/truth.md）契约：
