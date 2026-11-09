@@ -53,3 +53,14 @@
 变更 chg_6a639cf6df40 登记事实：实现提交 8ed9b2e 时本包 truth 仍为 status=draft、AC 表为占位符；完整 AC 与 status=frozen 直到其后 65c3112 才写入。
 本记录只登记该时序事实，不修改任何 AC、约束或既有结论正文。
 truth_freeze 门以本次 refreeze 关闭该治理变更。
+
+## AC-004 / AC-005 证据登记（2026-11-10，run-20261110-note-fallback）
+
+变更 chg_9aeb569f66df：`_note_from_state` 按冻结后的 AC-004 支持两种页面结构。
+
+- AC-004：`pytest tests/test_xhs.py -q` → 15 passed。同一份 note 分别经 `note.noteDetailMap[note_id].note` 与 `noteData.data.noteData` 注入，items 顺序/数量/类型一致（test_note_detail_map_and_note_data_parse_identically）；多条目 map 无匹配时回退第二结构（test_note_multiple_map_entries_fall_back_to_note_data）。
+- AC-005：noteData.noteId 与 URL note_id 不一致、noteDetailMap 为空且第二结构畸形，均返回 PARSE_FAILED（retryable=true），无崩溃（test_note_note_data_id_mismatch_is_parse_failed、test_note_malformed_map_does_not_crash）。
+- 回归：`pytest tests/test_parse.py tests/test_stage.py -q` → 12 passed，未改 l3 契约。
+- 证据目录：evidence/run-20261110-note-fallback/（pytest 原始输出、note_from_state.diff、summary.json）。
+
+旧 run 不适用（此前只认 noteDetailMap）；真实 xhs 图文样本仍待扫码会话补采，本轮不据此判真实样本通过。

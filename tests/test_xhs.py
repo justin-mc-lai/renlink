@@ -314,3 +314,95 @@ def test_parse_seam_returns_normalized_note(
     assert len(result["items"]) == 2
     assert all(entry["type"] == "image" for entry in result["items"])
     assert all(entry["needs_transcode"] is True for entry in result["items"])
+
+
+# --- l2-xhs-images AC-004: noteDetailMap / noteData dual structure -----------
+
+
+IMAGE_LIST = [
+    {
+        "urlDefault": "https://sns-img-qc.xhscdn.com/n1.webp",
+        "width": 1080,
+        "height": 1440,
+    },
+    {"urlDefault": "https://sns-img-qc.xhscdn.com/n2.jpg"},
+]
+
+
+def note_data_state(
+    image_list: list, note_id: str = NOTE_ID, title: str = "标题"
+) -> dict:
+    return {
+        "noteData": {
+            "data": {"noteData": {"noteId": note_id, "title": title, "imageList": image_list}}
+        }
+    }
+
+
+def item_signature(result: dict) -> list:
+    return [
+        (entry["index"], entry["type"], entry["remoteUrl"], entry["ext"])
+        for entry in result["items"]
+    ]
+
+
+def test_note_detail_map_and_note_data_parse_identically(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("XHS_NOTE_CACHE_TTL_S", "0")
+    install_stub(
+        tmp_path,
+        monkeypatch,
+        TOKEN_URL,
+        page({"note": {"noteDetailMap": {NOTE_ID: {"note": {"title": "标题", "imageList": IMAGE_LIST}}}}}),
+    )
+    from_map = asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    install_stub(tmp_path, monkeypatch, TOKEN_URL, page(note_data_state(IMAGE_LIST)))
+    from_data = asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    assert item_signature(from_map) == item_signature(from_data)
+    assert len(from_data["items"]) == len(IMAGE_LIST) == 2
+    assert all(entry["type"] == "image" for entry in from_data["items"])
+    assert from_data["title"] == "标题"
+    assert from_data["note_id"] == NOTE_ID
+
+
+def test_note_multiple_map_entries_fall_back_to_note_data(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    other_note = {"title": "别的笔记", "imageList": IMAGE_LIST}
+    state = note_data_state(IMAGE_LIST, title="第二结构")
+    state["note"] = {"noteDetailMap": {"other-1": {"note": other_note}, "other-2": {"note": other_note}}}
+    install_stub(tmp_path, monkeypatch, TOKEN_URL, page(state))
+
+    result = asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    assert result["title"] == "第二结构"
+    assert len(result["items"]) == 2
+
+
+def test_note_note_data_id_mismatch_is_parse_failed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    state = note_data_state(IMAGE_LIST, note_id="6a0000000000000000000002")
+    state["note"] = {"noteDetailMap": {}}
+    install_stub(tmp_path, monkeypatch, TOKEN_URL, page(state))
+
+    with pytest.raises(ApiError) as caught:
+        asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    assert caught.value.code == "PARSE_FAILED"
+    assert caught.value.retryable is True
+
+
+def test_note_malformed_map_does_not_crash(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    state = {"note": {"noteDetailMap": ""}, "noteData": {"data": {"noteData": "broken"}}}
+    install_stub(tmp_path, monkeypatch, TOKEN_URL, page(state))
+
+    with pytest.raises(ApiError) as caught:
+        asyncio.run(xhs.parse_note(TOKEN_URL, "c=1"))
+
+    assert caught.value.code == "PARSE_FAILED"

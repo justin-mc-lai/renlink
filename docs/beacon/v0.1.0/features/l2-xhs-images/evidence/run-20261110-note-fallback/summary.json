@@ -1,0 +1,48 @@
+{
+  "feature": "l2-xhs-images",
+  "run": "run-20261110-note-fallback",
+  "change": "chg_9aeb569f66df",
+  "date": "2026-11-10",
+  "scope": "container/app/parsers/xhs.py: _note_from_state only",
+  "acos": ["AC-004", "AC-005"],
+  "injected_structures": {
+    "primary": "window.__INITIAL_STATE__.note.noteDetailMap[note_id].note",
+    "fallback": "window.__INITIAL_STATE__.noteData.data.noteData (noteId must equal URL note_id)"
+  },
+  "resolution_order": [
+    "noteDetailMap[note_id].note",
+    "noteDetailMap single entry (only when map has exactly one entry)",
+    "noteData.data.noteData when noteId == URL note_id (reached when map missing/empty/multi-no-match)",
+    "else ApiError PARSE_FAILED: 两种结构都取不到目标笔记"
+  ],
+  "unchanged_behaviors": [
+    "imageList order",
+    "_image_url urlDefault -> WB_DFT -> CRD_WM_WEBP",
+    "needs_transcode",
+    "xsec_token chain"
+  ],
+  "tests": {
+    "tests/test_xhs.py": {
+      "command": "pytest tests/test_xhs.py -q",
+      "exit_code": 0,
+      "result": "15 passed",
+      "raw": "pytest-test_xhs.txt",
+      "new_cases": [
+        "test_note_detail_map_and_note_data_parse_identically",
+        "test_note_multiple_map_entries_fall_back_to_note_data",
+        "test_note_note_data_id_mismatch_is_parse_failed",
+        "test_note_malformed_map_does_not_crash"
+      ]
+    },
+    "tests/test_parse.py tests/test_stage.py": {
+      "command": "pytest tests/test_parse.py tests/test_stage.py -q",
+      "exit_code": 0,
+      "result": "12 passed",
+      "raw": "pytest-test_parse-test_stage.txt"
+    }
+  },
+  "function_diff": "note_from_state.diff",
+  "unverified": [
+    "real xhs sample still requires a QR-logged-in session; old run does not apply"
+  ]
+}

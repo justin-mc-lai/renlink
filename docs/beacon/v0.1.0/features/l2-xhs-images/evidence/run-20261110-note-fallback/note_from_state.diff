@@ -1,0 +1,37 @@
+--- /tmp/l2-note-before.py	2026-11-10 01:59:03
++++ /tmp/l2-note-after.py	2026-11-10 01:59:15
+@@ -1,18 +1,23 @@
+ def _note_from_state(state: Dict[str, Any], note_id: str) -> Dict[str, Any]:
++    # AC-004: note.noteDetailMap[note_id].note first (single entry as fallback),
++    # then noteData.data.noteData whose noteId must match the URL note_id.
++    note: Any = None
+     holder = state.get("note")
+     detail_map = holder.get("noteDetailMap") if isinstance(holder, dict) else None
+-    if not isinstance(detail_map, dict) or not detail_map:
+-        raise ApiError("PARSE_FAILED", "页面缺少 noteDetailMap")
+-    entry = detail_map.get(note_id)
+-    if entry is None:
+-        if len(detail_map) == 1:
++    if isinstance(detail_map, dict) and detail_map:
++        entry = detail_map.get(note_id)
++        if entry is None and len(detail_map) == 1:
+             entry = next(iter(detail_map.values()))
+-        else:
+-            raise ApiError("PARSE_FAILED", "noteDetailMap 里没有这个笔记")
+-    if not isinstance(entry, dict):
+-        raise ApiError("PARSE_FAILED", "noteDetailMap 条目不是对象")
+-    note = entry.get("note")
++        if isinstance(entry, dict):
++            note = entry.get("note")
+     if not isinstance(note, dict):
+-        raise ApiError("PARSE_FAILED", "页面缺少 note 正文")
++        holder = state.get("noteData")
++        data = holder.get("data") if isinstance(holder, dict) else None
++        candidate = data.get("noteData") if isinstance(data, dict) else None
++        if isinstance(candidate, dict) and str(candidate.get("noteId") or "") == note_id:
++            note = candidate
++    if not isinstance(note, dict):
++        raise ApiError("PARSE_FAILED", "两种结构都取不到目标笔记")
+     return note
+ 
++
