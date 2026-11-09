@@ -31,6 +31,10 @@ def write(name, body):
     path.write_text(body, encoding="utf-8")
     return str(path)
 
+def note_data_html(note_id, note):
+    state = {"noteData": {"data": {"noteData": dict(note, noteId=note_id)}}}
+    return "<html><body><script>window.__INITIAL_STATE__ = " + json.dumps(state, ensure_ascii=False) + "</script></body></html>"
+
 def state_html(note_id, note, with_state=True, raw=None):
     parts = ['<html><body><div id="app"></div>']
     if raw is not None:
@@ -133,8 +137,8 @@ curl -sS "$PARSE_BASE/health" | jq -e '.ok == true'
 | AC-001 | TC-001 | e2e | curl /parse 构造 3 图页 | 200、note、count=3、index 0/1/2、needs_transcode=true |
 | AC-002 | TC-002、TC-003 | behavior | 构造 4 图页，含 urlDefault 缺失与仅 urlPre 项 | count=3、顺序保持、只用原图字段、缩略图不出现 |
 | AC-003 | TC-013 | behavior | 直连 parse_note 传短链桩 | 3 跳内成功落到规范页；自环短链 PARSE_FAILED |
-| AC-004 | TC-001、TC-009 | behavior | 构造 state 页与空 noteDetailMap 页 | 正确命中 note；缺失 note 返回 PARSE_FAILED |
-| AC-005 | TC-006 至 TC-009 | negative | 无 state、坏 JSON、空列表、缺 note | 均 502 PARSE_FAILED、items 为空 |
+| AC-004 | TC-001、TC-009 | behavior | 构造 noteDetailMap 页、noteData 页与两种结构都无目标笔记的页 | 两种结构都能命中 note；都取不到返回 PARSE_FAILED |
+| AC-005 | TC-006 至 TC-009 | negative | 无 state、坏 JSON、空列表、两种结构都取不到目标笔记 | 均 502 PARSE_FAILED、items 为空 |
 | AC-006 | TC-004、TC-005 | negative | URL 无 token 但 state 有；两处都无 | 前者 200；后者 422 NEED_XSEC_TOKEN |
 | AC-007 | TC-010、TC-011 | contract | 视频笔记；单图契约 | 视频 502；字段齐全、needs_transcode=true |
 | AC-008 | TC-005、TC-006、TC-014 | negative | 缺 token、结构失败、cookie 字段、站外域名 | 错误码与信封固定 |
@@ -157,7 +161,7 @@ jq -e '[.items[].index] == [0,1,2] and ([.items[].type] | unique) == ["image"] a
 jq -e '[.items[].remoteUrl] == ["https://sns-img-qc.xhscdn.com/a.webp","https://sns-img-qc.xhscdn.com/b.webp","https://sns-img-qc.xhscdn.com/c.webp"]' /tmp/xhs-001.json
 ```
 
-判据：HTTP 200；platform=xhs、content_type=note、count=3；三张图顺序与 imageList 一致；每项 needs_transcode=true。
+判据：HTTP 200；platform=xhs、content_type=note、count=3；三张图顺序与 imageList 一致；每项 needs_transcode=true。同一份 note 分别以 note.noteDetailMap 与 noteData.data.noteData 两种页面结构注入，两次结果一致。
 
 ### TC-002 原图字段回退与顺序
 
@@ -250,7 +254,7 @@ code=$(curl -sS -X POST $PARSE_BASE/parse -H 'content-type: application/json' \
 jq -e '.error.code == "PARSE_FAILED"' /tmp/xhs-008.json
 ```
 
-判据：noteDetailMap 为空判 PARSE_FAILED。
+判据：noteDetailMap 为空且 noteData.data.noteData 也不匹配该 note_id，判 PARSE_FAILED。
 
 ### TC-010 视频或无图笔记
 

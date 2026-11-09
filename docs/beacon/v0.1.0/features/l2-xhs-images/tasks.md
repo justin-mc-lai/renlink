@@ -9,8 +9,8 @@ task_source: acceptance_criteria
 
 ## Task Ledger
 
-- [ ] TASK-001 新建 `container/app/parsers/xhs_note.py`：抓取规范笔记页、定位 window.__INITIAL_STATE__、解析 noteDetailMap 与 imageList · owner=后端 · deps=l1 xhs 接缝 · ac=AC-001,AC-004,AC-005 · evidence=TC-001,TC-006,TC-007,TC-008,TC-009
-- [ ] TASK-002 原图选择与顺序：urlDefault → infoList WB_DFT → CRD_WM_WEBP，全部缺失跳过；保持 imageList 顺序，不出现缩略地址 · owner=后端 · deps=TASK-001 · ac=AC-002 · evidence=TC-002,TC-003
+- [ ] TASK-001 新建 `container/app/parsers/xhs_note.py`：抓取规范笔记页、定位 window.__INITIAL_STATE__、按 note.noteDetailMap 优先、noteData.data.noteData 回退定位 note 并解析 imageList · owner=后端 · deps=l1 xhs 接缝 · ac=AC-001,AC-004,AC-005 · evidence=TC-001,TC-006,TC-007,TC-008,TC-009
+- [ ] TASK-002 原图选择与顺序：urlDefault → infoList WB_DFT → CRD_WM_WEBP，全部缺失跳过；两种页面结构下都保持 imageList 顺序，不出现缩略地址 · owner=后端 · deps=TASK-001 · ac=AC-002 · evidence=TC-002,TC-003
 - [ ] TASK-003 直连短链防御：xhslink.com 与 xhslink.cn 最多 3 跳、校验最终主机与规范路径，失败返回 PARSE_FAILED · owner=后端 · deps=TASK-001 · ac=AC-003 · evidence=TC-013
 - [ ] TASK-004 xsec_token 提取：URL query → note.xsecToken → state 顶层；缺失抛 NEED_XSEC_TOKEN · owner=后端 · deps=TASK-001 · ac=AC-006 · evidence=TC-004,TC-005
 - [ ] TASK-005 错误码注册：`container/app/errors.py` 的 ERROR_SPECS 增加 NEED_XSEC_TOKEN(422, retryable=true)，既有码不动 · owner=后端 · deps=TASK-004 · ac=AC-008 · evidence=TC-005

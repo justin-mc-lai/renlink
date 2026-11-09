@@ -64,7 +64,7 @@ scope_mode: focused
 
 | # | 约束原文 | 在本湖的落地方式 | 验证 |
 |---|----------|------------------|------|
-| C1 | 小红书图文必须自研，yt-dlp 只给缩略图 | 自研 fetch 页面 → 定位 window.__INITIAL_STATE__ → note.noteDetailMap[note_id].note.imageList，直接取原图地址；不复用 yt-dlp 的图片结果 | AC-001、AC-004 |
+| C1 | 小红书图文必须自研，yt-dlp 只给缩略图 | 自研 fetch 页面 → 定位 window.__INITIAL_STATE__ → 优先 note.noteDetailMap[note_id].note，取不到时回退 noteData.data.noteData → 读取 imageList，直接取原图地址；不复用 yt-dlp 的图片结果 | AC-001、AC-004 |
 | C2 | 原图优先，不返回缩略图 | 每张图优先 urlDefault；缺失时取 infoList 中 imageScene=WB_DFT，再其次 CRD_WM_WEBP；都缺失则跳过该项；urlPre 等缩略字段不作为降级来源 | AC-002 |
 | C3 | 保留 webp 原址，转码归 l3 | remoteUrl 原样返回，不拼接、不代理；needs_transcode 恒为 true | AC-002、AC-007 |
 | C4 | xsec_token 必须真实拿到 | 依次取最终 URL 的 xsec_token 查询参数、note.xsecToken、state 顶层 xsecToken；都没有返回 NEED_XSEC_TOKEN，不猜测、不省略 | AC-006 |
@@ -114,8 +114,8 @@ scope_mode: focused
 | AC-001 | POST /parse 传规范小红书图文链接（构造样本 3 张图）返回 200、ok=true、platform=xhs、content_type=note、item_count=3，items 三项 index 依次为 0、1、2，每项 type=image、remoteUrl 为非空 http(s) 原图地址、needs_transcode=true |
 | AC-002 | imageList 顺序即 items 顺序；每张图优先 urlDefault，缺失时取 infoList 中 imageScene=WB_DFT，再其次 CRD_WM_WEBP；三项都缺失的条目被跳过且不计数；urlDefault 与 infoList 都缺失时才判该条不可用；所有条目都不可用返回 502 PARSE_FAILED；响应中不出现 urlPre、thumbnail 等缩略地址 |
 | AC-003 | 直连 parse_note 传入 xhslink.com、xhslink.cn 短链时最多跟随 3 跳，落到 xiaohongshu.com 的 /explore/<id>、/discovery/item/<id> 规范页后继续解析；超过 3 跳、缺少 Location、落到站外域名、非规范页，任一情形返回 502 PARSE_FAILED，items 为空；经 /parse 的短链仍由 l1 expand_shortlink 负责，l2 不替换它的行为 |
-| AC-004 | 从页面 HTML 中定位 window.__INITIAL_STATE__ 的赋值对象，经 note.noteDetailMap[note_id].note 读取 imageList；URL 的 note_id 在 map 中缺失但 map 只有一项时取该唯一项；map 有多项且无匹配返回 502 PARSE_FAILED |
-| AC-005 | 页面无 window.__INITIAL_STATE__、初始状态 JSON 解析失败、noteDetailMap 缺失、目标 note 缺失、imageList 缺失、imageList 不是数组、imageList 为空数组，以上情形均返回 502、ok=false、error.code=PARSE_FAILED、retryable=true、items 为空数组，响应不带调用栈、异常类型 |
+| AC-004 | 从页面 HTML 中定位 window.__INITIAL_STATE__ 的赋值对象，优先经 note.noteDetailMap[note_id].note 读取 imageList；URL 的 note_id 在 map 中缺失但 map 只有一项时取该唯一项，map 有多项且无匹配视为取不到；noteDetailMap 缺失或取不到时回退 noteData.data.noteData，其 noteId 与 URL 的 note_id 一致才采用；两处都取不到目标笔记返回 502 PARSE_FAILED |
+| AC-005 | 页面无 window.__INITIAL_STATE__、初始状态 JSON 解析失败、两种结构（note.noteDetailMap 与 noteData.data.noteData）都取不到目标笔记、imageList 缺失、imageList 不是数组、imageList 为空数组，以上情形均返回 502、ok=false、error.code=PARSE_FAILED、retryable=true、items 为空数组，响应不带调用栈、异常类型 |
 | AC-006 | xsec_token 依次取最终 URL 的 xsec_token 查询参数、note.xsecToken、state 顶层 xsecToken；三者都缺失时返回 422、ok=false、error.code=NEED_XSEC_TOKEN、retryable=true、items 为空数组；不得猜测 token、不得降级为缩略图、不得返回空地址 |
 | AC-007 | 图文成功响应经 l1 归一化后 items[].index、type、remoteUrl、ext、cover、width、height、needs_transcode 字段齐全，needs_transcode 恒为 true，item_count 等于 items 长度；parse_note 收到视频笔记、无图笔记均返回 502 PARSE_FAILED，不返回空 items 冒充成功 |
 | AC-008 | 本湖新增错误码 NEED_XSEC_TOKEN（422、retryable=true）；其余沿用 l1：INVALID_URL 400、INVALID_REQUEST 400、UNSUPPORTED_PLATFORM 400、SHORTLINK_FAIL 422、COOKIE_EXPIRED 503、PARSE_FAILED 502、TIMEOUT 504、RATE_LIMITED 429；失败信封固定为 ok=false、error.code、error.message、error.retryable、items 空数组、elapsed_ms 整数 |
@@ -188,7 +188,7 @@ async def parse_note(url: str, cookie: str) -> dict:
 |----|------|
 | 页面抓取 | GET 规范笔记页，移动端 UA，运营方 cookie；跟随重定向时最多 3 跳并校验最终主机在白名单内 |
 | 初始状态定位 | 在 HTML 中查找 window.__INITIAL_STATE__ 的赋值表达式，从第一个 { 起用 JSON 解码器读取完整对象，允许属性名带引号与不带引号两种写法 |
-| note 定位 | state.note.noteDetailMap[note_id].note；note_id 取最终 URL 的最后一段路径，去掉查询串 |
+| note 定位 | 优先 state.note.noteDetailMap[note_id].note；缺失时回退 state.noteData.data.noteData；note_id 取最终 URL 的最后一段路径，去掉查询串 |
 | 唯一项兜底 | note_id 在 map 中缺失且 map 恰好一项时取该唯一项；多项且无匹配判 PARSE_FAILED |
 | 图片列表 | note.imageList 必须是数组且非空；顺序即输出顺序，index 从 0 连续递增 |
 | 原图字段 | 依次取 urlDefault、infoList 中 imageScene 为 WB_DFT 的 url、imageScene 为 CRD_WM_WEBP 的 url；三者都缺失则跳过该条目 |
