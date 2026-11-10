@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renlink.local/contract/parse_response.schema.json",
+  "title": "Renlink POST /parse response",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/success"
+    },
+    {
+      "$ref": "#/$defs/error"
+    }
+  ],
+  "$defs": {
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "type",
+        "remoteUrl",
+        "ext",
+        "cover",
+        "width",
+        "height",
+        "needs_transcode"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "type": {
+          "enum": [
+            "video",
+            "image"
+          ]
+        },
+        "remoteUrl": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "ext": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cover": {
+          "type": "string"
+        },
+        "width": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "height": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "needs_transcode": {
+          "type": "boolean"
+        }
+      }
+    },
+    "success": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ok",
+        "platform",
+        "content_type",
+        "source_url",
+        "resolved_url",
+        "title",
+        "item_count",
+        "elapsed_ms",
+        "items",
+        "task_id"
+      ],
+      "properties": {
+        "ok": {
+          "const": true
+        },
+        "platform": {
+          "enum": [
+            "douyin",
+            "xhs"
+          ]
+        },
+        "content_type": {
+          "enum": [
+            "video",
+            "note"
+          ]
+        },
+        "source_url": {
+          "type": "string"
+        },
+        "resolved_url": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "item_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/item"
+          }
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^st_[0-9a-f]{24}$|^$"
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ok",
+        "error",
+        "items",
+        "elapsed_ms"
+      ],
+      "properties": {
+        "ok": {
+          "const": false
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "properties": {
+            "code": {
+              "enum": [
+                "INVALID_URL",
+                "INVALID_REQUEST",
+                "UNSUPPORTED_PLATFORM",
+                "SHORTLINK_FAIL",
+                "COOKIE_EXPIRED",
+                "PARSE_FAILED",
+                "TIMEOUT",
+                "RATE_LIMITED"
+              ]
+            },
+            "message": {
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "resolved_url": {
+          "type": "string"
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

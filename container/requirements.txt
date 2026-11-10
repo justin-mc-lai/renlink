@@ -1,0 +1,11 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.9.2
+httpx==0.27.2
+yt-dlp>=2024.12.13
+f2==0.0.1.7
+pyexecjs==1.5.1
+jsonschema==4.23.0
+curl_cffi==0.17.0
+Pillow==11.3.0
+cos-python-sdk-v5==1.9.44
