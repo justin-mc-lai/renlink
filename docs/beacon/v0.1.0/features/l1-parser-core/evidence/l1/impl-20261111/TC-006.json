@@ -1,0 +1,45 @@
+{
+  "tc": "TC-006",
+  "command": "python3 ops/tc_run.py TC-006",
+  "exitCode": 0,
+  "base": "http://127.0.0.1:60962",
+  "stdout": "PARSE_BASE=http://127.0.0.1:60962\nTC-006 xhs-video-2: PASS\nSUMMARY pass=1 fail=0 blocked=0",
+  "smoke": {
+    "tc": "TC-006",
+    "name": "xhs-video-2",
+    "status": "PASS",
+    "startedAt": "2026-11-11T20:23:33+08:00",
+    "base": "http://127.0.0.1:60962",
+    "request": {
+      "url": "https://www.xiaohongshu.com/expl..."
+    },
+    "httpStatus": 200,
+    "responseBytes": 760,
+    "clientElapsedMs": 1470,
+    "response": {
+      "ok": true,
+      "platform": "xhs",
+      "content_type": "video",
+      "source_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+      "resolved_url": "https://www.xiaohongshu.com/explore/6a883be50000000018018c43?xsec_token=AB24qceqe7eTqvLGh1qtsnUd2QI_4AQGPJrzN09T2oJO8=&xsec_source=pc_feed",
+      "title": "森林味道🥀做生姜玫瑰痛经舒缓香薰",
+      "item_count": 1,
+      "elapsed_ms": 1452,
+      "task_id": "st_e3b0573e080aca646d7bd4e3",
+      "items": [
+        {
+          "index": 0,
+          "type": "video",
+          "remoteUrl": "http://sns-video-qc.xhscdn.com/stream/79/110/259/01ea883be5c5d53a01037003a0242c5435_259.mp4?sign=d8ba9f9d457f593923f4bcb1d13d7156&t=6af8fb87",
+          "ext": "mp4",
+          "cover": "",
+          "width": null,
+          "height": null,
+          "needs_transcode": false
+        }
+      ]
+    },
+    "failures": [],
+    "note": ""
+  }
+}

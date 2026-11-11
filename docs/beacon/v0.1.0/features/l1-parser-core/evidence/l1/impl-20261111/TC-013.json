@@ -1,22 +1,21 @@
 {
   "tc": "TC-013",
-  "command": "PARSE_BASE=http://127.0.0.1:18092 PARSE_UPSTREAM_DELAY_MS=13000 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-013 --out /tmp/l1-ev-tmp",
-  "startedAt": "2026-11-11T18:07:33+08:00",
+  "command": "python3 ops/tc_run.py TC-013",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18092\nTC-013 timeout: PASS (需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动)\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:62057",
+  "stdout": "PARSE_BASE=http://127.0.0.1:62057\nTC-013 timeout: PASS (需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动)\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-013",
     "name": "timeout",
     "status": "PASS",
-    "startedAt": "2026-11-11T18:07:33+08:00",
-    "base": "http://127.0.0.1:18092",
+    "startedAt": "2026-11-11T20:23:45+08:00",
+    "base": "http://127.0.0.1:62057",
     "request": {
       "url": "https://v.douyin.com/Y7MgY9YnYAg..."
     },
     "httpStatus": 504,
     "responseBytes": 142,
-    "clientElapsedMs": 12013,
+    "clientElapsedMs": 12020,
     "response": {
       "ok": false,
       "error": {
@@ -26,7 +25,7 @@
       },
       "items": [],
       "resolved_url": "",
-      "elapsed_ms": 12002
+      "elapsed_ms": 12003
     },
     "failures": [],
     "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动"

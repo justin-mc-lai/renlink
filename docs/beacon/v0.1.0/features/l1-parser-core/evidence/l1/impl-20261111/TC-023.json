@@ -1,17 +1,8 @@
 {
   "tc": "TC-023",
-  "command": "PARSE_BASE=http://127.0.0.1:18095 ENABLE_OBSCURA=1 .venv/bin/python ops/smoke.py --case TC-023 --out /tmp/l1-tc023",
+  "command": "python3 ops/tc_run.py TC-023",
   "exitCode": 3,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18095\nTC-023 obscura-xhs-render: BLOCKED (缺少样本: XHS_NOTE_1)\nSUMMARY pass=0 fail=0 blocked=1",
-  "smoke": {
-    "tc": "TC-023",
-    "name": "obscura-xhs-render",
-    "status": "BLOCKED",
-    "startedAt": "2026-11-11T18:10:50+08:00",
-    "base": "http://127.0.0.1:18095",
-    "request": {},
-    "failures": [],
-    "note": "缺少样本: XHS_NOTE_1"
-  },
-  "blockedReason": "缺少真实样本 XHS_NOTE_1；容器 SSRF P0 未闭合，本轮不判定 PASS"
+  "base": "",
+  "stdout": "TC-023 BLOCKED (AC-017 在本机不可达，缺 XHS_NOTE_1)",
+  "blockedReason": "AC-017 在本机不可达，缺 XHS_NOTE_1"
 }

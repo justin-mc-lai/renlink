@@ -1,22 +1,21 @@
 {
   "tc": "TC-001",
-  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-001 --out /tmp/l1-note-ev",
-  "startedAt": "2026-11-11T19:31:25+08:00",
+  "command": "python3 ops/tc_run.py TC-001",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-001 dy-video-1: PASS\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:56777",
+  "stdout": "PARSE_BASE=http://127.0.0.1:56777\nTC-001 dy-video-1: PASS\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-001",
     "name": "dy-video-1",
     "status": "PASS",
-    "startedAt": "2026-11-11T19:31:25+08:00",
-    "base": "http://127.0.0.1:18090",
+    "startedAt": "2026-11-11T20:26:12+08:00",
+    "base": "http://127.0.0.1:56777",
     "request": {
       "url": "https://v.douyin.com/Y7MgY9YnYAg..."
     },
     "httpStatus": 200,
-    "responseBytes": 1347,
-    "clientElapsedMs": 741,
+    "responseBytes": 1349,
+    "clientElapsedMs": 1063,
     "response": {
       "ok": true,
       "platform": "douyin",
@@ -25,15 +24,15 @@
       "resolved_url": "https://www.douyin.com/video/7705367833957403946",
       "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
       "item_count": 1,
-      "elapsed_ms": 720,
-      "task_id": "st_cc6b9ea1583b8cffc253d95d",
+      "elapsed_ms": 1042,
+      "task_id": "st_cf18d935f247742510ad2684",
       "items": [
         {
           "index": 0,
           "type": "video",
-          "remoteUrl": "https://v26-web.douyinvod.com/1e4a6bf6bf16546722834da84651f64b/6af481bc/video/tos/cn/tos-cn-ve-15/o8dYZn2A9IqAiDzftXQja2DqS8aFEAuuBgy6e7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=673&bt=673&cs=0&ds=3&ft=GN7rKGVVywSyRKJ80mo~MWwQlcU6nCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=aWQ3ZjM8NWk4Njc5PGg0NUBpamZmbXA5cmVoZTMzNGkzM0AzX14yYTMuNTMxX2E0MzJhYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100w_100B_100H_100K_100o&dy_q=1794396685&feature_id=f5241e7604dff1d9d6c943fd20bd51a2&l=202611111931259A893E33A67535625845",
+          "remoteUrl": "https://v11-weba.douyinvod.com/e1b1ff84c07a9c9024dcbfb2955826ab/6af48e93/video/tos/cn/tos-cn-ve-15/o8dYZn2A9IqAiDzftXQja2DqS8aFEAuuBgy6e7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=673&bt=673&cs=0&ds=3&ft=GN7rKGVVywSyRKJ80mo~MWwQlczynCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=aWQ3ZjM8NWk4Njc5PGg0NUBpamZmbXA5cmVoZTMzNGkzM0AzX14yYTMuNTMxX2E0MzJhYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100K_100o_100w_100B_100H&dy_q=1794399973&feature_id=f5241e7604dff1d9d6c943fd20bd51a2&l=202611112026126149CC4E93D26EA6444B",
           "ext": "mp4",
-          "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109754800&x-signature=OAbUfALqwJk0NgHUTYcTj4eEbCU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=202611111931259A893E33A67535625845",
+          "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109758400&x-signature=CcfbpvvAcCtxNciYZ24OawPt5cY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=202611112026126149CC4E93D26EA6444B",
           "width": 1080,
           "height": 1920,
           "needs_transcode": false

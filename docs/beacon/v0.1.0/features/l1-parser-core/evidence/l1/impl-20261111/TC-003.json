@@ -1,41 +1,90 @@
 {
   "tc": "TC-003",
-  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-003 --out /tmp/l1-note-ev",
-  "startedAt": "2026-11-11T19:31:26+08:00",
+  "command": "python3 ops/tc_run.py TC-003",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-003 dy-note-1: PASS (item_count 需与页面实际张数手工核对)\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:60330",
+  "stdout": "PARSE_BASE=http://127.0.0.1:60330\nTC-003 dy-note-1: PASS (item_count 需与页面实际张数手工核对)\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-003",
     "name": "dy-note-1",
     "status": "PASS",
-    "startedAt": "2026-11-11T19:31:26+08:00",
-    "base": "http://127.0.0.1:18090",
+    "startedAt": "2026-11-11T20:23:28+08:00",
+    "base": "http://127.0.0.1:60330",
     "request": {
-      "url": "https://www.douyin.com/note/7679..."
+      "url": "https://www.douyin.com/note/7457..."
     },
     "httpStatus": 200,
-    "responseBytes": 1115,
-    "clientElapsedMs": 341,
+    "responseBytes": 5510,
+    "clientElapsedMs": 540,
     "response": {
       "ok": true,
       "platform": "douyin",
       "content_type": "note",
-      "source_url": "https://www.douyin.com/note/7679049540180226021",
-      "resolved_url": "https://www.douyin.com/note/7679049540180226021",
-      "title": "你叹缘分太薄浅  又叹命运太深刻  即使刻舟求剑  也难以将掌纹重叠#虞姬#甘坑古镇",
-      "item_count": 1,
-      "elapsed_ms": 334,
-      "task_id": "st_f3722da787b9e7b1618f45cf",
+      "source_url": "https://www.douyin.com/note/7457450101523402047",
+      "resolved_url": "https://www.douyin.com/note/7457450101523402047",
+      "title": "江苏专转本报名流程。1、考生报名登录报名网站，链接：https://zzb.jseea.cn/。选择普通考生或退役士兵，进入后选择三年制转本，输入身份证/手机号、秘密、验证码，若未登陆过则需重新注册。\n2、未登陆过的填写个人信息并绑定手机号，点击确定即注册成功，返回页面重新登陆。\n3、登陆后需要阅读报名须知并点击确认已阅读。随后，填写个人信息，以及录取通知书地址后，点击确定。\n4、开始填写自己的志愿信息，依次按照分数从高到低填写8个志愿，左边是院校，右边是对应专业，填写后后确认并保存。\n5、报名完成即可看到自己考试科目以及考试时间，核对信息。\n6、核对完成，确认无误后提交报名费145元，缴费成功即报名成功。\n#上岸吧 #江苏 #专转本 #江苏专转本 #报名流程",
+      "item_count": 6,
+      "elapsed_ms": 514,
+      "task_id": "st_2e82f6ad02a24e710e39597f",
       "items": [
         {
           "index": 0,
           "type": "image",
-          "remoteUrl": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c000-ce/oAetfigEfAEWXiwfHsfX6tAIY4ANtmAJiTAU6Q~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796986800&x-signature=iY9mLMIgkqtq8M6SoCBeAMQeXEU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111193126DF5714CBDA6CB540AAFC",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oEAfiF9OA2j7TDhlQGLBksAADEEBfOnGAAEeIS~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796990400&x-signature=srY5e6edHytDX2vX6eksDFaFlhg%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111202328C7B3E3C908EA9AA6FCA1",
           "ext": "webp",
-          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c000-ce/oAetfigEfAEWXiwfHsfX6tAIY4ANtmAJiTAU6Q~noop.jpeg?lk3s=138a59ce&x-expires=1795604400&x-signature=t3qPEtKOqgrqu%2BJaDfsI6b5IsQQ%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111193126DF5714CBDA6CB540AAFC",
-          "width": 2160,
-          "height": 2880,
+          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oEAfiF9OA2j7TDhlQGLBksAADEEBfOnGAAEeIS~noop.jpeg?lk3s=138a59ce&x-expires=1795608000&x-signature=cItoAm%2FkQeS2va7Ca7WCMZI8R7Y%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "width": 1440,
+          "height": 1920,
+          "needs_transcode": false
+        },
+        {
+          "index": 1,
+          "type": "image",
+          "remoteUrl": "https://p9-pc-sign.douyinpic.com/tos-cn-i-0813c001/okleks9EAS7AAQRIUEFOALDDAIGQABh2fifBjh~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796990400&x-signature=jPDEL%2B84SOX1RhmScQV1WNYXG60%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oEAfiF9OA2j7TDhlQGLBksAADEEBfOnGAAEeIS~noop.jpeg?lk3s=138a59ce&x-expires=1795608000&x-signature=cItoAm%2FkQeS2va7Ca7WCMZI8R7Y%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "width": 1440,
+          "height": 1920,
+          "needs_transcode": false
+        },
+        {
+          "index": 2,
+          "type": "image",
+          "remoteUrl": "https://p9-pc-sign.douyinpic.com/tos-cn-i-0813/owRASlLkAs9BihGO7oKEBjAg2EQHIAFeADAffD~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796990400&x-signature=apgRcnMIvp%2BSkrgxKAemF7wI%2FMI%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oEAfiF9OA2j7TDhlQGLBksAADEEBfOnGAAEeIS~noop.jpeg?lk3s=138a59ce&x-expires=1795608000&x-signature=cItoAm%2FkQeS2va7Ca7WCMZI8R7Y%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "width": 1440,
+          "height": 1920,
+          "needs_transcode": false
+        },
+        {
+          "index": 3,
+          "type": "image",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/ooDIBABMEFAsQfAAQ7cDGkAjilLA9hOezBSfE2~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796990400&x-signature=0lYX4wsVflZY9Dah%2BEefq1assAM%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oEAfiF9OA2j7TDhlQGLBksAADEEBfOnGAAEeIS~noop.jpeg?lk3s=138a59ce&x-expires=1795608000&x-signature=cItoAm%2FkQeS2va7Ca7WCMZI8R7Y%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "width": 1440,
+          "height": 1920,
+          "needs_transcode": false
+        },
+        {
+          "index": 4,
+          "type": "image",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oY2BOfiejAT7DPAQAAhEAkEGLBfFIznSOl9sAD~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796990400&x-signature=92lpMU0Ym389mnecPoiMZioeWKg%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oEAfiF9OA2j7TDhlQGLBksAADEEBfOnGAAEeIS~noop.jpeg?lk3s=138a59ce&x-expires=1795608000&x-signature=cItoAm%2FkQeS2va7Ca7WCMZI8R7Y%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "width": 1440,
+          "height": 1920,
+          "needs_transcode": false
+        },
+        {
+          "index": 5,
+          "type": "image",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c001/ogkcEsFfA9h7AIA2OAQDSTFsBjBeGifLElAQDA~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796990400&x-signature=%2FtlGET0gmgVLWr%2F1RrySImWonoE%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813/oEAfiF9OA2j7TDhlQGLBksAADEEBfOnGAAEeIS~noop.jpeg?lk3s=138a59ce&x-expires=1795608000&x-signature=cItoAm%2FkQeS2va7Ca7WCMZI8R7Y%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111202328C7B3E3C908EA9AA6FCA1",
+          "width": 1440,
+          "height": 1920,
           "needs_transcode": false
         }
       ]

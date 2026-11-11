@@ -1,22 +1,21 @@
 {
   "tc": "TC-018",
-  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-018 --out /tmp/l1-note-ev",
-  "startedAt": "2026-11-11T19:31:27+08:00",
+  "command": "python3 ops/tc_run.py TC-018",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-018 health: PASS\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:63442",
+  "stdout": "PARSE_BASE=http://127.0.0.1:63442\nTC-018 health: PASS\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-018",
     "name": "health",
     "status": "PASS",
-    "startedAt": "2026-11-11T19:31:27+08:00",
-    "base": "http://127.0.0.1:18090",
+    "startedAt": "2026-11-11T20:24:06+08:00",
+    "base": "http://127.0.0.1:63442",
     "request": {
       "path": "/health"
     },
     "httpStatus": 200,
     "responseBytes": 760,
-    "clientElapsedMs": 7,
+    "clientElapsedMs": 11,
     "response": {
       "ok": true,
       "version": "v0.1.0",
@@ -25,22 +24,22 @@
           "cookie_status": "fresh",
           "last_refresh": "2026-11-10T01:41:12+08:00",
           "source": "env",
-          "pool_age_s": 150615
+          "pool_age_s": 153774
         },
         "xhs": {
           "cookie_status": "fresh",
           "last_refresh": "2026-11-10T01:26:05+08:00",
           "source": "env",
-          "pool_age_s": 151522
+          "pool_age_s": 154681
         }
       },
       "egress_proxy": "direct",
       "argus": {
-        "argus_requests": 3,
+        "argus_requests": 0,
         "cache_hits": 0,
         "argus_failures": 0,
         "dropped_argus_header": 0,
-        "cache_entries": 1,
+        "cache_entries": 0,
         "cache_ttl_s": 600
       },
       "render": {
@@ -58,7 +57,7 @@
         "last_error": ""
       },
       "rate_limit_hits": 0,
-      "cache_hits": 1,
+      "cache_hits": 0,
       "stage_hits": 0,
       "rejected_counts": {
         "INVALID_URL": 0,

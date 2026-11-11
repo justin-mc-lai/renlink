@@ -1,22 +1,21 @@
 {
   "tc": "TC-008",
-  "command": "PARSE_BASE=http://127.0.0.1:18096 SMOKE_CONTAINER_ID=renlink-impl-18096 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-008 --out /tmp/l1-refix",
-  "startedAt": "2026-11-11T19:01:00+08:00",
+  "command": "python3 ops/tc_run.py TC-008",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18096\nTC-008 xhs-short-1: PASS\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:61440",
+  "stdout": "PARSE_BASE=http://127.0.0.1:61440\nTC-008 xhs-short-1: PASS\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-008",
     "name": "xhs-short-1",
     "status": "PASS",
-    "startedAt": "2026-11-11T19:01:00+08:00",
-    "base": "http://127.0.0.1:18096",
+    "startedAt": "2026-11-11T20:23:38+08:00",
+    "base": "http://127.0.0.1:61440",
     "request": {
       "url": "https://xhslink.cn/o/1zbdThHpdb0"
     },
     "httpStatus": 200,
     "responseBytes": 1028,
-    "clientElapsedMs": 18,
+    "clientElapsedMs": 1324,
     "response": {
       "ok": true,
       "platform": "xhs",
@@ -25,13 +24,13 @@
       "resolved_url": "https://www.xiaohongshu.com/discovery/item/6af04386000000001500d626?app_platform=android&ignoreEngage=true&app_version=9.53.0&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%3D&author_share=1&xhsshare=CopyLink&shareRedId=ODg7QzQ7ST42NzUyOTgwNjg0OTk5Rz5M&apptime=1794139056&share_id=ab67879c62464af6adf3b23492c1e3c7&share_channel=copy_link&track_code=1zbdThHpdb0",
       "title": "长安四驱越野升顶皮卡房车#二手房车[话题]# #房车旅行[话题]# #房车生活[话题]# #房车自驾游[话题]#",
       "item_count": 1,
-      "elapsed_ms": 1564,
-      "task_id": "st_a9762f167129dbfa24dfc955",
+      "elapsed_ms": 1311,
+      "task_id": "st_61ec57fef621891593c1fdbc",
       "items": [
         {
           "index": 0,
           "type": "video",
-          "remoteUrl": "http://sns-video-v6.xhscdn.com/stream/79/110/259/01eaf043855eb5bb01037003a1ba88c340_259.mp4?sign=197a68b6aaa054171031f28287329cd3&t=6af8e81f",
+          "remoteUrl": "http://sns-video-qc.xhscdn.com/stream/79/110/259/01eaf043855eb5bb01037003a1ba88c340_259.mp4?sign=b5ea628f2e8d5ae1d470275d2b67a011&t=6af8fb8b",
           "ext": "mp4",
           "cover": "",
           "width": null,

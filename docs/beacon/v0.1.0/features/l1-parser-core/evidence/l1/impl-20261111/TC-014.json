@@ -1,0 +1,8 @@
+{
+  "tc": "TC-014",
+  "command": "python3 ops/tc_run.py TC-014",
+  "exitCode": 3,
+  "base": "",
+  "stdout": "TC-014 BLOCKED (缺少样本: XHS_NOTE_MAX)",
+  "blockedReason": "缺少样本: XHS_NOTE_MAX"
+}

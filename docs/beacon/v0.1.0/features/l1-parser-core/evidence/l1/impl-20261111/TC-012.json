@@ -1,22 +1,21 @@
 {
   "tc": "TC-012",
-  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-012 --out /tmp/l1-ev-tmp",
-  "startedAt": "2026-11-11T18:06:29+08:00",
+  "command": "python3 ops/tc_run.py TC-012",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-012 unsupported-platform: PASS (三个非目标平台)\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:61980",
+  "stdout": "PARSE_BASE=http://127.0.0.1:61980\nTC-012 unsupported-platform: PASS (三个非目标平台)\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-012",
     "name": "unsupported-platform",
     "status": "PASS",
-    "startedAt": "2026-11-11T18:06:29+08:00",
-    "base": "http://127.0.0.1:18090",
+    "startedAt": "2026-11-11T20:23:44+08:00",
+    "base": "http://127.0.0.1:61980",
     "request": {
       "url": "https://youtu.be/abc"
     },
     "httpStatus": 400,
     "responseBytes": 160,
-    "clientElapsedMs": 1,
+    "clientElapsedMs": 5,
     "response": {
       "ok": false,
       "error": {
@@ -26,7 +25,7 @@
       },
       "items": [],
       "resolved_url": "",
-      "elapsed_ms": 0
+      "elapsed_ms": 1
     },
     "failures": [],
     "note": "三个非目标平台"

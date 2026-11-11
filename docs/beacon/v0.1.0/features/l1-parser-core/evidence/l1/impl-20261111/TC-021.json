@@ -1,22 +1,21 @@
 {
   "tc": "TC-021",
-  "command": "PARSE_BASE=http://127.0.0.1:18094 RENLINK_DROP_ARGUS_HEADER=1 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-021 --out /tmp/l1-ev-tmp",
-  "startedAt": "2026-11-11T18:08:01+08:00",
+  "command": "python3 ops/tc_run.py TC-021",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18094\nTC-021 dy-argus-missing-header: PASS (需服务端以 RENLINK_DROP_ARGUS_HEADER=1 启动)\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:64124",
+  "stdout": "PARSE_BASE=http://127.0.0.1:64124\nTC-021 dy-argus-missing-header: PASS (需服务端以 RENLINK_DROP_ARGUS_HEADER=1 启动)\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-021",
     "name": "dy-argus-missing-header",
     "status": "PASS",
-    "startedAt": "2026-11-11T18:08:01+08:00",
-    "base": "http://127.0.0.1:18094",
+    "startedAt": "2026-11-11T20:24:14+08:00",
+    "base": "http://127.0.0.1:64124",
     "request": {
       "url": "https://v.douyin.com/Y7MgY9YnYAg..."
     },
     "httpStatus": 502,
     "responseBytes": 216,
-    "clientElapsedMs": 435,
+    "clientElapsedMs": 548,
     "response": {
       "ok": false,
       "error": {
@@ -26,7 +25,7 @@
       },
       "items": [],
       "resolved_url": "",
-      "elapsed_ms": 426
+      "elapsed_ms": 538
     },
     "failures": [],
     "note": "需服务端以 RENLINK_DROP_ARGUS_HEADER=1 启动"

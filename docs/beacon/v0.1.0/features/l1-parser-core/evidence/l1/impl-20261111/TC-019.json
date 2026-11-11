@@ -1,22 +1,21 @@
 {
   "tc": "TC-019",
-  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-019 --out /tmp/l1-ev-tmp",
-  "startedAt": "2026-11-11T18:06:30+08:00",
+  "command": "python3 ops/tc_run.py TC-019",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-019 dy-argus-1: PASS (argus requests 3 -> 3，browser_launches 不增)\nSUMMARY pass=1 fail=0 blocked=0",
-  "stderr": "",
+  "base": "http://127.0.0.1:63543",
+  "stdout": "PARSE_BASE=http://127.0.0.1:63543\nTC-019 dy-argus-1: PASS (argus requests 0 -> 1，browser_launches 不增)\nSUMMARY pass=1 fail=0 blocked=0",
   "smoke": {
     "tc": "TC-019",
     "name": "dy-argus-1",
     "status": "PASS",
-    "startedAt": "2026-11-11T18:06:30+08:00",
-    "base": "http://127.0.0.1:18090",
+    "startedAt": "2026-11-11T20:24:07+08:00",
+    "base": "http://127.0.0.1:63543",
     "request": {
       "url": "https://v.douyin.com/Y7MgY9YnYAg..."
     },
     "httpStatus": 200,
-    "responseBytes": 1350,
-    "clientElapsedMs": 1,
+    "responseBytes": 1347,
+    "clientElapsedMs": 765,
     "response": {
       "ok": true,
       "platform": "douyin",
@@ -25,15 +24,15 @@
       "resolved_url": "https://www.douyin.com/video/7705367833957403946",
       "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
       "item_count": 1,
-      "elapsed_ms": 217,
-      "task_id": "st_d119854fe1c2bae92e4556b2",
+      "elapsed_ms": 760,
+      "task_id": "st_fbaed39acde94c3b444affe9",
       "items": [
         {
           "index": 0,
           "type": "video",
-          "remoteUrl": "https://v11-weba.douyinvod.com/2b4d61ba554abba50080a5d57862e81a/6af46c28/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlci~wCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=80000e00038000&cquery=100H_100K_100o_100w_100B&dy_q=1794391161&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261111175921311888C0833B5C95ABD5",
+          "remoteUrl": "https://v26-web.douyinvod.com/88b2ba01e95203893e38ca74a39fc6da/6af48e17/video/tos/cn/tos-cn-ve-15/o8dYZn2A9IqAiDzftXQja2DqS8aFEAuuBgy6e7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=673&bt=673&cs=0&ds=3&ft=GN7rKGVVywSyRKJ80mo~MWwQlcvXnCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=aWQ3ZjM8NWk4Njc5PGg0NUBpamZmbXA5cmVoZTMzNGkzM0AzX14yYTMuNTMxX2E0MzJhYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100H_100K_100o_100w_100B&dy_q=1794399848&feature_id=f5241e7604dff1d9d6c943fd20bd51a2&l=20261111202407C772CD359FA668A7E7DB",
           "ext": "mp4",
-          "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109747600&x-signature=hh3%2FArywv4ylecNMBULWTDfVUJA%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261111175921311888C0833B5C95ABD5",
+          "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109758400&x-signature=CcfbpvvAcCtxNciYZ24OawPt5cY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261111202407C772CD359FA668A7E7DB",
           "width": 1080,
           "height": 1920,
           "needs_transcode": false
@@ -41,6 +40,6 @@
       ]
     },
     "failures": [],
-    "note": "argus requests 3 -> 3，browser_launches 不增"
+    "note": "argus requests 0 -> 1，browser_launches 不增"
   }
 }
