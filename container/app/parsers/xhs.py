@@ -137,6 +137,7 @@ def _copy_note(note: Dict[str, Any]) -> Dict[str, Any]:
         "title": note["title"],
         "xsec_token": note["xsec_token"],
         "items": [dict(item) for item in note["items"]],
+        "video_url": str(note.get("video_url") or ""),
     }
 
 
@@ -205,6 +206,23 @@ async def parse(url: str, cookie: Optional[str] = None) -> Dict[str, Any]:
             ],
         }
     note = await _call_note_parser(url, cookie or "")
+    note_video = note.get("video_url") if isinstance(note, dict) else ""
+    if isinstance(note_video, str) and note_video.startswith(("http://", "https://")):
+        return {
+            "content_type": "video",
+            "title": str(note.get("title") or ""),
+            "items": [
+                {
+                    "type": "video",
+                    "remoteUrl": note_video,
+                    "ext": "mp4",
+                    "cover": "",
+                    "width": None,
+                    "height": None,
+                    "needs_transcode": False,
+                }
+            ],
+        }
     return _note_payload(note)
 
 
@@ -537,18 +555,44 @@ def _note_from_state(state: Dict[str, Any], note_id: str) -> Dict[str, Any]:
 
 
 def _image_url(raw: Dict[str, Any]) -> str:
-    direct = raw.get("urlDefault")
-    if isinstance(direct, str) and direct.startswith(("http://", "https://")):
-        return direct
+    for key in ("urlDefault", "url"):
+        direct = raw.get(key)
+        if isinstance(direct, str) and direct.startswith(("http://", "https://")):
+            return direct
     info = raw.get("infoList")
     if isinstance(info, list):
-        for scene in ("WB_DFT", "CRD_WM_WEBP"):
+        for scene in ("WB_DFT", "CRD_WM_WEBP", "H5_DTL", "H5_PRV"):
             for entry in info:
                 if not isinstance(entry, dict) or entry.get("imageScene") != scene:
                     continue
                 url = entry.get("url")
                 if isinstance(url, str) and url.startswith(("http://", "https://")):
                     return url
+    return ""
+
+
+def _video_url(note: Dict[str, Any]) -> str:
+    """Video note stream address (yt-dlp may return None for xhslink)."""
+    video = note.get("video")
+    media = video.get("media") if isinstance(video, dict) else None
+    stream = media.get("stream") if isinstance(media, dict) else None
+    if not isinstance(stream, dict):
+        return ""
+    for codec in ("h264", "h265", "av1"):
+        entries = stream.get(codec)
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            master = entry.get("masterUrl")
+            if isinstance(master, str) and master.startswith(("http://", "https://")):
+                return master
+            backups = entry.get("backupUrls")
+            if isinstance(backups, list):
+                for url in backups:
+                    if isinstance(url, str) and url.startswith(("http://", "https://")):
+                        return url
     return ""
 
 
@@ -623,7 +667,8 @@ async def parse_note(url: str, cookie: str) -> Dict[str, Any]:
         state = _extract_state(html)
         note = _note_from_state(state, note_id)
         token = _xsec_token(final_url, note, state)
-        items = _note_items(note)
+        note_video = _video_url(note)
+        items = [] if note_video else _note_items(note)
     except ApiError as exc:
         if exc.code == "NEED_XSEC_TOKEN":
             _bump("xhs_note_parse_total{result=need_xsec}")
@@ -644,6 +689,7 @@ async def parse_note(url: str, cookie: str) -> Dict[str, Any]:
         "title": str(note.get("title") or note.get("desc") or ""),
         "xsec_token": token,
         "items": items,
+        "video_url": note_video,
     }
     _cache_put(key or _cache_key(note_id, token), result, ttl)
     _bump("xhs_note_parse_total{result=ok}")

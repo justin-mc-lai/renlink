@@ -1,4 +1,4 @@
-"""Douyin branch: Argus HTTP for video, f2 for notes. Never a browser.
+"""Douyin branch: Argus HTTP for video and notes; f2 only as a video fallback. Never a browser.
 
 Douyin must not import ``render`` (Obscura); TC-024 enforces that boundary.
 """
@@ -151,13 +151,22 @@ def _video_payload(
 
 
 def _f2_result(url: str, cookie: str, content_type: str) -> Dict[str, Any]:
-    """Use f2 as a library. Only fetch_one_video is called; no download."""
+    """Argus HTTP for notes; f2 remains the video fallback (no download)."""
     _ensure_f2_logger()
+    aweme_id = extract_aweme_id(url)
+    if content_type == "note":
+        try:
+            data = douyin_argus.fetch_detail(aweme_id, cookie)
+        except douyin_argus.ArgusUnavailable as exc:
+            raise ApiError("PARSE_FAILED", f"抖音图文 Argus 直连失败: {exc}") from exc
+        note = _note_payload(data)
+        if not note:
+            raise ApiError("PARSE_FAILED", "抖音图文 detail 里没有图片地址")
+        return note
     try:
         from f2.apps.douyin.handler import DouyinHandler
     except ImportError as exc:
         raise ApiError("PARSE_FAILED", "运行环境缺少 f2") from exc
-    aweme_id = extract_aweme_id(url)
     # f2 0.0.1.7 requires both keys even when headers is empty.
     kwargs = {"cookie": cookie or "", "headers": {}}
     proxies = f2_proxies()

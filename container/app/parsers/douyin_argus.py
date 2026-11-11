@@ -183,6 +183,29 @@ def fetch_play_addr(aweme_id: str, cookie: str) -> Dict[str, Any]:
     return data
 
 
+def fetch_detail(aweme_id: str, cookie: str) -> Dict[str, Any]:
+    """Return the raw ``aweme_detail`` object for one aweme (video or note)."""
+    cookie_map = parse_cookie(cookie)
+    uifid = cookie_map.get("UIFID") or cookie_map.get("UIFID_TEMP") or ""
+    verify = cookie_map.get("s_v_web_id") or ""
+    if not uifid or not verify:
+        raise ArgusUnavailable("cookie missing UIFID or s_v_web_id")
+    try:
+        payload = _request_detail(aweme_id, cookie_map, uifid, verify)
+    except ArgusUnavailable:
+        _stats["argus_failures"] += 1
+        raise
+    except Exception as exc:  # network / signing failure
+        _stats["argus_failures"] += 1
+        logger.warning("argus detail error aweme_id=%s type=%s", aweme_id, type(exc).__name__)
+        raise ArgusUnavailable(f"argus error: {type(exc).__name__}") from exc
+    detail = payload.get("aweme_detail")
+    if not isinstance(detail, dict) or not detail:
+        _stats["argus_failures"] += 1
+        raise ArgusUnavailable("detail payload missing aweme_detail")
+    return detail
+
+
 def _request_detail(
     aweme_id: str,
     cookie_map: Dict[str, str],
