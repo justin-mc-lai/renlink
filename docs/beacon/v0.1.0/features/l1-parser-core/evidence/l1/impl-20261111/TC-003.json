@@ -1,0 +1,46 @@
+{
+  "tc": "TC-003",
+  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-003 --out /tmp/l1-note-ev",
+  "startedAt": "2026-11-11T19:31:26+08:00",
+  "exitCode": 0,
+  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-003 dy-note-1: PASS (item_count 需与页面实际张数手工核对)\nSUMMARY pass=1 fail=0 blocked=0",
+  "stderr": "",
+  "smoke": {
+    "tc": "TC-003",
+    "name": "dy-note-1",
+    "status": "PASS",
+    "startedAt": "2026-11-11T19:31:26+08:00",
+    "base": "http://127.0.0.1:18090",
+    "request": {
+      "url": "https://www.douyin.com/note/7679..."
+    },
+    "httpStatus": 200,
+    "responseBytes": 1115,
+    "clientElapsedMs": 341,
+    "response": {
+      "ok": true,
+      "platform": "douyin",
+      "content_type": "note",
+      "source_url": "https://www.douyin.com/note/7679049540180226021",
+      "resolved_url": "https://www.douyin.com/note/7679049540180226021",
+      "title": "你叹缘分太薄浅  又叹命运太深刻  即使刻舟求剑  也难以将掌纹重叠#虞姬#甘坑古镇",
+      "item_count": 1,
+      "elapsed_ms": 334,
+      "task_id": "st_f3722da787b9e7b1618f45cf",
+      "items": [
+        {
+          "index": 0,
+          "type": "image",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c000-ce/oAetfigEfAEWXiwfHsfX6tAIY4ANtmAJiTAU6Q~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796986800&x-signature=iY9mLMIgkqtq8M6SoCBeAMQeXEU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111193126DF5714CBDA6CB540AAFC",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c000-ce/oAetfigEfAEWXiwfHsfX6tAIY4ANtmAJiTAU6Q~noop.jpeg?lk3s=138a59ce&x-expires=1795604400&x-signature=t3qPEtKOqgrqu%2BJaDfsI6b5IsQQ%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111193126DF5714CBDA6CB540AAFC",
+          "width": 2160,
+          "height": 2880,
+          "needs_transcode": false
+        }
+      ]
+    },
+    "failures": [],
+    "note": "item_count 需与页面实际张数手工核对"
+  }
+}

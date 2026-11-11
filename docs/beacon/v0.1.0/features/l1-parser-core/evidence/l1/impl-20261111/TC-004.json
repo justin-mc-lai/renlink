@@ -1,0 +1,76 @@
+{
+  "tc": "TC-004",
+  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-004 --out /tmp/l1-note-ev",
+  "startedAt": "2026-11-11T19:31:26+08:00",
+  "exitCode": 0,
+  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-004 dy-note-2: PASS (item_count 需与页面实际张数手工核对)\nSUMMARY pass=1 fail=0 blocked=0",
+  "stderr": "",
+  "smoke": {
+    "tc": "TC-004",
+    "name": "dy-note-2",
+    "status": "PASS",
+    "startedAt": "2026-11-11T19:31:26+08:00",
+    "base": "http://127.0.0.1:18090",
+    "request": {
+      "url": "https://www.douyin.com/note/7704..."
+    },
+    "httpStatus": 200,
+    "responseBytes": 4357,
+    "clientElapsedMs": 507,
+    "response": {
+      "ok": true,
+      "platform": "douyin",
+      "content_type": "note",
+      "source_url": "https://www.douyin.com/note/7704393290690366720",
+      "resolved_url": "https://www.douyin.com/note/7704393290690366720",
+      "title": "2026秋冬新款加厚夹棉毛呢大衣 女中长款娃娃领通勤款 最近在广州十三行淘到的这件2026秋冬新款加厚夹棉毛呢大衣，真的很适合日常通勤穿。挂在玄关就能看出整体版型很规整，中长款的长度刚好，直下摆利落不拖沓，柔和的娃娃领设计比普通翻领更显温婉。\n凑近看细节也很扎实，是梭织工艺的哑光呢感面料，加厚夹棉填充的是聚酯纤维，冬天穿保暖性足够。前襟是单排扣设计，还有实用的侧插口袋，平时放钥匙、口红这类小物件很方便。\n上身试穿的效果也很惊喜，修身版型不会显得臃肿，日常搭件基础针织衫、长裤和短靴就很得体，手插口袋的状态很放松，完全没有拘束感，对40+的通勤女性很友好。\n而且还有好几个颜色可以选，酒红、正红、驼色、藏蓝、黑色都有，不管是日常出门还是稍微正式点的通勤场合，都能挑到合适的颜色。",
+      "item_count": 4,
+      "elapsed_ms": 497,
+      "task_id": "st_7aec4a5abd8d261fe25a4a08",
+      "items": [
+        {
+          "index": 0,
+          "type": "image",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/ecom-shop-material/jpeg_m_f30431f138b3b550181ce957a8e55de0_sx_1512003_www1150-2044~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796986800&x-signature=5GolhrozKzdpqUKx9YMjO6%2Fdux0%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111193126610D0E6EF52B83479A33",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/obj/ecom-shop-material/jpeg_m_f30431f138b3b550181ce957a8e55de0_sx_1512003_www1150-2044?lk3s=138a59ce&x-expires=1795604400&x-signature=EVRdWvMZ%2BVDScLuPtdYJplmRss8%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111193126610D0E6EF52B83479A33",
+          "width": 1150,
+          "height": 2044,
+          "needs_transcode": false
+        },
+        {
+          "index": 1,
+          "type": "image",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/ecom-shop-material/jpeg_m_0ccb0eaa5afab348e9ff9a3abef10d78_sx_1515376_www1150-2044~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796986800&x-signature=ddfzB7LWEvSnF%2F%2BJUliQH4ShPI8%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111193126610D0E6EF52B83479A33",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/obj/ecom-shop-material/jpeg_m_f30431f138b3b550181ce957a8e55de0_sx_1512003_www1150-2044?lk3s=138a59ce&x-expires=1795604400&x-signature=EVRdWvMZ%2BVDScLuPtdYJplmRss8%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111193126610D0E6EF52B83479A33",
+          "width": 1150,
+          "height": 2044,
+          "needs_transcode": false
+        },
+        {
+          "index": 2,
+          "type": "image",
+          "remoteUrl": "https://p9-pc-sign.douyinpic.com/ecom-shop-material/jpeg_m_9e6199899a6f71d44abaac1a028859c0_sx_1453745_www1150-2044~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796986800&x-signature=RXrpQFcjVLHK8wwlq%2F4n3sXryWQ%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111193126610D0E6EF52B83479A33",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/obj/ecom-shop-material/jpeg_m_f30431f138b3b550181ce957a8e55de0_sx_1512003_www1150-2044?lk3s=138a59ce&x-expires=1795604400&x-signature=EVRdWvMZ%2BVDScLuPtdYJplmRss8%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111193126610D0E6EF52B83479A33",
+          "width": 1150,
+          "height": 2044,
+          "needs_transcode": false
+        },
+        {
+          "index": 3,
+          "type": "image",
+          "remoteUrl": "https://p3-pc-sign.douyinpic.com/ecom-shop-material/jpeg_m_76cfda7bbc883fa489271d882eb435d3_sx_1522467_www1150-2044~tplv-dy-aweme-images:q75.webp?lk3s=138a59ce&x-expires=1796986800&x-signature=2M4teFThVy2RDWfJG8oMp798SUA%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=image&biz_tag=aweme_images&l=20261111193126610D0E6EF52B83479A33",
+          "ext": "webp",
+          "cover": "https://p3-pc-sign.douyinpic.com/obj/ecom-shop-material/jpeg_m_f30431f138b3b550181ce957a8e55de0_sx_1512003_www1150-2044?lk3s=138a59ce&x-expires=1795604400&x-signature=EVRdWvMZ%2BVDScLuPtdYJplmRss8%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&biz_tag=pcweb_cover&l=20261111193126610D0E6EF52B83479A33",
+          "width": 1150,
+          "height": 2044,
+          "needs_transcode": false
+        }
+      ]
+    },
+    "failures": [],
+    "note": "item_count 需与页面实际张数手工核对"
+  }
+}

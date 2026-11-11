@@ -1,46 +1,46 @@
 {
   "tc": "TC-018",
-  "command": "PARSE_BASE=http://127.0.0.1:18096 SMOKE_CONTAINER_ID=renlink-impl-18096 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-018 --out /tmp/l1-ev-tmp",
-  "startedAt": "2026-11-11T18:06:34+08:00",
+  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-018 --out /tmp/l1-note-ev",
+  "startedAt": "2026-11-11T19:31:27+08:00",
   "exitCode": 0,
-  "stdout": "PARSE_BASE=http://127.0.0.1:18096\nTC-018 health: PASS\nSUMMARY pass=1 fail=0 blocked=0",
+  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-018 health: PASS\nSUMMARY pass=1 fail=0 blocked=0",
   "stderr": "",
   "smoke": {
     "tc": "TC-018",
     "name": "health",
     "status": "PASS",
-    "startedAt": "2026-11-11T18:06:34+08:00",
-    "base": "http://127.0.0.1:18096",
+    "startedAt": "2026-11-11T19:31:27+08:00",
+    "base": "http://127.0.0.1:18090",
     "request": {
       "path": "/health"
     },
     "httpStatus": 200,
     "responseBytes": 760,
-    "clientElapsedMs": 12,
+    "clientElapsedMs": 7,
     "response": {
       "ok": true,
       "version": "v0.1.0",
       "platforms": {
         "douyin": {
           "cookie_status": "fresh",
-          "last_refresh": "'2026-11-10T01:41:12+08:00'",
+          "last_refresh": "2026-11-10T01:41:12+08:00",
           "source": "env",
-          "pool_age_s": null
+          "pool_age_s": 150615
         },
         "xhs": {
           "cookie_status": "fresh",
-          "last_refresh": "'2026-11-10T01:26:05+08:00'",
+          "last_refresh": "2026-11-10T01:26:05+08:00",
           "source": "env",
-          "pool_age_s": null
+          "pool_age_s": 151522
         }
       },
       "egress_proxy": "direct",
       "argus": {
-        "argus_requests": 2,
+        "argus_requests": 3,
         "cache_hits": 0,
         "argus_failures": 0,
         "dropped_argus_header": 0,
-        "cache_entries": 2,
+        "cache_entries": 1,
         "cache_ttl_s": 600
       },
       "render": {
@@ -58,7 +58,7 @@
         "last_error": ""
       },
       "rate_limit_hits": 0,
-      "cache_hits": 2,
+      "cache_hits": 1,
       "stage_hits": 0,
       "rejected_counts": {
         "INVALID_URL": 0,
