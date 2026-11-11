@@ -44,30 +44,30 @@ export RENLINK_RENDER_WAIT_MS=8000        # Obscura 渲染预算，默认 8000
 
 | AC ID | TC ID | Layer | Command | Assertion |
 |-------|-------|-------|---------|-----------|
-| AC-001 | TC-001 | e2e | `python3 ops/smoke.py --case dy-video-1` | 200 且 items 长度 1 且 remoteUrl 非空且 ext=mp4 |
-| AC-001 | TC-002 | e2e | `python3 ops/smoke.py --case dy-video-2` | 200 且 items 长度 1 且 remoteUrl 非空且 ext=mp4 |
-| AC-002 | TC-003 | e2e | `python3 ops/smoke.py --case dy-note-1` | content_type=note 且 item_count 等于页面张数且每项 remoteUrl 非空 |
-| AC-002 | TC-004 | e2e | `python3 ops/smoke.py --case dy-note-2` | content_type=note 且 item_count 等于页面张数且每项 remoteUrl 非空 |
-| AC-003 | TC-005 | e2e | `python3 ops/smoke.py --case xhs-video-1` | platform=xhs 且 content_type=video 且 items 长度 1 且 remoteUrl 非空 |
-| AC-003 | TC-006 | e2e | `python3 ops/smoke.py --case xhs-video-2` | platform=xhs 且 content_type=video 且 items 长度 1 且 remoteUrl 非空 |
-| AC-004 | TC-007 | e2e | `python3 ops/smoke.py --case dy-short-1` | resolved_url 命中 douyin.com 的 video 路径且清单字段齐全 |
-| AC-004 | TC-008 | e2e | `python3 ops/smoke.py --case xhs-short-1` | resolved_url 命中 xiaohongshu.com 的规范路径 |
-| AC-005 | TC-009 | negative | `python3 ops/smoke.py --case cookie-expired` | 503 且 error.code=COOKIE_EXPIRED 且 items 为空数组 |
-| AC-006 | TC-010 | negative | `python3 ops/smoke.py --case shortlink-fail` | 422 且 error.code=SHORTLINK_FAIL 且 resolved_url 为空字符串 |
-| AC-007 | TC-011 | negative | `python3 ops/smoke.py --case invalid-url` | 400 且 error.code=INVALID_URL |
-| AC-008 | TC-012 | negative | `python3 ops/smoke.py --case unsupported-platform` | 400 且 error.code=UNSUPPORTED_PLATFORM |
-| AC-009 | TC-013 | negative | `python3 ops/smoke.py --case timeout` | 504 且 error.code=TIMEOUT 且耗时小于 15s |
-| AC-010 | TC-014 | contract | `python3 ops/smoke.py --case size-cap` | 响应体不大于 1024000 字节且 items 不大于 100 且无 base64 键 |
-| AC-011 | TC-015 | contract | `python3 ops/smoke.py --case field-contract` | 四类响应必填字段齐全且类型固定且 index 连续 |
-| AC-012 | TC-016 | behavior | `python3 ops/smoke.py --case no-download` | /tmp 文件数不变且响应无 cloudID 键 |
-| AC-013 | TC-017 | negative | `python3 ops/smoke.py --case user-cookie` | 400 且 error.code=INVALID_REQUEST |
-| AC-014 | TC-018 | contract | `python3 ops/smoke.py --case health` | 200 且 ok=true 且两平台 cookie_status 字段存在 |
-| AC-015 | TC-019 | e2e | `python3 ops/smoke.py --case dy-argus-1` | 抖音真实链接补齐 Argus 头与 a_bogus/msToken 后 200、ok=true、items 长度 1、remoteUrl 为非空 play_addr |
-| AC-015 | TC-020 | e2e | `python3 ops/smoke.py --case dy-argus-stability` | 同一链接连跑 3 次均 200，3 次 remoteUrl 均非空 |
-| AC-016 | TC-021 | negative | `python3 ops/smoke.py --case dy-argus-missing-header` | 去掉 x-tt-argus 时上游 403，/parse 502 PARSE_FAILED retryable=true 且 items 为空数组 |
-| AC-016 | TC-022 | negative | `python3 ops/smoke.py --case dy-argus-timeout` | 抖音上游超过 12s 时 504 TIMEOUT 且响应无半截 items，全程不起浏览器 |
-| AC-017 | TC-023 | e2e | `python3 ops/smoke.py --case obscura-xhs-render` | ENABLE_OBSCURA=1 时 Obscura 渲染小红书笔记页成功，标题正确且含 xsec_token |
-| AC-017 | TC-024 | behavior | `python3 ops/smoke.py --case douyin-no-obscura` | Obscura 开启时抖音 /parse 仍由 Argus 直连返回 play_addr，Obscura 无抖音页面请求，无浏览器进程 |
+| AC-001 | TC-001 | e2e | `python3 ops/tc_run.py TC-001` | 200 且 items 长度 1 且 remoteUrl 非空且 ext=mp4 |
+| AC-001 | TC-002 | e2e | `python3 ops/tc_run.py TC-002` | 200 且 items 长度 1 且 remoteUrl 非空且 ext=mp4 |
+| AC-002 | TC-003 | e2e | `python3 ops/tc_run.py TC-003` | content_type=note 且 item_count 等于页面张数且每项 remoteUrl 非空 |
+| AC-002 | TC-004 | e2e | `python3 ops/tc_run.py TC-004` | content_type=note 且 item_count 等于页面张数且每项 remoteUrl 非空 |
+| AC-003 | TC-005 | e2e | `python3 ops/tc_run.py TC-005` | platform=xhs 且 content_type=video 且 items 长度 1 且 remoteUrl 非空 |
+| AC-003 | TC-006 | e2e | `python3 ops/tc_run.py TC-006` | platform=xhs 且 content_type=video 且 items 长度 1 且 remoteUrl 非空 |
+| AC-004 | TC-007 | e2e | `python3 ops/tc_run.py TC-007` | resolved_url 命中 douyin.com 的 video 路径且清单字段齐全 |
+| AC-004 | TC-008 | e2e | `python3 ops/tc_run.py TC-008` | resolved_url 命中 xiaohongshu.com 的规范路径 |
+| AC-005 | TC-009 | negative | `python3 ops/tc_run.py TC-009` | 503 且 error.code=COOKIE_EXPIRED 且 items 为空数组 |
+| AC-006 | TC-010 | negative | `python3 ops/tc_run.py TC-010` | 422 且 error.code=SHORTLINK_FAIL 且 resolved_url 为空字符串 |
+| AC-007 | TC-011 | negative | `python3 ops/tc_run.py TC-011` | 400 且 error.code=INVALID_URL |
+| AC-008 | TC-012 | negative | `python3 ops/tc_run.py TC-012` | 400 且 error.code=UNSUPPORTED_PLATFORM |
+| AC-009 | TC-013 | negative | `python3 ops/tc_run.py TC-013` | 504 且 error.code=TIMEOUT 且耗时小于 15s |
+| AC-010 | TC-014 | contract | `python3 ops/tc_run.py TC-014` | 响应体不大于 1024000 字节且 items 不大于 100 且无 base64 键 |
+| AC-011 | TC-015 | contract | `python3 ops/tc_run.py TC-015` | 四类响应必填字段齐全且类型固定且 index 连续 |
+| AC-012 | TC-016 | behavior | `python3 ops/tc_run.py TC-016` | /tmp 文件数不变且响应无 cloudID 键 |
+| AC-013 | TC-017 | negative | `python3 ops/tc_run.py TC-017` | 400 且 error.code=INVALID_REQUEST |
+| AC-014 | TC-018 | contract | `python3 ops/tc_run.py TC-018` | 200 且 ok=true 且两平台 cookie_status 字段存在 |
+| AC-015 | TC-019 | e2e | `python3 ops/tc_run.py TC-019` | 抖音真实链接补齐 Argus 头与 a_bogus/msToken 后 200、ok=true、items 长度 1、remoteUrl 为非空 play_addr |
+| AC-015 | TC-020 | e2e | `python3 ops/tc_run.py TC-020` | 同一链接连跑 3 次均 200，3 次 remoteUrl 均非空 |
+| AC-016 | TC-021 | negative | `python3 ops/tc_run.py TC-021` | 去掉 x-tt-argus 时上游 403，/parse 502 PARSE_FAILED retryable=true 且 items 为空数组 |
+| AC-016 | TC-022 | negative | `python3 ops/tc_run.py TC-022` | 抖音上游超过 12s 时 504 TIMEOUT 且响应无半截 items，全程不起浏览器 |
+| AC-017 | TC-023 | e2e | `python3 ops/tc_run.py TC-023` | ENABLE_OBSCURA=1 时 Obscura 渲染小红书笔记页成功，标题正确且含 xsec_token |
+| AC-017 | TC-024 | behavior | `python3 ops/tc_run.py TC-024` | Obscura 开启时抖音 /parse 仍由 Argus 直连返回 play_addr，Obscura 无抖音页面请求，无浏览器进程 |
 
 ## 用例明细
 
