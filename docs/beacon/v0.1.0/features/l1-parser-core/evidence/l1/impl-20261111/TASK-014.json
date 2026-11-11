@@ -1,0 +1,146 @@
+{
+  "task": "TASK-014",
+  "tcs": [
+    "TC-001",
+    "TC-002"
+  ],
+  "buildLogTail": "s the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv\n#18 15.73 \n#18 15.73 [notice] A new release of pip is available: 24.0 -> 26.3\n#18 15.73 [notice] To update, run: pip install --upgrade pip\n#18 16.19 playwright CDP client ok\n#18 DONE 16.4s\n\n#19 [stage-2 11/14] COPY container/app ./app\n#19 DONE 0.0s\n\n#20 [stage-2 12/14] COPY contract ./contract\n#20 DONE 0.0s\n\n#21 [stage-2 13/14] COPY container/entrypoint.sh /usr/local/bin/renlink-entrypoint\n#21 DONE 0.0s\n\n#22 [stage-2 14/14] RUN chmod +x /usr/local/bin/renlink-entrypoint\n#22 DONE 0.1s\n\n#23 exporting to image\n#23 exporting layers\n#23 exporting layers 8.4s done\n#23 exporting manifest sha256:5b5d6cdc3e67af996c156eb9be9b2fb09379a9a549c3b82fd9300b8aa9b2edb9 done\n#23 exporting config sha256:50a09c8c83e05ca3f9baf7893d7d308a4bff709354cc4ab2a310470150f938e7 done\n#23 exporting attestation manifest sha256:a67fac16fe0ae497d04795b20aae4e7c37e09e2626e7385f96fdda864731a8a4 0.0s done\n#23 exporting manifest list sha256:2248a02197ab572bfd5a72e7268ee09490139345ca5ee6c7738553dd51809648 done\n#23 naming to docker.io/library/renlink-l1:impl-20261111 done\n#23 unpacking to docker.io/library/renlink-l1:impl-20261111\n#23 unpacking to docker.io/library/renlink-l1:impl-20261111 2.6s done\n#23 DONE 11.1s\n\nView build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/qaowgn3q4nnpdecqblx3zpr4i\n",
+  "checks": [
+    {
+      "command": "docker build -t renlink-l1:impl-20261111 .",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "#0 building with \"desktop-linux\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 1.96kB done\n#1 DONE 0.0s\n\n#2 [internal] load metadata for docker.io/h4ckf0r0day/obscura:latest\n#2 DONE 0.0s\n\n#3 [internal] load metadata for docker.io/library/node:20-bookworm-slim\n#3 ...\n\n#4 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm\n#4 DONE 0.3s\n\n#3 [internal] load metadata for docker.io/library/node:20-bookworm-slim\n#3 DONE 0.3s\n\n#5 [internal] load .dockerignore\n#5 transferring context: 2B done\n#5 DONE 0.0s\n\n#6 [stage-2  1/14] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39\n#6 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.0s done\n#6 DONE 0.0s\n\n#7 [obscura 1/1] FROM docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c\n#7 resolve docker.io/h4ckf0r0day/obscura:latest@sha256:76522dd288b0c0186b360fd6e6133ef55908e1fc3b9c4b7ad6240bf8682d998c 0.0s done\n#7 DONE 0.0s\n\n#8 [node 1/1] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0\n#8 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 0.0s done\n#8 DONE 0.0s\n\n#9 [internal] load build context\n#9 transferring context: 3.75kB done\n#9 DONE 0.0s\n\n#10 [stage-2  6/14] RUN chmod +x /usr/local/bin/obscura\n#10 CACHED\n\n#11 [stage-2  8/14] COPY container/requirements.txt ./requirements.txt\n#11 CACHED\n\n#12 [stage-2 10/14] RUN pip install --no-cache-dir playwright==1.64.1     && python -c \"from playwright.sync_api import sync_playwright; print('playwright CDP client ok')\"     && test ! -d /ms-playwright\n#12 CACHED\n\n#13 [stage-2 11/14] COPY container/app ./app\n#13 CACHED\n\n#14 [stage-2  7/14] WORKDIR /app\n#14 CACHED\n\n#15 [stage-2  5/14] COPY --from=obscura /obscura /usr/local/bin/obscura\n#15 CACHED\n\n#16 [stage-2 12/14] COPY contract ./contract\n#16 CACHED\n\n#17 [stage-2  3/14] COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules\n#17 CACHED\n\n#18 [stage-2  2/14] COPY --from=node /usr/local/bin/node /usr/local/bin/node\n#18 CACHED\n\n#19 [stage-2 13/14] COPY container/entrypoint.sh /usr/local/bin/renlink-entrypoint\n#19 CACHED\n\n#20 [stage-2  4/14] RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm\n#20 CACHED\n\n#21 [stage-2  9/14] RUN pip install --no-cache-dir -r requirements.txt     && node --version     && python -c \"import logging; logging.getLogger('f2').addHandler(logging.NullHandler()); import f2, curl_cffi; print('f2 import ok', getattr(f2, '__version__', 'unknown'), '| curl_cffi', curl_cffi.__version__)\"\n#21 CACHED\n\n#22 [stage-2 14/14] RUN chmod +x /usr/local/bin/renlink-entrypoint\n#22 CACHED\n\n#23 exporting to image\n#23 exporting layers done\n#23 exporting manifest sha256:5b5d6cdc3e67af996c156eb9be9b2fb09379a9a549c3b82fd9300b8aa9b2edb9 done\n#23 exporting config sha256:50a09c8c83e05ca3f9baf7893d7d308a4bff709354cc4ab2a310470150f938e7 done\n#23 exporting attestation manifest sha256:43bca454912527a94ddf946a5558b1d2c5c92067eaae7626409484ebef6a987c 0.0s done\n#23 exporting manifest list sha256:5853886171d5107b88d228a9f872918e071103ab8ea3c88eb0f59511f773a3cc\n#23 exporting manifest list sha256:5853886171d5107b88d228a9f872918e071103ab8ea3c88eb0f59511f773a3cc done\n#23 naming to docker.io/library/renlink-l1:impl-20261111 done\n#23 unpacking to docker.io/library/renlink-l1:impl-20261111 0.0s done\n#23 DONE 0.1s\n\nView build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/x9anyct4u2f2re9w97mwlmuqo"
+    },
+    {
+      "command": "docker inspect --format '{{.Id}}' renlink-l1:impl-20261111",
+      "exitCode": 0,
+      "stdout": "sha256:5853886171d5107b88d228a9f872918e071103ab8ea3c88eb0f59511f773a3cc",
+      "stderr": ""
+    },
+    {
+      "command": "docker exec renlink-impl-18096 python -V",
+      "exitCode": 0,
+      "stdout": "Python 3.11.18",
+      "stderr": ""
+    },
+    {
+      "command": "docker exec renlink-impl-18096 node --version",
+      "exitCode": 0,
+      "stdout": "v20.20.2",
+      "stderr": ""
+    },
+    {
+      "command": "docker exec renlink-impl-18096 python -c 'import f2,curl_cffi;print(\"f2\", f2.__version__, \"curl_cffi\", curl_cffi.__version__)'",
+      "exitCode": 0,
+      "stdout": "f2 0.0.1.7 curl_cffi 0.17.0",
+      "stderr": ""
+    },
+    {
+      "command": "docker exec renlink-impl-18096 sh -c 'ls -d /ms-playwright 2>/dev/null || echo no-ms-playwright'",
+      "exitCode": 0,
+      "stdout": "no-ms-playwright",
+      "stderr": ""
+    },
+    {
+      "command": "docker exec renlink-impl-18096 sh -c 'command -v chromium || command -v chromium-browser || command -v google-chrome || echo no-chromium'",
+      "exitCode": 0,
+      "stdout": "no-chromium",
+      "stderr": ""
+    }
+  ],
+  "tcRuns": {
+    "TC-001": {
+      "tc": "TC-001",
+      "command": "PARSE_BASE=http://127.0.0.1:18096 SMOKE_CONTAINER_ID=renlink-impl-18096 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-001 --out /tmp/l1-ev-tmp",
+      "startedAt": "2026-11-11T18:06:30+08:00",
+      "exitCode": 0,
+      "stdout": "PARSE_BASE=http://127.0.0.1:18096\nTC-001 dy-video-1: PASS\nSUMMARY pass=1 fail=0 blocked=0",
+      "stderr": "",
+      "smoke": {
+        "tc": "TC-001",
+        "name": "dy-video-1",
+        "status": "PASS",
+        "startedAt": "2026-11-11T18:06:30+08:00",
+        "base": "http://127.0.0.1:18096",
+        "request": {
+          "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+        },
+        "httpStatus": 200,
+        "responseBytes": 1348,
+        "clientElapsedMs": 936,
+        "response": {
+          "ok": true,
+          "platform": "douyin",
+          "content_type": "video",
+          "source_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+          "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+          "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+          "item_count": 1,
+          "elapsed_ms": 918,
+          "task_id": "st_fca26341036ee0bca90ee4dc",
+          "items": [
+            {
+              "index": 0,
+              "type": "video",
+              "remoteUrl": "https://v11-weba.douyinvod.com/adf0ae3cbc15380883905bb1406670ab/6af46dd6/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlc6zwCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=80000e00038000&cquery=100w_100B_100H_100K_100o&dy_q=1794391591&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261111180631755AAC1EDB5D709AA20C",
+              "ext": "mp4",
+              "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109751200&x-signature=q9cXuoK4Tcs7sxYmRrs6ggkRtgk%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261111180631755AAC1EDB5D709AA20C",
+              "width": 1080,
+              "height": 1920,
+              "needs_transcode": false
+            }
+          ]
+        },
+        "failures": [],
+        "note": ""
+      }
+    },
+    "TC-002": {
+      "tc": "TC-002",
+      "command": "PARSE_BASE=http://127.0.0.1:18096 SMOKE_CONTAINER_ID=renlink-impl-18096 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-002 --out /tmp/l1-ev-tmp",
+      "startedAt": "2026-11-11T18:06:31+08:00",
+      "exitCode": 0,
+      "stdout": "PARSE_BASE=http://127.0.0.1:18096\nTC-002 dy-video-2: PASS\nSUMMARY pass=1 fail=0 blocked=0",
+      "stderr": "",
+      "smoke": {
+        "tc": "TC-002",
+        "name": "dy-video-2",
+        "status": "PASS",
+        "startedAt": "2026-11-11T18:06:31+08:00",
+        "base": "http://127.0.0.1:18096",
+        "request": {
+          "url": "https://v.douyin.com/nWzAJk8H0-E..."
+        },
+        "httpStatus": 200,
+        "responseBytes": 1316,
+        "clientElapsedMs": 589,
+        "response": {
+          "ok": true,
+          "platform": "douyin",
+          "content_type": "video",
+          "source_url": "https://v.douyin.com/nWzAJk8H0-E/",
+          "resolved_url": "https://www.douyin.com/video/7480659754788900122",
+          "title": "程序员零门槛副业#程序员 #日常vlog #大学生 #惊喜",
+          "item_count": 1,
+          "elapsed_ms": 577,
+          "task_id": "st_aa0c5e4d28c92d5a9121e954",
+          "items": [
+            {
+              "index": 0,
+              "type": "video",
+              "remoteUrl": "https://v26-web.douyinvod.com/8ba2f29cb5ad5408b53a125dbcc8108c/6af46985/video/tos/cn/tos-cn-ve-0015c800/oIPQtC64EIP5xvHl1IZiAQBT18i3Qy91u4pAk/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=1384&bt=1384&cs=0&ds=3&ft=GN7rKGVVywSyRKJ80mo~MWwQlcvzwCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=NDVmOmk2NzpmOGZnZTQ3ZUBpamt4d3I5cmhkeTMzNGkzM0BhNTM2YTViNi0xYl5gNC9jYSNmb2xuMmRrNjVgLS1kLWFzcw%3D%3D&btag=c0000e00030000&cquery=100o_100w_100B_100x_100z&dy_q=1794391592&feature_id=fea919893f650a8c49286568590446ef&l=202611111806326853349C23662A5C7FFF",
+              "ext": "mp4",
+              "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/06ff4fae1a49c5cc80afe33936d1d55e~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109751200&x-signature=C1zt8OsVJrUCpfVsAzDywfdrloM%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=202611111806326853349C23662A5C7FFF",
+              "width": 1920,
+              "height": 1080,
+              "needs_transcode": false
+            }
+          ]
+        },
+        "failures": [],
+        "note": ""
+      }
+    }
+  }
+}

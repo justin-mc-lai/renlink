@@ -1,0 +1,34 @@
+{
+  "tc": "TC-022",
+  "command": "PARSE_BASE=http://127.0.0.1:18092 PARSE_UPSTREAM_DELAY_MS=13000 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-022 --out /tmp/l1-ev-tmp",
+  "startedAt": "2026-11-11T18:07:45+08:00",
+  "exitCode": 0,
+  "stdout": "PARSE_BASE=http://127.0.0.1:18092\nTC-022 dy-argus-timeout: PASS (需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504)\nSUMMARY pass=1 fail=0 blocked=0",
+  "stderr": "",
+  "smoke": {
+    "tc": "TC-022",
+    "name": "dy-argus-timeout",
+    "status": "PASS",
+    "startedAt": "2026-11-11T18:07:45+08:00",
+    "base": "http://127.0.0.1:18092",
+    "request": {
+      "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+    },
+    "httpStatus": 504,
+    "responseBytes": 142,
+    "clientElapsedMs": 12016,
+    "response": {
+      "ok": false,
+      "error": {
+        "code": "TIMEOUT",
+        "message": "上游解析超过 12 秒",
+        "retryable": true
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 12001
+    },
+    "failures": [],
+    "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动；抖音不启浏览器，12s 总预算到期直接 504"
+  }
+}

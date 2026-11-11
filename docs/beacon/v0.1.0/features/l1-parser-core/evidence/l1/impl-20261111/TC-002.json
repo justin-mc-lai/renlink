@@ -1,0 +1,46 @@
+{
+  "tc": "TC-002",
+  "command": "PARSE_BASE=http://127.0.0.1:18096 SMOKE_CONTAINER_ID=renlink-impl-18096 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-002 --out /tmp/l1-ev-tmp",
+  "startedAt": "2026-11-11T18:06:31+08:00",
+  "exitCode": 0,
+  "stdout": "PARSE_BASE=http://127.0.0.1:18096\nTC-002 dy-video-2: PASS\nSUMMARY pass=1 fail=0 blocked=0",
+  "stderr": "",
+  "smoke": {
+    "tc": "TC-002",
+    "name": "dy-video-2",
+    "status": "PASS",
+    "startedAt": "2026-11-11T18:06:31+08:00",
+    "base": "http://127.0.0.1:18096",
+    "request": {
+      "url": "https://v.douyin.com/nWzAJk8H0-E..."
+    },
+    "httpStatus": 200,
+    "responseBytes": 1316,
+    "clientElapsedMs": 589,
+    "response": {
+      "ok": true,
+      "platform": "douyin",
+      "content_type": "video",
+      "source_url": "https://v.douyin.com/nWzAJk8H0-E/",
+      "resolved_url": "https://www.douyin.com/video/7480659754788900122",
+      "title": "程序员零门槛副业#程序员 #日常vlog #大学生 #惊喜",
+      "item_count": 1,
+      "elapsed_ms": 577,
+      "task_id": "st_aa0c5e4d28c92d5a9121e954",
+      "items": [
+        {
+          "index": 0,
+          "type": "video",
+          "remoteUrl": "https://v26-web.douyinvod.com/8ba2f29cb5ad5408b53a125dbcc8108c/6af46985/video/tos/cn/tos-cn-ve-0015c800/oIPQtC64EIP5xvHl1IZiAQBT18i3Qy91u4pAk/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=1384&bt=1384&cs=0&ds=3&ft=GN7rKGVVywSyRKJ80mo~MWwQlcvzwCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=NDVmOmk2NzpmOGZnZTQ3ZUBpamt4d3I5cmhkeTMzNGkzM0BhNTM2YTViNi0xYl5gNC9jYSNmb2xuMmRrNjVgLS1kLWFzcw%3D%3D&btag=c0000e00030000&cquery=100o_100w_100B_100x_100z&dy_q=1794391592&feature_id=fea919893f650a8c49286568590446ef&l=202611111806326853349C23662A5C7FFF",
+          "ext": "mp4",
+          "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/06ff4fae1a49c5cc80afe33936d1d55e~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109751200&x-signature=C1zt8OsVJrUCpfVsAzDywfdrloM%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=202611111806326853349C23662A5C7FFF",
+          "width": 1920,
+          "height": 1080,
+          "needs_transcode": false
+        }
+      ]
+    },
+    "failures": [],
+    "note": ""
+  }
+}

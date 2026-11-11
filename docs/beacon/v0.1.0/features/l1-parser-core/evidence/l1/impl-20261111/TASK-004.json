@@ -1,0 +1,68 @@
+{
+  "task": "TASK-004",
+  "allPass": true,
+  "runs": [
+    {
+      "tc": "TC-007",
+      "command": "PARSE_BASE=http://127.0.0.1:18096 SMOKE_CONTAINER_ID=renlink-impl-18096 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-007 --out /tmp/l1-ev-tmp",
+      "exitCode": 0,
+      "status": "PASS",
+      "failures": [],
+      "note": "",
+      "response": {
+        "ok": true,
+        "platform": "douyin",
+        "content_type": "video",
+        "source_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+        "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+        "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+        "item_count": 1,
+        "elapsed_ms": 918,
+        "task_id": "st_fca26341036ee0bca90ee4dc",
+        "items": [
+          {
+            "index": 0,
+            "type": "video",
+            "remoteUrl": "https://v11-weba.douyinvod.com/adf0ae3cbc15380883905bb1406670ab/6af46dd6/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlc6zwCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=80000e00038000&cquery=100w_100B_100H_100K_100o&dy_q=1794391591&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261111180631755AAC1EDB5D709AA20C",
+            "ext": "mp4",
+            "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109751200&x-signature=q9cXuoK4Tcs7sxYmRrs6ggkRtgk%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261111180631755AAC1EDB5D709AA20C",
+            "width": 1080,
+            "height": 1920,
+            "needs_transcode": false
+          }
+        ]
+      }
+    },
+    {
+      "tc": "TC-008",
+      "command": "PARSE_BASE=http://127.0.0.1:18096 SMOKE_CONTAINER_ID=renlink-impl-18096 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-008 --out /tmp/l1-ev-tmp",
+      "exitCode": 0,
+      "status": "PASS",
+      "failures": [],
+      "note": "",
+      "response": {
+        "ok": true,
+        "platform": "xhs",
+        "content_type": "video",
+        "source_url": "https://xhslink.cn/o/1zbdThHpdb0",
+        "resolved_url": "https://www.xiaohongshu.com/discovery/item/6af04386000000001500d626?app_platform=android&ignoreEngage=true&app_version=9.53.0&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%3D&author_share=1&xhsshare=CopyLink&shareRedId=ODg7QzQ7ST42NzUyOTgwNjg0OTk5Rz5M&apptime=1794139056&share_id=ab67879c62464af6adf3b23492c1e3c7&share_channel=copy_link&track_code=1zbdThHpdb0",
+        "title": "XiaoHongShu video #6af04386000000001500d626",
+        "item_count": 1,
+        "elapsed_ms": 1242,
+        "task_id": "st_7d3e3c4133f3f20b9ba09c75",
+        "items": [
+          {
+            "index": 0,
+            "type": "video",
+            "remoteUrl": "http://sns-bak-v6.xhscdn.com/stream/79/110/523/01eaf043855eb5bb4f037001a1ba89bebf_523.mp4",
+            "ext": "mp4",
+            "cover": "http://sns-webpic-qc.xhscdn.com/202611111806/da2998a66c28b481308a7c49d4ca1ee0/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+            "width": 2160,
+            "height": 3840,
+            "needs_transcode": false
+          }
+        ]
+      }
+    }
+  ]
+}

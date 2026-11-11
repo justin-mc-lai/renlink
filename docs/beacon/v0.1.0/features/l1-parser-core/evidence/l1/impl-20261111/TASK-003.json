@@ -1,0 +1,25 @@
+{
+  "task": "TASK-003",
+  "allPass": true,
+  "runs": [
+    {
+      "tc": "TC-017",
+      "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-017 --out /tmp/l1-ev-tmp",
+      "exitCode": 0,
+      "status": "PASS",
+      "failures": [],
+      "note": "请求体含 cookie 字段，不应进入解析分支",
+      "response": {
+        "ok": false,
+        "error": {
+          "code": "INVALID_REQUEST",
+          "message": "请求体不得包含 cookie 字段",
+          "retryable": false
+        },
+        "items": [],
+        "resolved_url": "",
+        "elapsed_ms": 0
+      }
+    }
+  ]
+}

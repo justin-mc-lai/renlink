@@ -56,17 +56,17 @@
 - 时间：2026-11-08 19:40 Asia/Shanghai
 - host run：`run_1084fcb4301353f56601ec48`，stage=`plan`，status=`blocked (loop_stage governance_precheck)`，reason=`stage_executor_not_registered`。host run 保持原状，本轮是 lake 级 implement，未重建 run。
 - 实现依据：truth.md（frozen, R1）、tasks.md、tests.md
-- 契约参考： docs/PLAN.md
+- 契约参考： <docs/PLAN.md>
 - 以上四份正文未修改。
-- 交付物： container/app/main.py container/app/routes_parse.py container/app/contract.py container/app/errors.py container/app/parsers/shortlink.py container/app/parsers/douyin.py container/app/parsers/xhs.py container/app/session_bridge.py container/requirements.txt contract/parse_response.schema.json ops/smoke.py Dockerfile
+- 交付物： <container/app/main.py> <container/app/routes_parse.py> <container/app/contract.py> <container/app/errors.py> <container/app/parsers/shortlink.py> <container/app/parsers/douyin.py> <container/app/parsers/xhs.py> <container/app/session_bridge.py> <container/requirements.txt> <contract/parse_response.schema.json> <ops/smoke.py> Dockerfile
 
 ### 验证结果
 
-- `docker build -t renlink-l1:local .`：退出码 0；镜像 `sha256:8c0da220d69769635f60ed30de9bb8585882913516ee0edd4ea93b874ae77890`；构建日志 docs/beacon/v0.1.0/features/l1-parser-core/evidence/build-docker.log 。镜像内 Node `v20.20.2`、`python -c "import f2"` 输出 `f2 import ok 0.0.1.7`。
+- `docker build -t renlink-l1:local .`：退出码 0；镜像 `sha256:8c0da220d69769635f60ed30de9bb8585882913516ee0edd4ea93b874ae77890`；构建日志 <docs/beacon/v0.1.0/features/l1-parser-core/evidence/build-docker.log> 。镜像内 Node `v20.20.2`、`python -c "import f2"` 输出 `f2 import ok 0.0.1.7`。
 - 容器运行：`renlink-l1-test` 启动成功，`GET /health` 返回 200；`curl -X POST localhost:18080/parse -d '{"url":"https://example.com"}'` 返回 HTTP 400、`error.code=UNSUPPORTED_PLATFORM` 信封。
-- `python ops/smoke.py` （无真实样本、容器地址）：18 个用例，`pass=5 fail=0 blocked=13`，退出码 3；原始输出见 docs/beacon/v0.1.0/features/l1-parser-core/evidence/smoke-run.log ，逐用例结果见 docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/smoke-TC-001.json ~ smoke-TC-018.json。
+- `python <ops/smoke.py>` （无真实样本、容器地址）：18 个用例，`pass=5 fail=0 blocked=13`，退出码 3；原始输出见 <docs/beacon/v0.1.0/features/l1-parser-core/evidence/smoke-run.log> ，逐用例结果见 <docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/smoke-TC-001.json> ~ smoke-TC-018.json。
 - `python -m compileall container ops`：退出码 0。
-- `uv pip install -r container/requirements.txt` （Python 3.11.14 venv）：退出码 0；f2 0.0.1.7 可 import。
+- `uv pip install -r <container/requirements.txt>` （Python 3.11.14 venv）：退出码 0；f2 0.0.1.7 可 import。
 - 截断与体积：120 项输入截为 100 项且 `truncated=true`；恰好 100 项不置 truncated；100 条超长 URL 序列化后收缩到 84 项、1020074 字节，仍 ≤1024000。
 - 超时：注入 13000ms 延迟后请求返回 HTTP 504、`TIMEOUT`、`elapsed_ms=12001`、墙钟 12.011865s（<15s）。
 - 限流：默认 20 次/分钟，同一 IP 第 21 次请求返回 HTTP 429、`RATE_LIMITED`。
@@ -92,7 +92,7 @@
 | TASK-012 | done | 解析链路无临时文件 API；容器 `/tmp` 前后均为 0 |
 | TASK-013 | done | `/health` 返回两平台 cookie_status、last_refresh、egress_proxy |
 | TASK-014 | done | 镜像 Python 3.11 + FastAPI + yt-dlp + f2 0.0.1.7 + Node20 + pyexecjs；镜像内 f2 import 通过 |
-| TASK-015 | done | `ops/smoke.py` 定义 18 个用例，缺样本逐条 BLOCKED，退出码 3 |
+| TASK-015 | done | `<ops/smoke.py>` 定义 18 个用例，缺样本逐条 BLOCKED，退出码 3 |
 | TASK-016 | BLOCKED | 缺 8 个真实样本（DY_VIDEO_1/2、DY_NOTE_1/2、XHS_VIDEO_1/2、DY_SHORT_1、XHS_SHORT_1），未采集、未编造 |
 | TASK-017 | BLOCKED | 依赖 TASK-016 的真实样本，打包验收未执行 |
 
@@ -120,7 +120,7 @@
 | 干净构建 | `docker build --no-cache -t renlink-l1:qa-verify .` | 退出码 0，镜像 `52eb2dffd549`，无 ERROR 行 |
 | 容器依赖 | `docker exec … node --version` / `python -c "import f2"` | `v20.20.2` / `f2 0.0.1.7` |
 | 编译 | `.venv/bin/python -m compileall -q container ops` | 退出码 0 |
-| smoke | `PARSE_BASE=http://localhost:18081 python ops/smoke.py` | `pass=5 fail=0 blocked=13`，退出码 3 |
+| smoke | `PARSE_BASE=http://localhost:18081 python <ops/smoke.py>` | `pass=5 fail=0 blocked=13`，退出码 3 |
 | 错误码矩阵 | 8 个码逐一实打 | 全部 HTTP/retryable 与 truth 一致 |
 | 白名单 | `evil-douyin.com`、`douyin.com.evil.com` 等 | 全部 400 UNSUPPORTED_PLATFORM |
 | 超时 | `PARSE_UPSTREAM_DELAY_MS=13000` | 504 TIMEOUT，墙钟 12.03s |
@@ -132,8 +132,8 @@
 
 | ID | 严重度 | 位置 | 问题 | 复现 |
 |----|--------|------|------|------|
-| D1 | 高（FAIL TASK-006） | container/app/parsers/douyin.py 第 139 行、第 218–247 行 | 抖音图文按 `images[*].url_list` 的全部镜像展开，每张图产出 3 条 item；f2 0.0.1.7 的 `PostDetailFilter.images` 只取 `url_list[0]` | 3 张图 × 3 镜像 → 9 项（ docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/qa_unit_checks.py ） |
-| D2 | 低 | container/app/routes_parse.py 第 70–71 行 | `url` 非字符串返回 INVALID_URL；truth 把「字段类型错误」归 INVALID_REQUEST | `POST {"url":123}` → INVALID_URL |
+| D1 | 高（FAIL TASK-006） | <container/app/parsers/douyin.py> 第 139 行、第 218–247 行 | 抖音图文按 `images[*].url_list` 的全部镜像展开，每张图产出 3 条 item；f2 0.0.1.7 的 `PostDetailFilter.images` 只取 `url_list[0]` | 3 张图 × 3 镜像 → 9 项（ <docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/qa_unit_checks.py> ） |
+| D2 | 低 | <container/app/routes_parse.py> 第 70–71 行 | `url` 非字符串返回 INVALID_URL；truth 把「字段类型错误」归 INVALID_REQUEST | `POST {"url":123}` → INVALID_URL |
 
 D1 影响：AC-002 的 `item_count` 会等于页面张数的 3 倍，l3 会把同一张图下载 3 次；即使真实样本未到也能确定性复现，不能留到 TASK-017。
 
@@ -173,7 +173,7 @@ D1 影响：AC-002 的 `item_count` 会等于页面张数的 3 倍，l3 会把�
 
 ### 边界
 
-真实抖音/小红书链接解析未验证，stub/构造用例范围通过不等于 TASK-017 通过。修复 D1/D2 后由验收员复验 TASK-006 并重跑 smoke；release 与发布动作由人类确认。
+真实抖音/小红书链接解析未验证，stub 构造用例范围通过不等于 TASK-017 通过。修复 D1/D2 后由验收员复验 TASK-006 并重跑 smoke；release 与发布动作由人类确认。
 
 ---
 
@@ -196,7 +196,7 @@ host run 仍是诚实 blocked 状态；本轮是 lake 级 implement-fix，未重
 
 ## D1 修复（TASK-006）
 
-文件： container/app/parsers/douyin.py 。
+文件： <container/app/parsers/douyin.py> 。
 
 - 新增 `_primary_image_urls()`：每个图片元素只取 `url_list` 中第一条 http(s)，跨图去重；语义与 f2 0.0.1.7 `PostDetailFilter.images = $.aweme_detail.images[*].url_list[0]` 一致。
 - 图文分支抽成 `_note_payload(data)`，`_f2_result()` 调用它；可脱离网络做确定性单测。
@@ -207,7 +207,7 @@ OLD _image_urls (pre-fix behavior) = 9
 NEW _primary_image_urls = 3
 ```
 
-`ops/checks_note_normalize.py` 实际输出：
+`<ops/checks_note_normalize.py>` 实际输出：
 
 ```text
 case=3x3-mirrors
@@ -221,7 +221,7 @@ checks_exit=0
 
 ## D2 修复（TASK-003）
 
-文件： container/app/routes_parse.py 。url 缺失 → `INVALID_URL`；`url` 存在但非字符串（null / 数字 / 数组 / 对象）→ `INVALID_REQUEST`；空串、纯空白、非 http(s)、超 2048 → `INVALID_URL`。
+文件： <container/app/routes_parse.py> 。url 缺失 → `INVALID_URL`；`url` 存在但非字符串（null / 数字 / 数组 / 对象）→ `INVALID_REQUEST`；空串、纯空白、非 http(s)、超 2048 → `INVALID_URL`。
 
 容器 18082 实际响应：
 
@@ -248,7 +248,7 @@ http=400
 
 ## f2 日志脱敏
 
-`container/app/main.py` 安装 LogRecord 工厂，对 `msToken` / `a_bogus` / `X-Bogus` / `X-Amz-Signature` / `verifyFp` / `fp` / `signtime` / `signature` 的查询值统一替换为 `[REDACTED]`；cookie 值仍不出现。f2 子 logger 实测：
+`<container/app/main.py>` 安装 LogRecord 工厂，对 `msToken` / `a_bogus` / `X-Bogus` / `X-Amz-Signature` / `verifyFp` / `fp` / `signtime` / `signature` 的查询值统一替换为 `[REDACTED]`；cookie 值仍不出现。f2 子 logger 实测：
 
 ```text
 2026-11-08 11:45:37,328 INFO f2.apps.douyin.handler https://www.douyin.com/aweme/v1/web/aweme/detail/?msToken=[REDACTED]&a_bogus=[REDACTED]&X-Bogus=[REDACTED]&device_platform=webapp
@@ -347,7 +347,7 @@ host run 仍为 `plan/blocked`；本次是 lake 级 implement-fix 后的独立�
 | 干净构建 | `docker build --no-cache -t renlink-l1:qa-reverify .` | 完成，无 ERROR，镜像 `9b378b056835` |
 | 编译 | `.venv/bin/python -m compileall -q container ops` | `compile_exit=0` |
 | 容器依赖 | 镜像内 `python -V` / `node --version` / `import f2` / `pip show pyexecjs` | `3.11.18` / `v20.20.2` / `0.0.1.7` / `PyExecJS 1.5.1` |
-| smoke | `PARSE_BASE=http://localhost:18083 python ops/smoke.py --out .../evidence/qa/l1` | `pass=5 fail=0 blocked=13`，`smoke_exit=3` |
+| smoke | `PARSE_BASE=http://localhost:18083 python <ops/smoke.py> --out .../evidence/qa/l1` | `pass=5 fail=0 blocked=13`，`smoke_exit=3` |
 | 超时 | 容器 `PARSE_UPSTREAM_DELAY_MS=13000` | `504 TIMEOUT`，墙钟 `12.006252s` |
 | 限流 | 默认 20/min 连打 22 次 | 第 21 次起 `429 RATE_LIMITED`，retryable=true |
 | 零落盘 | 真实 f2 解析尝试前后 `find /tmp -type f` + `/app/logs` | `/tmp` 0→0，`/app/logs` 不存在 |
@@ -358,7 +358,7 @@ host run 仍为 `plan/blocked`；本次是 lake 级 implement-fix 后的独立�
 
 - **D1（TASK-006）已修复**：走真实 `POST /parse`（同一 ASGI 应用，上游用注入替身）验证——3 张图 × 每张 3 个 CDN 镜像 → 恰好 3 条、`item_count=3`、每项 `remoteUrl` 为各图 `url_list[0]`、全为 `type=image`、index 0..2；120 图 → 100 条且 `truncated=true`。镜像内确认 f2 0.0.1.7 `filter.images` 本身按 `url_list[0]` 取图。
 - **D2（TASK-003）已修复**：容器内实打 `{"url":123|null|[]|{}}` → `400 INVALID_REQUEST`；`{}`、`{"url":""}`、`{"url":"   "}`、`not-a-url`、`ftp://`、超 2048 → `400 INVALID_URL`；请求体为数组/非法 JSON → `INVALID_REQUEST`。
-- **顺带项**：日志掩码已生效（见上表）； ops/smoke.py 与样本清单已写明第 9 个变量 `XHS_NOTE_MAX` 仅 TC-014 使用。
+- **顺带项**：日志掩码已生效（见上表）； <ops/smoke.py> 与样本清单已写明第 9 个变量 `XHS_NOTE_MAX` 仅 TC-014 使用。
 
 ### 契约与边界（独立核对）
 
@@ -387,9 +387,9 @@ host run 仍为 `plan/blocked`；本次是 lake 级 implement-fix 后的独立�
 - 失败信封保留 `resolved_url:""`（AC-006 要求，接受）。
 - `tasks.md` 的 001–015 勾选仍未更新（文档层面）。
 - 限流以直连客户端 IP 为键；若部署在 Cloud Run 代理后，所有调用方可能共享同一桶，属生产部署风险，本机无法验证。
-- 真实抖音/小红书解析、真实短链展开（TC-007/008）、真实 l2 图文均未验证，只能说明「stub/构造用例范围通过，真实样本 BLOCKED」。
+- 真实抖音/小红书解析、真实短链展开（TC-007/008）、真实 l2 图文均未验证，只能说明「stub 构造用例范围通过，真实样本 BLOCKED」。
 
-**证据**： docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/qa-findings-reverify.json 、http-matrix-reverify.json、smoke-reverify.log、reverify-contract.log、reverify-size-cap*.log。
+**证据**： <docs/beacon/v0.1.0/features/l1-parser-core/evidence/qa/qa-findings-reverify.json> 、http-matrix-reverify.json、smoke-reverify.log、reverify-contract.log、reverify-size-cap*.log。
 
 ## 真实样本验证（2026-11-08，运营方本机）
 
@@ -405,7 +405,7 @@ host run 仍为 `plan/blocked`；本次是 lake 级 implement-fix 后的独立�
 关键结论（变更输入）：
 1. 小红书链路已跑通：`xhslink.cn` 短链 → `discovery/item`，`xsec_token` 原样保留。
 2. 抖音 web detail API 对服务端直连返回 403：f2 0.0.1.7 与 yt-dlp 2026.08.19 均失败；即使带上完整 Chrome 安全 cookie（含 `UIFID`/`UIFID_TEMP`/`odin_tt`/`__ac_signature`）仍 403。headless Chromium 渲染页面后可拿到 `play_addr` 并成功下载。
-3. 因此 truth 里「抖音用 f2」的假设不再成立，需要变更：抖音 `/parse` 增加浏览器渲染分支，或等价的 UIFID/签名方案。
+3. 因此 truth 里「抖音用 f2」的假设不再成立，需要变更：抖音 `/parse` 增加浏览器渲染分支，或等价的 UIFID 签名方案。
 4. 短链修正（已改代码）：`v.douyin.com` 对 HEAD 返回 404，只有 GET 会 302；`iesdouyin.com/share/video/<id>` 必须归一化为 `www.douyin.com/video/<id>`。
 5. 白名单修正（已改代码）：需包含 `xhslink.cn` 与 `iesdouyin.com`。
 6. 容器成本影响：浏览器渲染分支会给镜像 +~100MB、内存 +~300–500MB，云托管规格需上调。
@@ -443,11 +443,11 @@ host run 仍为 `plan/blocked`；本次是 lake 级 implement-fix 后的独立�
 | 文件 | 改动 |
 |---|---|
 | 历史渲染模块 `douyin_browser.py`（已随本次变更删除，文件不存在） | headless Chromium 打开 `https://www.douyin.com/video/<aweme_id>`，`domcontentloaded` 后在剩余预算内读 `window._ROUTER_DATA` 的 `video.play_addr.url_list[0]`；8s 渲染上限；aweme_id 键进程内缓存 10 分钟；每次请求在 `/tmp/renlink-render-*` 建 profile，`finally` 删除 |
-| `container/app/parsers/douyin.py` | 抖音视频分支改为「浏览器渲染 → f2/yt-dlp 回退」；图文仍走 f2；`iesdouyin.com/share/video/<id>` 统一用 aweme_id 生成规范页 |
-| `container/app/main.py` | `/health` 增加 `render` 计数（browser_launches / cache_hits / render_failures / render_timeouts / cache_entries），供缓存与「小红书不起浏览器」判定 |
-| `container/requirements.txt` | `playwright==1.64.1` |
+| `<container/app/parsers/douyin.py>` | 抖音视频分支改为「浏览器渲染 → f2/yt-dlp 回退」；图文仍走 f2；`iesdouyin.com/share/video/<id>` 统一用 aweme_id 生成规范页 |
+| `<container/app/main.py>` | `/health` 增加 `render` 计数（browser_launches / cache_hits / render_failures / render_timeouts / cache_entries），供缓存与「小红书不起浏览器」判定 |
+| `<container/requirements.txt>` | `playwright==1.64.1` |
 | `Dockerfile` | `python -m playwright install chromium --with-deps`，构建期自检 Chromium 可启动 |
-| `ops/smoke.py` | 新增 TC-019 ~ TC-022 四个用例：`dy-render-1`、`dy-render-cache`、`dy-render-403`、`dy-render-timeout` |
+| `<ops/smoke.py>` | 新增 TC-019 ~ TC-022 四个用例：`dy-render-1`、`dy-render-cache`、`dy-render-403`、`dy-render-timeout` |
 
 ### 抖音真实链接 /parse 实测
 
@@ -487,7 +487,7 @@ douyin 二次后         browser_launches=1 cache_hits=1 cache_entries=1
 | TC-021 | `dy-render-403` | PASS | 502 / PARSE_FAILED / retryable=true / items=[] / 1152ms |
 | TC-022 | `dy-render-timeout` | PASS | 504 / TIMEOUT / retryable=true / items=[] / 8305ms |
 
-TC-021 的注入开关是 `RENLINK_FORCE_RENDER_403=1`（跳过浏览器，f2 真实 403 失败）；TC-022 的注入开关是 `RENLINK_RENDER_DELAY_MS=9000`（超过 8s 渲染预算）。8s 内渲染失败但页面已返回（403/风控/无地址）走 f2 回退，回退也失败返回 502；渲染本身超过 8s 返回 504。两者都不返回半截 items。
+TC-021 的注入开关是 `RENLINK_FORCE_RENDER_403=1`（跳过浏览器，f2 真实 403 失败）；TC-022 的注入开关是 `RENLINK_RENDER_DELAY_MS=9000`（超过 8s 渲染预算）。8s 内渲染失败但页面已返回（403、风控、无地址）走 f2 回退，回退也失败返回 502；渲染本身超过 8s 返回 504。两者都不返回半截 items。
 
 ### 零落盘 / 清理
 
@@ -507,14 +507,14 @@ TC-021 的注入开关是 `RENLINK_FORCE_RENDER_403=1`（跳过浏览器，f2 �
 
 ### 证据文件
 
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-first.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-cached.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-xhs-regression.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-403.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-timeout.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/health-before.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/health-after-xhs.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/health-after.json`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-first.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-cached.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-xhs-regression.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-403.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/parse-douyin-timeout.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/health-before.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/health-after-xhs.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/douyin-render/health-after.json>`
 - TC-019 ~ TC-022 的浏览器 smoke 用例结果未单独落盘，仅本节内联 JSON 可查；不作为当前 Argus 方案的验收依据。
 
 ### 逐 TASK 状态
@@ -538,12 +538,12 @@ TC-021 的注入开关是 `RENLINK_FORCE_RENDER_403=1`（跳过浏览器，f2 �
 
 | 文件 | 改动 |
 |---|---|
-| `container/app/parsers/douyin_argus.py` | 新增。f2 生成 `a_bogus`；按固定参数顺序拼 detail API，补 `x-tt-argus`、`uifid` 头与 `uifid`/`verifyFp`/`fp` 参数；`curl_cffi(impersonate="chrome")` 取 `aweme_detail.video.play_addr.url_list[0]`；aweme_id 键 10 分钟缓存；只回地址不下载 |
-| `container/app/parsers/douyin.py` | 视频主路径改为 Argus HTTP；抖音任何情况都不启浏览器（无 Playwright 回退分支）；图文仍走 f2 |
-| `container/app/main.py` | `/health` 增加 `argus` 与 `render` 计数（argus_requests / cache_hits / argus_failures / browser_launches） |
-| `container/requirements.txt` | 增加 `curl_cffi==0.17.0`；Playwright 不再进默认依赖 |
+| `<container/app/parsers/douyin_argus.py>` | 新增。f2 生成 `a_bogus`；按固定参数顺序拼 detail API，补 `x-tt-argus`、`uifid` 头与 `uifid`/`verifyFp`/`fp` 参数；`curl_cffi(impersonate="chrome")` 取 `aweme_detail.video.play_addr.url_list[0]`；aweme_id 键 10 分钟缓存；只回地址不下载 |
+| `<container/app/parsers/douyin.py>` | 视频主路径改为 Argus HTTP；抖音任何情况都不启浏览器（无 Playwright 回退分支）；图文仍走 f2 |
+| `<container/app/main.py>` | `/health` 增加 `argus` 与 `render` 计数（argus_requests / cache_hits / argus_failures / browser_launches） |
+| `<container/requirements.txt>` | 增加 `curl_cffi==0.17.0`；Playwright 不再进默认依赖 |
 | `Dockerfile` | 默认不装浏览器；`--build-arg INSTALL_CHROMIUM=1` 才安装 playwright 包 + headless shell；默认镜像自检 f2 与 curl_cffi 可 import |
-| `ops/smoke.py` | TC-019 `dy-argus-1`、TC-020 `dy-argus-stability`、TC-021 `dy-argus-missing-header`、TC-022 `dy-argus-timeout` |
+| `<ops/smoke.py>` | TC-019 `dy-argus-1`、TC-020 `dy-argus-stability`、TC-021 `dy-argus-missing-header`、TC-022 `dy-argus-timeout` |
 
 ### 已验证的 Argus 组合
 
@@ -577,7 +577,7 @@ TC-021 的注入开关是 `RENLINK_FORCE_RENDER_403=1`（跳过浏览器，f2 �
 | TC-021 | `dy-argus-missing-header` | PASS | 502 / PARSE_FAILED / retryable=true / items=[] / 505ms / 上游 403 `Blocked by ArgusSecurityPlugin Signature Not Found` |
 | TC-022 | `dy-argus-timeout` | PASS | `PARSE_UPSTREAM_DELAY_MS=13000` 下 12.0s 返回 504 / TIMEOUT / items=[] / browser_launches=0 |
 
-TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启动，/parse 在 12.0s 到期返回 504，抖音分支全程不启浏览器。3 次稳定性原始日志见 `evidence/douyin-argus/dy-argus-3x.log`，前后计数见 `health-before-3x.json` 与 `health-after-3x.json`。
+TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启动，/parse 在 12.0s 到期返回 504，抖音分支全程不启浏览器。3 次稳定性原始日志见 `<evidence/douyin-argus/dy-argus-3x.log>`，前后计数见 `health-before-3x.json` 与 `health-after-3x.json`。
 
 ### 容器规格（chg_42d5d41158ba）
 
@@ -589,18 +589,18 @@ TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启�
 | 回退渲染内存 | 打开回退并实际渲染时约 +300–500MB |
 | 冷启动 | 默认路径无浏览器，冷启动不受渲染影响；可选回退镜像首次启动会慢 |
 
-构建验证：`docker build -t renlink-l1:argus .` 成功（最终镜像 created 2026-11-08 20:51:27 +0800）；镜像内 `/app/app/parsers/douyin.py`、`douyin_argus.py` 与工作区 md5 一致。镜像内 `/ms-playwright` 不存在、`import playwright` 按预期失败，`import f2`（0.0.1.7）与 `import curl_cffi`（0.17.0）成功；运行中的容器进程表无 chromium/playwright。容器内真实链接 `/parse`：抖音 200，小红书 200；容器 `/tmp` 只有 `/tmp` 本身，无残留文件。最终构建日志见 `evidence/douyin-argus/build-final.log`，尺寸与 `/tmp` 快照见 `container-image-size.txt`、`container-tmp.txt`。
+构建验证：`docker build -t renlink-l1:argus .` 成功（最终镜像 created 2026-11-08 20:51:27 +0800）；镜像内 `</app/app/parsers/douyin.py>`、`douyin_argus.py` 与工作区 md5 一致。镜像内 `/ms-playwright` 不存在、`import playwright` 按预期失败，`import f2`（0.0.1.7）与 `import curl_cffi`（0.17.0）成功；运行中的容器进程表无 chromium/playwright。容器内真实链接 `/parse`：抖音 200，小红书 200；容器 `/tmp` 只有 `/tmp` 本身，无残留文件。最终构建日志见 `<evidence/douyin-argus/build-final.log>`，尺寸与 `/tmp` 快照见 `container-image-size.txt`、`container-tmp.txt`。
 
 ### 证据文件
 
-- `evidence/douyin-argus/dy-argus-3x.log`、`health-before-3x.json`、`health-after-3x.json`（3 次稳定性，缓存关闭）
-- `evidence/douyin-argus/parse-douyin-missing-header.json`、`health-missing-header.json`（缺 x-tt-argus → 上游 403）
-- `evidence/douyin-argus/parse-douyin-timeout-12s.json`、`health-timeout.json`（13s 上游延迟 → 12s 504）
-- `evidence/douyin-argus/parse-douyin-argus.json`、`parse-douyin-cached.json`、`parse-xhs-regression.json`、`parse-xhs-regression-current.json`
-- `evidence/douyin-argus/health-argus-cache.json`、`health-argus-cache-off.json`
-- `evidence/douyin-argus/dockerfile-chromium-grep.txt`、`no-chromium-proof.txt`、`browser-process-scan.txt`、`container-image-size.txt`
-- `evidence/douyin-argus/impl-smoke/smoke-TC-019.json` ~ `smoke-TC-022.json`（对最终镜像执行；与 QA 共用目录分开存放，避免互相覆盖）
-- `evidence/douyin-argus/build-final.log`（最终镜像构建）
+- `<evidence/douyin-argus/dy-argus-3x.log>`、`health-before-3x.json`、`health-after-3x.json`（3 次稳定性，缓存关闭）
+- `<evidence/douyin-argus/parse-douyin-missing-header.json>`、`health-missing-header.json`（缺 x-tt-argus → 上游 403）
+- `<evidence/douyin-argus/parse-douyin-timeout-12s.json>`、`health-timeout.json`（13s 上游延迟 → 12s 504）
+- `<evidence/douyin-argus/parse-douyin-argus.json>`、`parse-douyin-cached.json`、`parse-xhs-regression.json`、`parse-xhs-regression-current.json`
+- `<evidence/douyin-argus/health-argus-cache.json>`、`health-argus-cache-off.json`
+- `<evidence/douyin-argus/dockerfile-chromium-grep.txt>`、`no-chromium-proof.txt`、`browser-process-scan.txt`、`container-image-size.txt`
+- `<evidence/douyin-argus/impl-smoke/smoke-TC-019.json>` ~ `smoke-TC-022.json`（对最终镜像执行；与 QA 共用目录分开存放，避免互相覆盖）
+- `<evidence/douyin-argus/build-final.log>`（最终镜像构建）
 
 ### 逐 TASK 状态
 
@@ -625,20 +625,20 @@ TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启�
 
 | 文件 | 改动 |
 |---|---|
-| `container/app/parsers/render.py` | 新增。`ENABLE_OBSCURA!=1` 时只保留模块常量，不 import Playwright、不连 CDP；启用时 `connect_over_cdp(PLAYWRIGHT_CDP)` → `new_context()` → `goto(wait_until="commit")` → 读取 title/HTML；只 `context.close()`，无 `browser.close()`；渲染预算默认 8000ms，上限 8000ms；统计 renders / failures / cdp_connects / last_url_host |
-| `container/app/main.py` | `/health` 增加 `render` 统计；新增仅 `ENABLE_OBSCURA=1` 可用的 `GET /render/probe?url=`，只接受 xiaohongshu.com，返回 title、final_url、html_bytes、xsec_token、obscura_alive |
-| `container/entrypoint.sh` | 新增。`ENABLE_OBSCURA=1` 时先启动 `obscura serve --port 9222 --host 127.0.0.1 --stealth` 并等待端口就绪，再 `exec` app；默认跳过；可选 `OBSCURA_ALLOW_PRIVATE_NETWORK=1` 仅用于本地 fake-ip 环境 |
+| `<container/app/parsers/render.py>` | 新增。`ENABLE_OBSCURA!=1` 时只保留模块常量，不 import Playwright、不连 CDP；启用时 `connect_over_cdp(PLAYWRIGHT_CDP)` → `new_context()` → `goto(wait_until="commit")` → 读取 title/HTML；只 `context.close()`，无 `browser.close()`；渲染预算默认 8000ms，上限 8000ms；统计 renders / failures / cdp_connects / last_url_host |
+| `<container/app/main.py>` | `/health` 增加 `render` 统计；新增仅 `ENABLE_OBSCURA=1` 可用的 `GET /render/probe?url=`，只接受 xiaohongshu.com，返回 title、final_url、html_bytes、xsec_token、obscura_alive |
+| `<container/entrypoint.sh>` | 新增。`ENABLE_OBSCURA=1` 时先启动 `obscura serve --port 9222 --host 127.0.0.1 --stealth` 并等待端口就绪，再 `exec` app；默认跳过；可选 `OBSCURA_ALLOW_PRIVATE_NETWORK=1` 仅用于本地 fake-ip 环境 |
 | `Dockerfile` | 新增 `FROM h4ckf0r0day/obscura:latest AS obscura`，只拷 `/obscura` 二进制；删除 Chromium/Playwright 浏览器安装分支；只安装 Playwright Python CDP 客户端（1.64.1），不下载浏览器 |
-| `container/app/parsers/douyin.py` | 仅修正注释：抖音永不使用渲染；模块仍不 import render |
-| `ops/smoke.py` | 新增 TC-023 `obscura-xhs-render`、TC-024 `douyin-no-obscura`，用例总数 24；TC-023/024 证据额外记录 render 计数、obscura 进程、日志命中与静态 import 边界 |
+| `<container/app/parsers/douyin.py>` | 仅修正注释：抖音永不使用渲染；模块仍不 import render |
+| `<ops/smoke.py>` | 新增 TC-023 `obscura-xhs-render`、TC-024 `douyin-no-obscura`，用例总数 24；TC-023/024 证据额外记录 render 计数、obscura 进程、日志命中与静态 import 边界 |
 
 ### 实测结果
 
 | 用例 | 结果 | 实测 |
 |---|---|---|
-| 默认镜像/容器 | PASS | 构建 `renlink-l1:obscura` 成功；镜像内 `/ms-playwright` 不存在，chrome/chromium/headless_shell 可执行文件数为 0；默认起容器无 obscura 进程，`/health.render.enabled=false`，`/render/probe` 返回 404 |
+| 默认镜像/容器 | PASS | 构建 `renlink-l1:obscura` 成功；镜像内 `/ms-playwright` 不存在，chrome/chromium/headless_shell 可执行文件数为 0；默认起容器无 obscura 进程，`</health.render.enabled=false>`，`/render/probe` 返回 404 |
 | TC-023 `obscura-xhs-render` | PASS | `ENABLE_OBSCURA=1` 下渲染小红书笔记页，title=`长安四驱越野升顶皮卡房车#二手房车 #房车旅行 #房车生活 #房车自驾游 - 小红书`，`has_xsec_token=true`，`html_bytes=578609`，`elapsed_ms=9276`，渲染后 `obscura_alive=true`（端口仍存活，未调用 `browser.close()`） |
-| TC-024 `douyin-no-obscura` | PASS | Obscura 开启时抖音 `/parse` 返回 200 / ok=true / content_type=video / 1 项 play_addr；`render.renders` 与 `render.cdp_connects` 前后不变；`/tmp/obscura.log` 中 douyin 命中 0；`douyin.py`、`douyin_argus.py` 均不 import render |
+| TC-024 `douyin-no-obscura` | PASS | Obscura 开启时抖音 `/parse` 返回 200 / ok=true / content_type=video / 1 项 play_addr；`render.renders` 与 `render.cdp_connects` 前后不变；`</tmp/obscura.log>` 中 douyin 命中 0；`douyin.py`、`douyin_argus.py` 均不 import render |
 | 抖音 `/parse` | PASS | 真实链接 `https://v.douyin.com/Y7MgY9YnYAg/` 在 Obscura 开启的容器中返回 200，`elapsed_ms=686`，`remoteUrl` 为非空 `douyinvod.com` play_addr |
 
 说明：本机 Docker 的 DNS 返回 Clash fake-ip `198.18.0.0/15`，被 Obscura 的 SSRF 防护拒绝；本地证据容器额外以 `OBSCURA_ALLOW_PRIVATE_NETWORK=1` 启动。生产默认不加该参数，仍是严格的 `obscura serve --port 9222 --host 127.0.0.1 --stealth`。
@@ -657,12 +657,12 @@ TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启�
 
 ### 证据文件
 
-- `evidence/l1/obscura-xhs-render.json`（TC-023 响应、title、xsec_token、obscura 进程与日志尾部）
-- `evidence/l1/douyin-no-obscura.json`（TC-024 的 /parse、前后 render 计数、obscura 日志命中、静态 import 边界）
-- `evidence/l1/parse-douyin-obscura.json`（Obscura 开启时抖音 /parse 实测 JSON）
-- `evidence/l1/default-no-obscura.json`（默认容器无 obscura 进程、render 关闭、/render/probe=404）
-- `evidence/l1/dockerfile-default-browser-off.txt`、`evidence/l1/container-spec.txt`
-- `evidence/l1/smoke-TC-023.json`、`evidence/l1/smoke-TC-024.json`（对最终镜像执行）
+- `<evidence/l1/obscura-xhs-render.json>`（TC-023 响应、title、xsec_token、obscura 进程与日志尾部）
+- `<evidence/l1/douyin-no-obscura.json>`（TC-024 的 /parse、前后 render 计数、obscura 日志命中、静态 import 边界）
+- `<evidence/l1/parse-douyin-obscura.json>`（Obscura 开启时抖音 /parse 实测 JSON）
+- `<evidence/l1/default-no-obscura.json>`（默认容器无 obscura 进程、render 关闭、/render/probe=404）
+- `<evidence/l1/dockerfile-default-browser-off.txt>`、`<evidence/l1/container-spec.txt>`
+- `<evidence/l1/smoke-TC-023.json>`、`<evidence/l1/smoke-TC-024.json>`（对最终镜像执行）
 
 ### 边界
 
@@ -678,12 +678,12 @@ TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启�
 
 | 文件 | 改动 |
 |---|---|
-| `container/app/parsers/render_obscura.py` | 渲染实现落到本轮要求的文件名；仍只被小红书渲染路径调用，抖音模块不 import |
-| `container/app/parsers/render.py` | 保留为兼容别名，导出 `render_obscura` 的公开符号 |
-| `container/app/parsers/render_obscura.py` | 每次渲染串行执行；渲染前记录 `/tmp/playwright-artifacts-*` 快照，请求结束（成功或失败）删除本次新增目录 |
-| `container/app/parsers/render_obscura.py` | 新增 `RenderTimeout`：连接或页面渲染超时、或整体达到 12s 总预算时抛出 |
-| `container/app/main.py` | `/render/probe` 把 `RenderTimeout` 映射为 504 `TIMEOUT`、`retryable=true`；其他渲染失败仍是 502 `PARSE_FAILED`、`retryable=true` |
-| `docs/.../tasks.md` | 勾选 TASK-021、TASK-022；交付物清单写明 `render_obscura.py` 与 `render.py` 别名；部署段补冷启动变慢 |
+| `<container/app/parsers/render_obscura.py>` | 渲染实现落到本轮要求的文件名；仍只被小红书渲染路径调用，抖音模块不 import |
+| `<container/app/parsers/render.py>` | 保留为兼容别名，导出 `render_obscura` 的公开符号 |
+| `<container/app/parsers/render_obscura.py>` | 每次渲染串行执行；渲染前记录 `/tmp/playwright-artifacts-*` 快照，请求结束（成功或失败）删除本次新增目录 |
+| `<container/app/parsers/render_obscura.py>` | 新增 `RenderTimeout`：连接或页面渲染超时、或整体达到 12s 总预算时抛出 |
+| `<container/app/main.py>` | `/render/probe` 把 `RenderTimeout` 映射为 504 `TIMEOUT`、`retryable=true`；其他渲染失败仍是 502 `PARSE_FAILED`、`retryable=true` |
+| `<docs/.../tasks.md>` | 勾选 TASK-021、TASK-022；交付物清单写明 `render_obscura.py` 与 `render.py` 别名；部署段补冷启动变慢 |
 
 ### 默认模式（ENABLE_OBSCURA 未设置）
 
@@ -692,7 +692,7 @@ TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启�
 | 镜像构建 | PASS，`docker build -t renlink-l1:obscura .` 退出码 0 |
 | 镜像内浏览器 | PASS，`/ms-playwright` 不存在，chrome/chromium/headless_shell 可执行文件数 0 |
 | 默认容器进程 | PASS，仅 `uvicorn`，无 obscura/chromium/playwright 进程 |
-| `/health.render` | PASS，`enabled=false`、`browser_launches=0`、`renders=0` |
+| `</health.render>` | PASS，`enabled=false`、`browser_launches=0`、`renders=0` |
 | `/render/probe` | PASS，返回 404（默认关闭） |
 | `/tmp` | PASS，默认容器条目 0 |
 
@@ -709,7 +709,7 @@ TC-022 走整体预算路径：服务端以 `PARSE_UPSTREAM_DELAY_MS=13000` 启�
 TC-023 `obscura-xhs-render`：PASS。HTTP 200，客户端 9362ms，渲染 9336ms；标题
 `长安四驱越野升顶皮卡房车#二手房车 #房车旅行 #房车生活 #房车自驾游 - 小红书`，`has_xsec_token=true`，`html_bytes=578609`，`obscura_alive=true`（context 关闭后 CDP 端口仍存活，未调用 `browser.close()`）。
 
-TC-024 `douyin-no-obscura`：PASS。Obscura 开启时抖音 `/parse` 返回 200、`ok=true`、1 项 play_addr；`render.renders` 与 `render.cdp_connects` 前后均为 1，`browser_launches=0`；`/tmp/obscura.log` 中 douyin 命中 0；`douyin.py`、`douyin_argus.py` 均不 import render。
+TC-024 `douyin-no-obscura`：PASS。Obscura 开启时抖音 `/parse` 返回 200、`ok=true`、1 项 play_addr；`render.renders` 与 `render.cdp_connects` 前后均为 1，`browser_launches=0`；`</tmp/obscura.log>` 中 douyin 命中 0；`douyin.py`、`douyin_argus.py` 均不 import render。
 
 渲染预算与超时映射：把 CDP 指向只接受 TCP、不做 WebSocket 握手的本地端口，`RENLINK_RENDER_WAIT_MS=1000` 时 `/render/probe` 在 1.37s 返回 504：
 
@@ -734,14 +734,14 @@ TC-024 `douyin-no-obscura`：PASS。Obscura 开启时抖音 `/parse` 返回 200�
 
 ### 证据文件
 
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/smoke-TC-023.json`（本轮对重建镜像执行）
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/smoke-TC-024.json`（本轮对重建镜像执行）
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/parse-douyin-default.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/parse-xhs-default.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/health-default.json`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/render-timeout.json`（504 TIMEOUT 映射）
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/container-spec.txt`
-- `docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/process-tmp.txt`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/smoke-TC-023.json>`（本轮对重建镜像执行）
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/smoke-TC-024.json>`（本轮对重建镜像执行）
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/parse-douyin-default.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/parse-xhs-default.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/health-default.json>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/render-timeout.json>`（504 TIMEOUT 映射）
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/container-spec.txt>`
+- `<docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-rerun-2112/process-tmp.txt>`
 
 ### 边界
 
@@ -763,30 +763,30 @@ PASS: 2/2 samples parsed and downloaded
 
 - 抖音：Argus HTTP 直连（`x-tt-argus` + `uifid` + `verifyFp`/`fp` + `a_bogus`），全程未启动浏览器。
 - 小红书：yt-dlp + cookie。
-- cookie 池由 `ops/refresh_cookie.py` 刷新，含 `UIFID_TEMP`、`s_v_web_id`、`web_session`。
+- cookie 池由 `<ops/refresh_cookie.py>` 刷新，含 `UIFID_TEMP`、`s_v_web_id`、`web_session`。
 - 与验收员容器内的数字（732ms / 121261002B、1284ms / 21220376B）不同，属不同网络、不同时刻的真实输出，两处都按原文保留。
 
-### ops/accept_local.py 登记
+### <ops/accept_local.py> 登记
 
 | 项 | 内容 |
 |---|---|
 | 用途 | 两条真实链接走 `POST /parse`，逐项下载 `remoteUrl`；视频项再用 ffprobe 读时长与大小。任一解析或下载失败返回退出码 1 |
-| 启动方式 | 用运营方 cookie 池起服务：`PARSE_RATE_LIMIT_PER_MIN=0 uvicorn app.main:app --port 18099`，再跑 `.venv/bin/python ops/accept_local.py`；`PARSE_BASE` 可覆盖服务地址 |
+| 启动方式 | 用运营方 cookie 池起服务：`PARSE_RATE_LIMIT_PER_MIN=0 uvicorn app.main:app --port 18099`，再跑 `.venv/bin/python <ops/accept_local.py>`；`PARSE_BASE` 可覆盖服务地址 |
 | 下载落盘 | `/tmp/renlink_accept/<platform>-<index>.<ext>` |
 | 通过判定 | 末尾打印 `PASS: 2/2 samples parsed and downloaded` 且退出码 0 |
 | 归属 | 本机验收由调用方执行；本次登记不作为后端自证 |
 
 ## 独立 QA 结论（验收员，只摘录不评判）
 
-- verdict：**BLOCKED**。权威文件 `evidence/qa/l1-qa-final/verdict.md`（run_id `qa-l1-20261108-2143`，mode `beacon-go`，stage `qa`）。
+- verdict：**BLOCKED**。权威文件 `<evidence/qa/l1-qa-final/verdict.md>`（run_id `qa-l1-20261108-2143`，mode `beacon-go`，stage `qa`）。
 - 干净构建：`docker build --no-cache -t renlink-l1:qa .` 退出码 0，镜像 `sha256:5c2a8624…`，1.02GB。
-- 默认配置 `ops/smoke.py`：pass=12 fail=5 blocked=7；其中 TC-009/013/021/022/024 需要注入环境变量，TC-002/003/004/006/014/015/023 缺样本。专项容器逐条复验合并：PASS 17 / FAIL 0 / BLOCKED 7。
-- 验收员容器内 `ops/accept_local.py`：douyin 732ms / 121261002B；xhs 1284ms / 21220376B；`PASS: 2/2`；容器内无 ffprobe。
+- 默认配置 `<ops/smoke.py>`：pass=12 fail=5 blocked=7；其中 TC-009/013/021/022/024 需要注入环境变量，TC-002/003/004/006/014/015/023 缺样本。专项容器逐条复验合并：PASS 17 / FAIL 0 / BLOCKED 7。
+- 验收员容器内 `<ops/accept_local.py>`：douyin 732ms / 121261002B；xhs 1284ms / 21220376B；`PASS: 2/2`；容器内无 ffprobe。
 - 缺真实样本的 TC：TC-002、TC-003、TC-004、TC-006、TC-014、TC-015、TC-023。
 - P0：
   1. `obscura serve` 缺 `--allow-private-network`；Docker DNS `127.0.0.11` 被 SSRF 守卫判为私网，`/render/probe` 返回 502，TC-023 / AC-017 无法认证。
   2. 7 个 TC 缺真实样本，对应 AC 无法认证。
-- P1：`ops/refresh_cookie.py` 用 Python repr 写 env，单引号被 `docker --env-file` 原样保留，容器内 cookie 损坏导致抖音 502；默认 20/min 限流小于 smoke 单轮请求数，尾部用例 429。
+- P1：`<ops/refresh_cookie.py>` 用 Python repr 写 env，单引号被 `docker --env-file` 原样保留，容器内 cookie 损坏导致抖音 502；默认 20/min 限流小于 smoke 单轮请求数，尾部用例 429。
 - P2：accept_local 在 douyin 失败时不继续跑 xhs；TC-016/024 的“未设置”提示有误导；镜像无 ffprobe，编码与时长未验。
 
 ## 容器默认事实（Dockerfile 只读核对，2026-11-08 本轮）
@@ -794,7 +794,7 @@ PASS: 2/2 samples parsed and downloaded
 | 检查项 | 实际事实 |
 |---|---|
 | `INSTALL_CHROMIUM` | **已从 Dockerfile 删除**，当前不存在这个 ARG；浏览器安装分支已整体移除，镜像无条件不下载 Chromium / Playwright 浏览器，构建期以 `test ! -d /ms-playwright` 自检 |
-| `ENABLE_OBSCURA` | Dockerfile 无默认值；`container/entrypoint.sh` 用 `${ENABLE_OBSCURA:-0}`，未设置时不启动 obscura、也不设置 `PLAYWRIGHT_CDP` |
+| `ENABLE_OBSCURA` | Dockerfile 无默认值；`<container/entrypoint.sh>` 用 `${ENABLE_OBSCURA:-0}`，未设置时不启动 obscura、也不设置 `PLAYWRIGHT_CDP` |
 | `PLAYWRIGHT_BROWSERS_PATH` | 未设置；镜像内无 `/ms-playwright`、无 `~/.cache/ms-playwright` |
 | obscura 二进制 | 从 `h4ckf0r0day/obscura:latest` 多阶段拷入 `/usr/local/bin/obscura`，只有二进制，默认零进程 |
 | 历史偏差 | 早前存档段落里的 `--build-arg INSTALL_CHROMIUM=1` 在当前 Dockerfile 已不存在，以本节与验收员镜像实测为准 |
@@ -805,24 +805,24 @@ PASS: 2/2 samples parsed and downloaded
 
 | TASK | 代码位置 | 判定 |
 |---|---|---|
-| 001 | `app/contract.py`、`app/main.py`、`app/errors.py` | 已实现。ErrorEnvelope 用 dict 构建并以 `contract/parse_response.schema.json` 固化，没有同名 pydantic 类 |
-| 002 | `app/errors.py` | 8 个错误码、http 状态、retryable 齐全 |
-| 003 | `app/routes_parse.py` | 白名单、2048 上限、cookie 字段拒绝齐全（另放行 iesdouyin.com、xhslink.cn） |
-| 004 | `app/parsers/shortlink.py` | 3 跳上限、SHORTLINK_FAIL、resolved_url 交接已实现；实际用 GET 流式取 Location，未用 HEAD（实测 v.douyin.com 对 HEAD 返回 404） |
-| 005 | `app/parsers/douyin.py` | 视频走 Argus/yt-dlp 取播放地址，图文走 f2 `fetch_one_video`，只取地址不下载 |
-| 006 | `app/parsers/douyin.py` | `images[*].url_list[0]` 每图一条，index/type/remoteUrl/ext 归一 |
-| 007 | `app/parsers/xhs.py` | yt-dlp 取播放地址与标题，items 固定 1 项 |
-| 008 | `app/parsers/xhs.py` | `parse_note` 接缝与归一，图片标 needs_transcode=true；不解析 `__INITIAL_STATE__` |
-| 009 | `app/session_bridge.py` | get_cookie / CookieExpired / 脱敏齐全 |
-| 010 | `app/routes_parse.py` | 12s `asyncio.wait_for` 映射 TIMEOUT；`PARSE_UPSTREAM_DELAY_MS` 可注入 |
-| 011 | `app/contract.py` | 100 项上限、truncated、1024000 字节自检齐全 |
-| 012 | `app/` 全量 grep | 解析链路无临时文件写入；只有 `render_obscura.py` 读取 tempdir 做清理快照 |
-| 013 | `app/main.py` `/health` | cookie_status、last_refresh、egress_proxy、argus/render 统计齐全 |
-| 014 | `Dockerfile`、`container/requirements.txt` | Python 3.11、FastAPI、yt-dlp、f2 0.0.1.7、curl_cffi、Node20、pyexecjs；构建期自检 import；不装浏览器 |
-| 015 | `ops/smoke.py` | 24 个用例，写 JSON 证据，缺样本 BLOCKED 且退出码 3 |
-| 018 | `app/parsers/douyin_argus.py` | Argus 头/参数直连，curl_cffi chrome 指纹，无浏览器 |
-| 019 | `app/parsers/douyin_argus.py`、`app/routes_parse.py` | 12s 预算、失败无半截 items、play_addr 缓存 TTL 600s、`RENLINK_DROP_ARGUS_HEADER=1` 复现 403 |
-| 020 | `evidence.md`、`evidence/l1/`、`evidence/qa/l1-qa-final/` | 真实链接实测与容器规格已入证据；TC-019~024 有实测输出 |
+| 001 | `<app/contract.py>`、`<app/main.py>`、`<app/errors.py>` | 已实现。ErrorEnvelope 用 dict 构建并以 `<contract/parse_response.schema.json>` 固化，没有同名 pydantic 类 |
+| 002 | `<app/errors.py>` | 8 个错误码、http 状态、retryable 齐全 |
+| 003 | `<app/routes_parse.py>` | 白名单、2048 上限、cookie 字段拒绝齐全（另放行 iesdouyin.com、xhslink.cn） |
+| 004 | `<app/parsers/shortlink.py>` | 3 跳上限、SHORTLINK_FAIL、resolved_url 交接已实现；实际用 GET 流式取 Location，未用 HEAD（实测 v.douyin.com 对 HEAD 返回 404） |
+| 005 | `<app/parsers/douyin.py>` | 视频走 Argus/yt-dlp 取播放地址，图文走 f2 `fetch_one_video`，只取地址不下载 |
+| 006 | `<app/parsers/douyin.py>` | `images[*].url_list[0]` 每图一条，index/type/remoteUrl/ext 归一 |
+| 007 | `<app/parsers/xhs.py>` | yt-dlp 取播放地址与标题，items 固定 1 项 |
+| 008 | `<app/parsers/xhs.py>` | `parse_note` 接缝与归一，图片标 needs_transcode=true；不解析 `__INITIAL_STATE__` |
+| 009 | `<app/session_bridge.py>` | get_cookie / CookieExpired / 脱敏齐全 |
+| 010 | `<app/routes_parse.py>` | 12s `asyncio.wait_for` 映射 TIMEOUT；`PARSE_UPSTREAM_DELAY_MS` 可注入 |
+| 011 | `<app/contract.py>` | 100 项上限、truncated、1024000 字节自检齐全 |
+| 012 | `<app>` 全量 grep | 解析链路无临时文件写入；只有 `render_obscura.py` 读取 tempdir 做清理快照 |
+| 013 | `<app/main.py>` `/health` | cookie_status、last_refresh、egress_proxy、argus/render 统计齐全 |
+| 014 | `Dockerfile`、`<container/requirements.txt>` | Python 3.11、FastAPI、yt-dlp、f2 0.0.1.7、curl_cffi、Node20、pyexecjs；构建期自检 import；不装浏览器 |
+| 015 | `<ops/smoke.py>` | 24 个用例，写 JSON 证据，缺样本 BLOCKED 且退出码 3 |
+| 018 | `<app/parsers/douyin_argus.py>` | Argus 头/参数直连，curl_cffi chrome 指纹，无浏览器 |
+| 019 | `<app/parsers/douyin_argus.py>`、`<app/routes_parse.py>` | 12s 预算、失败无半截 items、play_addr 缓存 TTL 600s、`RENLINK_DROP_ARGUS_HEADER=1` 复现 403 |
+| 020 | `evidence.md`、`<evidence/l1>`、`<evidence/qa/l1-qa-final>` | 真实链接实测与容器规格已入证据；TC-019~024 有实测输出 |
 
 ## 边界（本轮）
 
@@ -833,7 +833,7 @@ PASS: 2/2 samples parsed and downloaded
 
 ## 独立 QA 复验 r2 登记（验收员，2026-11-08 22:25 +08:00）
 
-- 权威文件：`evidence/qa/l1-qa-final-r2/verdict.md`；索引：`evidence/qa/l1-qa-final-r2-index.md`；哈希清单：`evidence/qa/l1-qa-final-r2/sha256-manifest.txt`（52 个文件）。
+- 权威文件：`<evidence/qa/l1-qa-final-r2/verdict.md>`；索引：`<evidence/qa/l1-qa-final-r2-index.md>`；哈希清单：`<evidence/qa/l1-qa-final-r2/sha256-manifest.txt>`（52 个文件）。
 - mode `beacon-go` / run_id `qa-l1-20261108-2225` / stage `qa`；current_stage=`plan`（blocked，`stage_executor_not_registered`）。
 - 对象：`renlink-l1-final:latest` = `sha256:cf44f898eb17caa77baaa44013deb83bd816de5f2cfeed15b6d161f35b2bfe6a`，created `2026-11-08T13:14:17Z`；truth frozen / R1。
 - 分段结论：
@@ -844,8 +844,8 @@ PASS: 2/2 samples parsed and downloaded
   - 缺样本 **BLOCKED 8 条**：TC-002(DY_VIDEO_2)、TC-003(DY_NOTE_1)、TC-004(DY_NOTE_2)、TC-006(XHS_VIDEO_2)、TC-008(XHS_SHORT_1)、TC-014(XHS_NOTE_MAX)、TC-015(DY_NOTE_1 连带)、TC-023(XHS_NOTE_1 连带)。
   - TC-023 遗留 **P0 未关闭**：默认 `/render/probe` 502；加 `OBSCURA_ALLOW_PRIVATE_NETWORK=1` 后 200 但落 XHS 登录页、`has_xsec_token=false`；`render_obscura.py` 无 cookie 注入。
 - 镜像事实更正：无 Chromium/Chrome/headless_shell、无 Playwright 浏览器成立；但 `obscura` 存在（`/usr/local/bin/obscura` 0.2.6），调用方“obscura 为空”的表述不成立。
-- 其他：`/health` 的 `cookie_status` 仅判存在性，XHS 会话失效仍报 `fresh`（P1）；`ops/smoke.py` 21:28 版 BLOCKED 门已验证不会吞真 FAIL（客户端设 env、服务端未开 → FAIL）。
-- 边界：未改 `app/`、`truth.md`、`tests.md` 判据；未 commit / push。本轮 verdict 不支持直接 release，release 由人类确认。
+- 其他：`/health` 的 `cookie_status` 仅判存在性，XHS 会话失效仍报 `fresh`（P1）；`<ops/smoke.py>` 21:28 版 BLOCKED 门已验证不会吞真 FAIL（客户端设 env、服务端未开 → FAIL）。
+- 边界：未改 `<app>`、`truth.md`、`tests.md` 判据；未 commit / push。本轮 verdict 不支持直接 release，release 由人类确认。
 
 ---
 
@@ -853,13 +853,13 @@ PASS: 2/2 samples parsed and downloaded
 
 ### 本轮改动（只动实现与 evidence.md）
 
-- `container/app/parsers/render_obscura.py`
+- `<container/app/parsers/render_obscura.py>`
   - 去掉固定 1000ms settle，改为约 120ms 的就绪轮询：标题非 `loading` 且（xhs 页面）内容含 `xsec_token` 即返回；上限仍受 12s 总预算约束。
   - Playwright driver 与 `connect_over_cdp` 的 browser 改为进程内单例，固定在一个专用线程（sync API 有线程/greenlet 绑定）；每次请求只 `new_context()` → `new_page()`，只关闭 context，任何路径都不调用 `browser.close()`；断线时 `playwright.stop()` 后下次重连。
   - `app` 启动时预连一次 CDP（`prewarm`），失败不影响启动；预连成本不再计入首个请求。
   - 只跳过 `image` / `media` / `font` / `stylesheet` 子资源，脚本照常执行；`goto(wait_until="commit")` 用 2s 探针超时后立即进入轮询（超时不会中止导航）。
   - 就绪时间越过 11.85s 仍按 12s 预算返回 504，保持 C10 的「超过 12s 返回 TIMEOUT」。
-- `container/app/main.py`：startup 预连 Obscura。
+- `<container/app/main.py>`：startup 预连 Obscura。
 - `Dockerfile`：`HEALTHCHECK --start-period` 调整为 40s（预连需要时间）；默认仍不装 Chromium / Playwright 浏览器。
 - 未改 `truth.md`、`tests.md`、`tasks.md` 的任何判据；未 commit / push。
 
@@ -868,7 +868,7 @@ PASS: 2/2 samples parsed and downloaded
 - 3 个构建迭代共 15 次 TC-023 尝试：`<12s` 且 200 的只有 **7 次**，其余 8 次为 502/504 或 12s 后才返回。**没有任何一次 5/5。**
 - 最优一批（轮询 + 单例 + 预连，未加严格预算检查）：`12.004s(502) / 11.464 / 11.301 / 11.313 / 11.903`，4/5。
 - 最终构建 5 连跑：`12.612(502) / 11.820(200) / 12.176(504) / 12.220(502) / 15.011(504)`，1/5。
-- 官方 `ops/smoke.py --case TC-023` 在 1C：**FAIL**，13.018s，HTTP 502。
+- 官方 `<ops/smoke.py> --case TC-023` 在 1C：**FAIL**，13.018s，HTTP 502。
 - 结论：1C 下小红书页面的 JS 水合本身需要 12–15s；轮询、连接复用和预连把最好成绩从约 13.1s 压到约 11.3s，但方差大，无法稳定满足 5/5 <12s。要满足冻结的 12s 预算，容器规格应为 **≥2C1G**（truth C12 的「开启时建议 1C1G」需要人签变更，本轮未改）。
 
 ### 2C1G 实测
@@ -890,14 +890,14 @@ PASS: 2/2 samples parsed and downloaded
 ### 样本问题（与代码无关）
 
 - 冻结样本 `XHS_NOTE_1`（`6af04386000000001500d626`）现在直接 `curl` 就是 **302 → /login**，不经过 obscura；旧 `xsec_token` 已不被接受。验收员 r2 也记录了同一现象。
-- 本轮 TC-023 使用 2026-11-08 22:23 从 explore feed 新取的真实笔记链接（`6a883be50000000018018c43`），见 `evidence/l1/task-023/sample-expiry.json`。QA 复跑必须换新样本；否则 FAIL/BLOCKED 是样本失效，不是实现回归。
+- 本轮 TC-023 使用 2026-11-08 22:23 从 explore feed 新取的真实笔记链接（`6a883be50000000018018c43`），见 `<evidence/l1/task-023/sample-expiry.json>`。QA 复跑必须换新样本；否则 FAIL/BLOCKED 是样本失效，不是实现回归。
 
 ### 生产前提（P1，与旧证据一致）
 
-- Obscura 主机不能处于 fake-ip/私网解析环境：Clash fake-ip `198.18.0.0/15` 会被 SSRF 防护拒绝。本地证据用了 `OBSCURA_ALLOW_PRIVATE_NETWORK=1`，生产默认不加，保持严格模式。
+- Obscura 主机不能处于 <fake-ip/>私网解析环境：Clash fake-ip `198.18.0.0/15` 会被 SSRF 防护拒绝。本地证据用了 `OBSCURA_ALLOW_PRIVATE_NETWORK=1`，生产默认不加，保持严格模式。
 - 开启 Obscura 时启动会多做一次 CDP 预连（约 0.3–1.1s）；默认关闭时不导入 Playwright、不连接、不启动任何浏览器进程。
 
-### 证据文件（`evidence/l1/task-023/`）
+### 证据文件（`<evidence/l1/task-023>`）
 
 - `tc023-1c-runs.json`、`tc023-2c-runs.json`、`tc023-1c-smoke.json`、`tc023-2c-smoke.json`
 - `tc024-1c.json`、`regression-tc018.json`、`regression-tc019.json`、`default-off.json`

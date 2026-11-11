@@ -10,28 +10,28 @@ depends_on: l2-xhs-images, l4-session-egress
 
 ## 任务台账
 
-- [x] TASK-001 解析路由与契约模型：FastAPI 挂 POST /parse 与 GET /health，pydantic 定义 ParseRequest、ParseItem、ParseResult、ErrorEnvelope，字段名与 truth.md 接口契约逐字一致 · ac=AC-011
-- [x] TASK-002 错误信封与错误码：实现 INVALID_URL、INVALID_REQUEST、UNSUPPORTED_PLATFORM、SHORTLINK_FAIL、COOKIE_EXPIRED、PARSE_FAILED、TIMEOUT、RATE_LIMITED 八个码，统一 http 状态与 retryable · ac=AC-005
-- [x] TASK-003 域名白名单与输入校验：只放行 douyin.com、v.douyin.com、xhslink.com、xiaohongshu.com 及其子域；url 长度上限 2048；请求体出现 cookie 字段直接拒绝 · ac=AC-013
-- [x] TASK-004 短链展开：3 跳上限、HEAD 优先、失败映射 SHORTLINK_FAIL，成功后把 resolved_url 交给平台分支 · ac=AC-004
-- [x] TASK-005 f2 抖音分支：DouyinHandler 取 aweme_id，视频走 yt-dlp DouyinIE 或 f2 的播放地址，图文读 PostDetailFilter.images，全程不触发下载 · ac=AC-001
-- [x] TASK-006 抖音图文条目归一：images 逐项转 index、type=image、remoteUrl、ext，封面与宽高可空；item_count 取实际条目数 · ac=AC-002
-- [x] TASK-007 小红书视频分支：yt-dlp XiaoHongShuIE 取播放地址与标题，items 固定 1 项 · ac=AC-003
-- [x] TASK-008 小红书图文路由接 l2：调用 l2 的 parse_note，把返回的 imageList 原图与 xsec_token 归一成 items，needs_transcode=true；本湖不实现 __INITIAL_STATE__ 解析 · ac=AC-011
-- [x] TASK-009 cookie 池接缝 l4：get_cookie(platform) 取运营方 cookie，捕获 CookieExpired 映射 503 COOKIE_EXPIRED，日志脱敏 · ac=AC-005
-- [x] TASK-010 超时与预算：解析整体 12s 硬超时，返回 504 TIMEOUT；慢上游可注入 PARSE_UPSTREAM_DELAY_MS 用于测试 · ac=AC-009
-- [x] TASK-011 体积与条目上限：items 最多 100 项，截断时置 truncated=true；序列化后自检字节数不大于 1024000 · ac=AC-010
-- [x] TASK-012 零落盘自检：解析链路不使用临时文件 API，代码评审加测试用 /tmp 快照对比 · ac=AC-012
-- [x] TASK-013 健康探针：GET /health 汇总两平台 cookie 新鲜度、上次刷新时间、出口代理模式 · ac=AC-014
-- [x] TASK-014 容器镜像依赖：Python 3.11、FastAPI、yt-dlp、f2 0.0.1.7、curl_cffi、Node20、pyexecjs，镜像内自检 f2 与 curl_cffi 可 import；镜像不默认装 Chromium · ac=AC-001
-- [x] TASK-015 ops/smoke.py：实现 24 个用例，读环境变量样本，输出 JSON 证据；缺样本时打印 BLOCKED 并以退出码 3 结束 · ac=AC-001
-- [ ] TASK-016 样本采集登记：运营采集 8 个槽位，回填采集日期与页面条目数，样本只留在运营侧 · ac=AC-004 · BLOCKED：缺 8 个真实样本槽位（DY_VIDEO_1/2、DY_NOTE_1/2、XHS_VIDEO_1/2、DY_SHORT_1、XHS_SHORT_1），另缺 TC-014 用的 XHS_NOTE_MAX；样本未采集、未编造
-- [ ] TASK-017 打包验收：冻结后按 tests.md 跑 24 个用例，真实样本全绿才算本湖通过 · ac=AC-014 · BLOCKED：缺 8 个真实样本槽位，24 用例未能全绿；独立 QA 另有 7 条 BLOCKED，且 TC-023 渲染 P0 未闭合
-- [x] TASK-018 抖音 Argus HTTP 分支：f2 取 aweme_id/a_bogus/msToken，curl_cffi(impersonate="chrome") 直连 detail API，补 x-tt-argus、uifid 头与 uifid/verifyFp/fp 参数；主路径不起浏览器，小红书与图文分支不动 · ac=AC-015
-- [x] TASK-019 预算、缓存与清理：抖音 /parse 总预算 ≤12s，超时 TIMEOUT，失败 PARSE_FAILED retryable=true 且无半截 items；play_addr 按 aweme_id 缓存 10 分钟；缺 x-tt-argus 时复现上游 403 · ac=AC-016、AC-012
-- [x] TASK-020 真实样本验证与证据：用真实抖音链接跑 /parse 连跑 3 次记录 JSON（remoteUrl 可截断）；把实测输出与容器规格写进 evidence.md；tests.md TC-019 到 TC-024 附实测输出 · ac=AC-015、AC-016、AC-017
-- [x] TASK-021 容器与部署说明：Dockerfile 默认不装浏览器与 Chromium；Obscura 走可选多阶段（从 h4ckf0r0day/obscura:latest 拷二进制或直接用其镜像），默认关闭；标注不开 Obscura 0.5C1G 可跑、开启建议 1C1G · ac=AC-015、AC-017
-- [x] TASK-022 Obscura 通用渲染回退：ENABLE_OBSCURA=1 时启动 `obscura serve --port 9222 --stealth`，应用侧读 PLAYWRIGHT_CDP=ws://127.0.0.1:9222，用 new_context() 接入且不 browser.close()；只服务小红书/未来平台，抖音分支禁止接 Obscura；默认关闭时零进程零依赖 · ac=AC-017 · 对应 change chg_42c00bf71013（可选回退）；该 change 仍 pending，TC-023 的容器 SSRF P0 未闭合
+- [ ] TASK-001 解析路由与契约模型：FastAPI 挂 POST /parse 与 GET /health，pydantic 定义 ParseRequest、ParseItem、ParseResult、ErrorEnvelope，字段名与 truth.md 接口契约逐字一致 · ac=AC-011 · evidence=TC-015
+- [x] TASK-002 错误信封与错误码：实现 INVALID_URL、INVALID_REQUEST、UNSUPPORTED_PLATFORM、SHORTLINK_FAIL、COOKIE_EXPIRED、PARSE_FAILED、TIMEOUT、RATE_LIMITED 八个码，统一 http 状态与 retryable · ac=AC-005 · TC=TC-009 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-002.json
+- [x] TASK-003 域名白名单与输入校验：只放行 douyin.com、v.douyin.com、xhslink.com、xiaohongshu.com 及其子域；url 长度上限 2048；请求体出现 cookie 字段直接拒绝 · ac=AC-013 · TC=TC-017 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-003.json
+- [x] TASK-004 短链展开：3 跳上限、HEAD 优先、失败映射 SHORTLINK_FAIL，成功后把 resolved_url 交给平台分支 · ac=AC-004 · TC=TC-007,TC-008 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-004.json
+- [x] TASK-005 f2 抖音分支：DouyinHandler 取 aweme_id，视频走 yt-dlp DouyinIE 或 f2 的播放地址，图文读 PostDetailFilter.images，全程不触发下载 · ac=AC-001 · TC=TC-001,TC-002 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-005.json
+- [ ] TASK-006 抖音图文条目归一：images 逐项转 index、type=image、remoteUrl、ext，封面与宽高可空；item_count 取实际条目数 · ac=AC-002 · evidence=TC-003,TC-004
+- [ ] TASK-007 小红书视频分支：yt-dlp XiaoHongShuIE 取播放地址与标题，items 固定 1 项 · ac=AC-003 · evidence=TC-005,TC-006
+- [ ] TASK-008 小红书图文路由接 l2：调用 l2 的 parse_note，把返回的 imageList 原图与 xsec_token 归一成 items，needs_transcode=true；本湖不实现 __INITIAL_STATE__ 解析 · ac=AC-011 · evidence=TC-015
+- [x] TASK-009 cookie 池接缝 l4：get_cookie(platform) 取运营方 cookie，捕获 CookieExpired 映射 503 COOKIE_EXPIRED，日志脱敏 · ac=AC-005 · TC=TC-009 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-009.json
+- [x] TASK-010 超时与预算：解析整体 12s 硬超时，返回 504 TIMEOUT；慢上游可注入 PARSE_UPSTREAM_DELAY_MS 用于测试 · ac=AC-009 · TC=TC-013 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-010.json
+- [ ] TASK-011 体积与条目上限：items 最多 100 项，截断时置 truncated=true；序列化后自检字节数不大于 1024000 · ac=AC-010 · evidence=TC-014
+- [x] TASK-012 零落盘自检：解析链路不使用临时文件 API，代码评审加测试用 /tmp 快照对比 · ac=AC-012 · TC=TC-016 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-012.json
+- [x] TASK-013 健康探针：GET /health 汇总两平台 cookie 新鲜度、上次刷新时间、出口代理模式 · ac=AC-014 · TC=TC-018 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-013.json
+- [x] TASK-014 容器镜像依赖：Python 3.11、FastAPI、yt-dlp、f2 0.0.1.7、curl_cffi、Node20、pyexecjs，镜像内自检 f2 与 curl_cffi 可 import；镜像不默认装 Chromium · ac=AC-001 · TC=TC-001,TC-002 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-014.json
+- [x] TASK-015 ops/smoke.py：实现 24 个用例，读环境变量样本，输出 JSON 证据；缺样本时打印 BLOCKED 并以退出码 3 结束 · ac=AC-001 · TC=TC-001,TC-002,TC-003,TC-004,TC-005,TC-006,TC-007,TC-008,TC-009,TC-010,TC-011,TC-012,TC-013,TC-014,TC-015,TC-016,TC-017,TC-018,TC-019,TC-020,TC-021,TC-022,TC-023,TC-024 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-015.json
+- [ ] TASK-016 样本采集登记：运营采集 8 个槽位，回填采集日期与页面条目数，样本只留在运营侧 · ac=AC-004 · evidence=TC-007,TC-008 · BLOCKED：缺 8 个真实样本槽位（DY_VIDEO_1/2、DY_NOTE_1/2、XHS_VIDEO_1/2、DY_SHORT_1、XHS_SHORT_1），另缺 TC-014 用的 XHS_NOTE_MAX；样本未采集、未编造
+- [ ] TASK-017 打包验收：冻结后按 tests.md 跑 24 个用例，真实样本全绿才算本湖通过 · ac=AC-014 · evidence=TC-001,TC-002,TC-003,TC-004,TC-005,TC-006,TC-007,TC-008,TC-009,TC-010,TC-011,TC-012,TC-013,TC-014,TC-015,TC-016,TC-017,TC-018,TC-019,TC-020,TC-021,TC-022,TC-023,TC-024 · BLOCKED：缺 8 个真实样本槽位，24 用例未能全绿；独立 QA 另有 7 条 BLOCKED，且 TC-023 渲染 P0 未闭合
+- [x] TASK-018 抖音 Argus HTTP 分支：f2 取 aweme_id/a_bogus/msToken，curl_cffi(impersonate="chrome") 直连 detail API，补 x-tt-argus、uifid 头与 uifid/verifyFp/fp 参数；主路径不起浏览器，小红书与图文分支不动 · ac=AC-015 · TC=TC-019,TC-020 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-018.json
+- [x] TASK-019 预算、缓存与清理：抖音 /parse 总预算 ≤12s，超时 TIMEOUT，失败 PARSE_FAILED retryable=true 且无半截 items；play_addr 按 aweme_id 缓存 10 分钟；缺 x-tt-argus 时复现上游 403 · ac=AC-016、AC-012 · TC=TC-021,TC-022,TC-016 · evidence=docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-019.json
+- [ ] TASK-020 真实样本验证与证据：用真实抖音链接跑 /parse 连跑 3 次记录 JSON（remoteUrl 可截断）；把实测输出与容器规格写进 evidence.md；tests.md TC-019 到 TC-024 附实测输出 · ac=AC-015、AC-016、AC-017 · evidence=TC-019,TC-020,TC-021,TC-022,TC-023,TC-024
+- [ ] TASK-021 容器与部署说明：Dockerfile 默认不装浏览器与 Chromium；Obscura 走可选多阶段（从 h4ckf0r0day/obscura:latest 拷二进制或直接用其镜像），默认关闭；标注不开 Obscura 0.5C1G 可跑、开启建议 1C1G · ac=AC-015、AC-017 · evidence=TC-019,TC-020,TC-023,TC-024
+- [ ] TASK-022 Obscura 通用渲染回退：ENABLE_OBSCURA=1 时启动 `obscura serve --port 9222 --stealth`，应用侧读 PLAYWRIGHT_CDP=ws://127.0.0.1:9222，用 new_context() 接入且不 browser.close()；只服务小红书/未来平台，抖音分支禁止接 Obscura；默认关闭时零进程零依赖 · ac=AC-017 · evidence=TC-023,TC-024 · 对应 change chg_42c00bf71013（可选回退）；TC-023 容器 SSRF P0 未修复，缺 XHS_NOTE_1 样本，实测 BLOCKED
 
 ## 依赖关系
 
@@ -83,3 +83,5 @@ depends_on: l2-xhs-images, l4-session-egress
 ## 边界
 
 勾选只在绑定证据存在时成立，完成不等于自己打勾。实现阶段的文件不在 truth 阶段创建；本阶段只允许改 truth.md、tests.md、tasks.md、evidence.md 四个文件。
+
+R2 台账按证据实况重置：R1 的勾选未绑定 evidence=，按包形状门不成立，本版全部保持未勾选，由 implement 轮逐条实测后回填。evidence= 用 tests.md 的 TC 编号声明绑定，实测记录落在 evidence/l1/smoke-TC-<编号>.json。

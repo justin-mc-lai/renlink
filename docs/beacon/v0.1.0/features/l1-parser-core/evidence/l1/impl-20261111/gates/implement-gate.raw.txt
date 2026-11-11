@@ -1,0 +1,77 @@
+{
+  "gate_type": "implement",
+  "verdict": "blocked",
+  "reason_codes": [
+    "unscoped_dirty_state"
+  ],
+  "checks": [
+    {
+      "check": "truth_frozen",
+      "ok": true,
+      "applicable": true,
+      "detail": "truth frozen (source: frontmatter)"
+    },
+    {
+      "check": "worktree_binding",
+      "ok": true,
+      "applicable": true,
+      "detail": "bound to ."
+    },
+    {
+      "check": "design_bound",
+      "ok": true,
+      "applicable": false,
+      "detail": "run requires no design (no --ux)"
+    },
+    {
+      "check": "blocker_streak",
+      "ok": true,
+      "applicable": true,
+      "detail": "no uncleared hard block"
+    },
+    {
+      "check": "steering_ack",
+      "ok": true,
+      "applicable": true,
+      "detail": "no pending steering"
+    },
+    {
+      "check": "baseline_merged",
+      "ok": true,
+      "applicable": true,
+      "detail": "worktree HEAD 1bed47d87c7f contains truth_baseline_commit b4a162478023"
+    },
+    {
+      "check": "dirty_policy",
+      "ok": false,
+      "applicable": true,
+      "reason_code": "unscoped_dirty_state",
+      "detail": "dirty state violates the pre-implement dirty policy: docs/beacon/v0.1.0/features/l1-parser-core/evidence.md (requirement package), docs/beacon/v0.1.0/features/l1-parser-core/tasks.md (requirement package), docs/beacon/v0.1.0/features/l1-parser-core/changes/chg_55cb1f93401b.md (requirement package), docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111 (requirement package); commit/stash the requirement package and protected paths before implementing (AC-141)"
+    },
+    {
+      "check": "topology_gate",
+      "ok": true,
+      "applicable": true,
+      "detail": "topology gate pass over bc_da8c049f49c50431 (monorepo, 2 scope(s))"
+    },
+    {
+      "check": "review_decision",
+      "ok": true,
+      "applicable": true,
+      "detail": "no unresolved review decision"
+    },
+    {
+      "check": "implement_work_recorded",
+      "ok": true,
+      "applicable": true,
+      "detail": "work tree carries 20 uncommitted change(s)"
+    }
+  ],
+  "evaluator": "任链接后端",
+  "feature_id": "feat_a04afe51ee656be487b33fc2",
+  "feature_slug": "l1-parser-core",
+  "run_id": "run_520cb25cfb55fe642d6b583e",
+  "gate_result_id": "gate_3a2f1053c8dd8213280dce6e",
+  "evaluated_at": "2026-11-11T10:13:13.074963000Z"
+}
+Error: gate evaluate: gate implement blocked for feature l1-parser-core (unscoped_dirty_state)

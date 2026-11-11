@@ -1,0 +1,122 @@
+[
+  {
+    "task": "TASK-002",
+    "tcs": "TC-009",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-002.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_e1608dc19b83d783ee6f3f26",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-003",
+    "tcs": "TC-017",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-003.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_74925f8308fe41deff5ea003",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-004",
+    "tcs": "TC-007,TC-008",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-004.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_7dec243ef4535bed29639334",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-005",
+    "tcs": "TC-001,TC-002",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-005.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_73b0f3aae3ad4154e084c126",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-009",
+    "tcs": "TC-009",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-009.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_b1129ce1f373d43680531eb4",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-010",
+    "tcs": "TC-013",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-010.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_80a43941826cd09a849fefda",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-012",
+    "tcs": "TC-016",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-012.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_7026409d9f15cdd19261f63a",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-013",
+    "tcs": "TC-018",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-013.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_8253283780e1e998be0159df",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-014",
+    "tcs": "TC-001,TC-002",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-014.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_b08a9260e891cec3fe13d1a7",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-015",
+    "tcs": "TC-001,TC-002,TC-003,TC-004,TC-005,TC-006,TC-007,TC-008,TC-009,TC-010,TC-011,TC-012,TC-013,TC-014,TC-015,TC-016,TC-017,TC-018,TC-019,TC-020,TC-021,TC-022,TC-023,TC-024",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-015.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_5ac731a58ce36e46a9f19495",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-018",
+    "tcs": "TC-019,TC-020",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-018.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_120e2d7a202f47dbe6a31f2b",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  },
+  {
+    "task": "TASK-019",
+    "tcs": "TC-021,TC-022,TC-016",
+    "evidence": "docs/beacon/v0.1.0/features/l1-parser-core/evidence/l1/impl-20261111/TASK-019.json",
+    "gate_verdict": "pass",
+    "gate_result_id": "gate_5a3b1a99c50366367271c8eb",
+    "reason_codes": null,
+    "exit": 0,
+    "kept": true
+  }
+]

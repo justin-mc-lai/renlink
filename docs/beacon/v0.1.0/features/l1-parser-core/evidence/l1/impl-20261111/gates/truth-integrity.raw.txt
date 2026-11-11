@@ -1,0 +1,11 @@
+{
+  "gate_type": "truth_integrity",
+  "verdict": "pass",
+  "mode": "audit_only",
+  "evaluator": "任链接后端",
+  "feature_id": "feat_a04afe51ee656be487b33fc2",
+  "feature_slug": "l1-parser-core",
+  "gate_result_id": "gate_e7086c628d334afb022660b0",
+  "evaluated_at": "2026-11-11T10:11:39.635610000Z",
+  "repair_route": "beacon-gen-truth"
+}

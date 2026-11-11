@@ -1,0 +1,156 @@
+{
+  "task": "TASK-015",
+  "tcs": [
+    "TC-001..TC-024"
+  ],
+  "command": "PARSE_BASE=http://127.0.0.1:18096 DY_VIDEO_1=... DY_VIDEO_2=... DY_SHORT_1=... XHS_VIDEO_1=... XHS_SHORT_1=... SMOKE_CONTAINER_ID=renlink-impl-18096 .venv/bin/python ops/smoke.py --out /tmp/l1-full",
+  "startedAt": "2026-11-11T18:10:27+08:00",
+  "exitCode": 3,
+  "stdout": "PARSE_BASE=http://127.0.0.1:18096\nTC-001 dy-video-1: PASS\nTC-002 dy-video-2: PASS\nTC-003 dy-note-1: BLOCKED (缺少样本: DY_NOTE_1)\nTC-004 dy-note-2: BLOCKED (缺少样本: DY_NOTE_2)\nTC-005 xhs-video-1: PASS\nTC-006 xhs-video-2: BLOCKED (缺少样本: XHS_VIDEO_2)\nTC-007 dy-short-1: PASS\nTC-008 xhs-short-1: PASS\nTC-009 cookie-expired: BLOCKED (服务端未以 PARSE_STUB_COOKIE_EXPIRED 启动)\nTC-010 shortlink-fail: PASS (构造的失效短链，不冒充真实样本)\nTC-011 invalid-url: PASS (三组输入：空串、not-a-url、超长 URL)\nTC-012 unsupported-platform: PASS (三个非目标平台)\nTC-013 timeout: BLOCKED (服务端未以 PARSE_UPSTREAM_DELAY_MS 启动)\nTC-014 size-cap: BLOCKED (缺少样本: XHS_NOTE_MAX)\nTC-015 field-contract: BLOCKED (缺少样本: DY_NOTE_1)\nTC-016 no-download: PASS (/tmp 前后快照一致)\nTC-017 user-cookie: PASS (请求体含 cookie 字段，不应进入解析分支)\nTC-018 health: PASS\nTC-019 dy-argus-1: PASS (argus requests 2 -> 2，browser_launches 不增)\nTC-020 dy-argus-stability: BLOCKED (服务端未以 RENLINK_DISABLE_CACHE 启动)\nTC-021 dy-argus-missing-header: BLOCKED (服务端未以 RENLINK_DROP_ARGUS_HEADER 启动)\nTC-022 dy-argus-timeout: BLOCKED (服务端未以 PARSE_UPSTREAM_DELAY_MS 启动)\nTC-023 obscura-xhs-render: BLOCKED (缺少样本: XHS_NOTE_1)\nTC-024 douyin-no-obscura: BLOCKED (服务端未以 ENABLE_OBSCURA 启动)\nSUMMARY pass=12 fail=0 blocked=12\n",
+  "perCase": {
+    "TC-001": {
+      "name": "dy-video-1",
+      "status": "PASS",
+      "failures": [],
+      "note": ""
+    },
+    "TC-002": {
+      "name": "dy-video-2",
+      "status": "PASS",
+      "failures": [],
+      "note": ""
+    },
+    "TC-003": {
+      "name": "dy-note-1",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: DY_NOTE_1"
+    },
+    "TC-004": {
+      "name": "dy-note-2",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: DY_NOTE_2"
+    },
+    "TC-005": {
+      "name": "xhs-video-1",
+      "status": "PASS",
+      "failures": [],
+      "note": ""
+    },
+    "TC-006": {
+      "name": "xhs-video-2",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: XHS_VIDEO_2"
+    },
+    "TC-007": {
+      "name": "dy-short-1",
+      "status": "PASS",
+      "failures": [],
+      "note": ""
+    },
+    "TC-008": {
+      "name": "xhs-short-1",
+      "status": "PASS",
+      "failures": [],
+      "note": ""
+    },
+    "TC-009": {
+      "name": "cookie-expired",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 PARSE_STUB_COOKIE_EXPIRED 启动"
+    },
+    "TC-010": {
+      "name": "shortlink-fail",
+      "status": "PASS",
+      "failures": [],
+      "note": "构造的失效短链，不冒充真实样本"
+    },
+    "TC-011": {
+      "name": "invalid-url",
+      "status": "PASS",
+      "failures": [],
+      "note": "三组输入：空串、not-a-url、超长 URL"
+    },
+    "TC-012": {
+      "name": "unsupported-platform",
+      "status": "PASS",
+      "failures": [],
+      "note": "三个非目标平台"
+    },
+    "TC-013": {
+      "name": "timeout",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 PARSE_UPSTREAM_DELAY_MS 启动"
+    },
+    "TC-014": {
+      "name": "size-cap",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: XHS_NOTE_MAX"
+    },
+    "TC-015": {
+      "name": "field-contract",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: DY_NOTE_1"
+    },
+    "TC-016": {
+      "name": "no-download",
+      "status": "PASS",
+      "failures": [],
+      "note": "/tmp 前后快照一致"
+    },
+    "TC-017": {
+      "name": "user-cookie",
+      "status": "PASS",
+      "failures": [],
+      "note": "请求体含 cookie 字段，不应进入解析分支"
+    },
+    "TC-018": {
+      "name": "health",
+      "status": "PASS",
+      "failures": [],
+      "note": ""
+    },
+    "TC-019": {
+      "name": "dy-argus-1",
+      "status": "PASS",
+      "failures": [],
+      "note": "argus requests 2 -> 2，browser_launches 不增"
+    },
+    "TC-020": {
+      "name": "dy-argus-stability",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 RENLINK_DISABLE_CACHE 启动"
+    },
+    "TC-021": {
+      "name": "dy-argus-missing-header",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 RENLINK_DROP_ARGUS_HEADER 启动"
+    },
+    "TC-022": {
+      "name": "dy-argus-timeout",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 PARSE_UPSTREAM_DELAY_MS 启动"
+    },
+    "TC-023": {
+      "name": "obscura-xhs-render",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "缺少样本: XHS_NOTE_1"
+    },
+    "TC-024": {
+      "name": "douyin-no-obscura",
+      "status": "BLOCKED",
+      "failures": [],
+      "note": "服务端未以 ENABLE_OBSCURA 启动"
+    }
+  }
+}

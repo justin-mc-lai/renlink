@@ -1,0 +1,34 @@
+{
+  "tc": "TC-009",
+  "command": "PARSE_BASE=http://127.0.0.1:18091 PARSE_STUB_COOKIE_EXPIRED=douyin /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-009 --out /tmp/l1-ev-tmp",
+  "startedAt": "2026-11-11T18:07:33+08:00",
+  "exitCode": 0,
+  "stdout": "PARSE_BASE=http://127.0.0.1:18091\nTC-009 cookie-expired: PASS (需服务端以 PARSE_STUB_COOKIE_EXPIRED=douyin 启动)\nSUMMARY pass=1 fail=0 blocked=0",
+  "stderr": "",
+  "smoke": {
+    "tc": "TC-009",
+    "name": "cookie-expired",
+    "status": "PASS",
+    "startedAt": "2026-11-11T18:07:33+08:00",
+    "base": "http://127.0.0.1:18091",
+    "request": {
+      "url": "https://v.douyin.com/Y7MgY9YnYAg..."
+    },
+    "httpStatus": 503,
+    "responseBytes": 172,
+    "clientElapsedMs": 216,
+    "response": {
+      "ok": false,
+      "error": {
+        "code": "COOKIE_EXPIRED",
+        "message": "运营方 cookie 失效，请运营刷新后重试",
+        "retryable": true
+      },
+      "items": [],
+      "resolved_url": "",
+      "elapsed_ms": 206
+    },
+    "failures": [],
+    "note": "需服务端以 PARSE_STUB_COOKIE_EXPIRED=douyin 启动"
+  }
+}

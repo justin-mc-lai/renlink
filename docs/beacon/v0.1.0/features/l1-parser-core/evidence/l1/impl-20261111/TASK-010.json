@@ -1,0 +1,25 @@
+{
+  "task": "TASK-010",
+  "allPass": true,
+  "runs": [
+    {
+      "tc": "TC-013",
+      "command": "PARSE_BASE=http://127.0.0.1:18092 PARSE_UPSTREAM_DELAY_MS=13000 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-013 --out /tmp/l1-ev-tmp",
+      "exitCode": 0,
+      "status": "PASS",
+      "failures": [],
+      "note": "需服务端以 PARSE_UPSTREAM_DELAY_MS=13000 启动",
+      "response": {
+        "ok": false,
+        "error": {
+          "code": "TIMEOUT",
+          "message": "上游解析超过 12 秒",
+          "retryable": true
+        },
+        "items": [],
+        "resolved_url": "",
+        "elapsed_ms": 12002
+      }
+    }
+  ]
+}

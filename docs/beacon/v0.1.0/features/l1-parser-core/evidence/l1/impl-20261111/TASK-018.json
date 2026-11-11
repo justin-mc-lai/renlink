@@ -1,0 +1,68 @@
+{
+  "task": "TASK-018",
+  "allPass": true,
+  "runs": [
+    {
+      "tc": "TC-019",
+      "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-019 --out /tmp/l1-ev-tmp",
+      "exitCode": 0,
+      "status": "PASS",
+      "failures": [],
+      "note": "argus requests 3 -> 3，browser_launches 不增",
+      "response": {
+        "ok": true,
+        "platform": "douyin",
+        "content_type": "video",
+        "source_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+        "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+        "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+        "item_count": 1,
+        "elapsed_ms": 217,
+        "task_id": "st_d119854fe1c2bae92e4556b2",
+        "items": [
+          {
+            "index": 0,
+            "type": "video",
+            "remoteUrl": "https://v11-weba.douyinvod.com/2b4d61ba554abba50080a5d57862e81a/6af46c28/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlci~wCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=80000e00038000&cquery=100H_100K_100o_100w_100B&dy_q=1794391161&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261111175921311888C0833B5C95ABD5",
+            "ext": "mp4",
+            "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109747600&x-signature=hh3%2FArywv4ylecNMBULWTDfVUJA%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261111175921311888C0833B5C95ABD5",
+            "width": 1080,
+            "height": 1920,
+            "needs_transcode": false
+          }
+        ]
+      }
+    },
+    {
+      "tc": "TC-020",
+      "command": "PARSE_BASE=http://127.0.0.1:18093 RENLINK_DISABLE_CACHE=1 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-020 --out /tmp/l1-ev-tmp",
+      "exitCode": 0,
+      "status": "PASS",
+      "failures": [],
+      "note": "连跑 3 次；需服务端以 RENLINK_DISABLE_CACHE=1 启动，避免缓存掩盖上游稳定性",
+      "response": {
+        "ok": true,
+        "platform": "douyin",
+        "content_type": "video",
+        "source_url": "https://v.douyin.com/Y7MgY9YnYAg/",
+        "resolved_url": "https://www.douyin.com/video/7705367833957403946",
+        "title": "走进影视飓风和TIM聊聊人生与理想#人间观察计划 #溥江半日谈 #人生 #影视飓风",
+        "item_count": 1,
+        "elapsed_ms": 761,
+        "task_id": "st_cc990df1bf0a9274255c6ebf",
+        "items": [
+          {
+            "index": 0,
+            "type": "video",
+            "remoteUrl": "https://v11-weba.douyinvod.com/4d8adc2e6437a4b044faf0a716773c80/6af46e2d/video/tos/cn/tos-cn-ve-15/oMvYZ2qA9IqApDvftfQka2DqUFaFEAuuBgw6A7/?a=6383&ch=26&cr=3&dr=0&lr=all&cd=0%7C0%7C0%7C3&cv=1&br=903&bt=903&cs=0&ds=4&ft=GN7rKGVVywSyRKJ80mo~MWwQlcWXwCv2bLqGIrh8ZmkaY3&mime_type=video_mp4&qs=0&rc=Ozk8NzozPDw3OTtpZTtkOEBpamZmbXA5cmVoZTMzNGkzM0AtXy0uNjBeX14xNi9hNWIwYSNqbF9uMmRrcWthLS1kLTBzcw%3D%3D&btag=c0000e00038000&cquery=100B_100H_100K_100o_100w&dy_q=1794391678&feature_id=37f92ebd2877ae8e7eba995d406c5150&l=20261111180758539CC4A78199E49ECEB9",
+            "ext": "mp4",
+            "cover": "https://p3-pc-sign.douyinpic.com/image-cut-tos-priv/de8fed341cd1c691ee596c19a67fb085~tplv-dy-resize-origshort-autoq-75:330.jpeg?lk3s=138a59ce&x-expires=2109751200&x-signature=q9cXuoK4Tcs7sxYmRrs6ggkRtgk%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=pcweb_cover&l=20261111180758539CC4A78199E49ECEB9",
+            "width": 1080,
+            "height": 1920,
+            "needs_transcode": false
+          }
+        ]
+      }
+    }
+  ]
+}

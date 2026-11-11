@@ -1,0 +1,46 @@
+{
+  "tc": "TC-005",
+  "command": "PARSE_BASE=http://127.0.0.1:18090 /Users/apple/Developer/Personal/renlink/.venv/bin/python ops/smoke.py --case TC-005 --out /tmp/l1-ev-tmp",
+  "startedAt": "2026-11-11T18:06:28+08:00",
+  "exitCode": 0,
+  "stdout": "PARSE_BASE=http://127.0.0.1:18090\nTC-005 xhs-video-1: PASS\nSUMMARY pass=1 fail=0 blocked=0",
+  "stderr": "",
+  "smoke": {
+    "tc": "TC-005",
+    "name": "xhs-video-1",
+    "status": "PASS",
+    "startedAt": "2026-11-11T18:06:28+08:00",
+    "base": "http://127.0.0.1:18090",
+    "request": {
+      "url": "https://xhslink.cn/o/1zbdThHpdb0"
+    },
+    "httpStatus": 200,
+    "responseBytes": 1026,
+    "clientElapsedMs": 733,
+    "response": {
+      "ok": true,
+      "platform": "xhs",
+      "content_type": "video",
+      "source_url": "https://xhslink.cn/o/1zbdThHpdb0",
+      "resolved_url": "https://www.xiaohongshu.com/discovery/item/6af04386000000001500d626?app_platform=android&ignoreEngage=true&app_version=9.53.0&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBVAtce4UCUiNYxMmOlWIPXz1mhF2c1dojfef3gSjakj0%3D&author_share=1&xhsshare=CopyLink&shareRedId=ODg7QzQ7ST42NzUyOTgwNjg0OTk5Rz5M&apptime=1794139056&share_id=ab67879c62464af6adf3b23492c1e3c7&share_channel=copy_link&track_code=1zbdThHpdb0",
+      "title": "XiaoHongShu video #6af04386000000001500d626",
+      "item_count": 1,
+      "elapsed_ms": 725,
+      "task_id": "st_7d3e3c4133f3f20b9ba09c75",
+      "items": [
+        {
+          "index": 0,
+          "type": "video",
+          "remoteUrl": "http://sns-bak-v6.xhscdn.com/stream/79/110/523/01eaf043855eb5bb4f037001a1ba89bebf_523.mp4",
+          "ext": "mp4",
+          "cover": "http://sns-webpic-qc.xhscdn.com/202611111806/da2998a66c28b481308a7c49d4ca1ee0/1040g2sg327aaf4fs6qe05pkmdbljugdukngp3qg!nd_dft_wlteh_jpg_3",
+          "width": 2160,
+          "height": 3840,
+          "needs_transcode": false
+        }
+      ]
+    },
+    "failures": [],
+    "note": ""
+  }
+}
